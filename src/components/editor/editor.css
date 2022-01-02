@@ -1,0 +1,36 @@
+.monaco-editor .decorationsOverviewRuler,
+.monaco-editor .scrollbar.vertical {
+  position: fixed !important;
+}
+
+.monaco-editor .cursors-layer.cursor-smooth-caret-animation > .cursor:not(.x) {
+  transition: left 100ms ease-out;
+}
+
+.cursor-smooth:not(.x) {
+  animation-duration: 1s;
+  animation-delay: 1s;
+}
+
+.monaco-editor .cursors-layer .cursor:not(.x) {
+  color: transparent;
+}
+
+.monaco-editor .cursors-layer:not(.x) {
+  z-index: -1;
+}
+.monaco-editor .lines-content .cslr:not(.x) {
+  z-index: -1;
+}
+
+.monaco-editor .relative-current-line-number {
+  text-align: end !important;
+}
+
+.vim-status {
+  color: #727579;
+}
+.vim-status input {
+  background-color: #2b3036;
+  outline: none;
+}
