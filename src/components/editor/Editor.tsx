@@ -9,7 +9,7 @@ import { getEditorThemeRules } from './theme/rules';
 
 const createEditor = (editorEl: HTMLDivElement, statusEl: HTMLDivElement) => {
   const editor = monaco.editor.create(editorEl, {
-    value: 'Hello _world_',
+    value: 'This is a little **test**',
     language: 'markdown',
     ariaLabel: 'Markdown Editor',
     codeLens: false,
@@ -29,7 +29,7 @@ const createEditor = (editorEl: HTMLDivElement, statusEl: HTMLDivElement) => {
       enabled: false,
     },
     padding: {
-      top: 150,
+      top: 96,
     },
     quickSuggestions: false,
     roundedSelection: false,
