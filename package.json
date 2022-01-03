@@ -3,10 +3,10 @@
   "version": "0.0.0",
   "main": "main/index.js",
   "scripts": {
-    "dev": "concurrently \"yarn dev:vite\" \" yarn dev:electron\"",
+    "dev": "concurrently \"yarn dev:vite --config vite.config-electron.ts\" \" yarn dev:electron\"",
     "dev:vite": "vite",
     "dev:electron": "npm run build:electron && electron .",
-    "build": "npm run build:vite && npm run build:electron",
+    "build": "npm run build:vite --config vite.config-electron.ts && npm run build:electron",
     "build:vite": "tsc && vite build",
     "build:electron": "tsc -p electron",
     "dist": "npm run build && electron-builder",

@@ -11,6 +11,11 @@ export default ({ command }: ConfigEnv): UserConfig => {
       root: srcRoot,
       base: '/',
       plugins: [react(), monacoEditorPlugin()],
+      build: {
+        outDir: join(srcRoot, '/out'),
+        emptyOutDir: true,
+        rollupOptions: {},
+      },
       server: {
         port: process.env.PORT === undefined ? 3000 : +process.env.PORT,
       },
@@ -22,10 +27,10 @@ export default ({ command }: ConfigEnv): UserConfig => {
 
   return {
     root: srcRoot,
-    base: `${__dirname}/dist/`,
+    base: `${__dirname}/src/out/`,
     plugins: [react(), monacoEditorPlugin()],
     build: {
-      outDir: join(srcRoot, '../dist'),
+      outDir: join(srcRoot, '/out'),
       emptyOutDir: true,
       rollupOptions: {},
     },
