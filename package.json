@@ -19,7 +19,8 @@
     "monaco-editor": "^0.31.1",
     "monaco-vim": "^0.1.19",
     "react": "^17.0.2",
-    "react-dom": "^17.0.2"
+    "react-dom": "^17.0.2",
+    "electron-is-dev": "^2.0.0"
   },
   "devDependencies": {
     "@types/react": "^17.0.33",
@@ -31,7 +32,6 @@
     "concurrently": "^7.0.0",
     "electron": "16.0.5",
     "electron-builder": "^22.14.5",
-    "electron-is-dev": "^2.0.0",
     "eslint": "^8.6.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-prettier": "^8.3.0",
