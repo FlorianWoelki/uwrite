@@ -9,7 +9,6 @@ export default ({ command }: ConfigEnv): UserConfig => {
   if (command === 'serve') {
     return {
       root: srcRoot,
-      base: '/',
       plugins: [react(), monacoEditorPlugin()],
       server: {
         port: process.env.PORT === undefined ? 3000 : +process.env.PORT,
@@ -22,7 +21,6 @@ export default ({ command }: ConfigEnv): UserConfig => {
 
   return {
     root: srcRoot,
-    base: `${__dirname}/dist/`,
     plugins: [react(), monacoEditorPlugin()],
     build: {
       outDir: join(srcRoot, '../dist'),
