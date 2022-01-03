@@ -5,3 +5,7 @@ dist-ssr
 *.local
 
 .vercel
+
+/main
+/dist
+/src/out
