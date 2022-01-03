@@ -2,7 +2,6 @@ import { useEffect, useRef } from 'react';
 import './theme/font/font.css';
 import './editor.css';
 import * as monaco from 'monaco-editor';
-// @ts-ignore
 import { VimMode, initVimMode } from 'monaco-vim';
 import { getEditorThemeColors } from './theme/colors';
 import { getEditorThemeRules } from './theme/rules';
@@ -103,9 +102,9 @@ export const Editor = (): JSX.Element => {
 
   return (
     <>
-      <div className="h-full w-full" ref={editorRef}></div>
+      <div className="w-full h-full" ref={editorRef}></div>
       <div
-        className="vim-status absolute bottom-0 inset-x-0 px-4 py-2"
+        className="absolute inset-x-0 bottom-0 px-4 py-2 vim-status"
         ref={statusRef}
       ></div>
     </>
