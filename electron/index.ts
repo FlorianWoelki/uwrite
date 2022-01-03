@@ -4,15 +4,27 @@ import { join } from 'path';
 // Packages
 import { BrowserWindow, app, ipcMain, IpcMainEvent } from 'electron';
 import isDev from 'electron-is-dev';
+import Store from './store';
 
-const height = 600;
-const width = 800;
+const store = new Store({
+  configName: 'user-preferences',
+  defaults: {
+    windowBounds: {
+      x: undefined,
+      y: undefined,
+      width: 800,
+      height: 600,
+    },
+  },
+});
 
 function createWindow() {
   // Create the browser window.
   const window = new BrowserWindow({
-    width,
-    height,
+    x: store.get('windowBounds').x,
+    y: store.get('windowBounds').y,
+    width: store.get('windowBounds').width,
+    height: store.get('windowBounds').height,
     show: true,
     resizable: true,
     fullscreenable: true,
@@ -48,6 +60,16 @@ function createWindow() {
 
   ipcMain.on('close', () => {
     window.close();
+  });
+
+  window.on('resize', () => {
+    const { x, y, width, height } = window.getBounds();
+    store.set('windowBounds', { x, y, width, height });
+  });
+
+  window.on('moved', () => {
+    const { x, y, width, height } = window.getBounds();
+    store.set('windowBounds', { x, y, width, height });
   });
 }
 
