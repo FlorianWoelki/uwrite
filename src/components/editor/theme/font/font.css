@@ -4,3 +4,10 @@
   font-style: normal;
   src: url('./iAWriterDuo.ttf') format('truetype-variations');
 }
+
+@font-face {
+  font-family: 'iA Writer Duo';
+  font-weight: 100 900;
+  font-style: italic;
+  src: url('./iAWriterDuo-Italic.ttf') format('truetype-variations');
+}

@@ -2,7 +2,7 @@ import { Editor } from './components/editor/Editor';
 
 function App() {
   return (
-    <div className="w-full h-screen relative max-w-6xl m-auto">
+    <div className="relative w-full h-screen max-w-6xl m-auto">
       <Editor />
     </div>
   );

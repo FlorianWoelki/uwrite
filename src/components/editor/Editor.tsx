@@ -18,7 +18,6 @@ const createEditor = (editorEl: HTMLDivElement, statusEl: HTMLDivElement) => {
     cursorSmoothCaretAnimation: true,
     cursorSurroundingLines: 3,
     cursorWidth: 3,
-    fontFamily: 'iA Writer Duo',
     fontSize: 20,
     fontWeight: '450',
     glyphMargin: false,
@@ -47,6 +46,7 @@ const createEditor = (editorEl: HTMLDivElement, statusEl: HTMLDivElement) => {
     scrollbar: {
       horizontal: 'hidden',
       verticalSliderSize: 5,
+      useShadows: false,
     },
   });
 
