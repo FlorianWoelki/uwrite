@@ -18,7 +18,7 @@ const store = new Store({
   },
 });
 
-function createWindow() {
+const createWindow = (): void => {
   // Create the browser window.
   const window = new BrowserWindow({
     x: store.get('windowBounds').x,
@@ -71,7 +71,7 @@ function createWindow() {
     const { x, y, width, height } = window.getBounds();
     store.set('windowBounds', { x, y, width, height });
   });
-}
+};
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
