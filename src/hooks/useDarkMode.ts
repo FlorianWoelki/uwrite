@@ -3,9 +3,22 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 type ThemeType = 'dark' | 'light' | 'system';
 
 export const useDarkMode = () => {
-  const [theme, setTheme] = useState<ThemeType>(
+  const [theme, setThemeState] = useState<ThemeType>(
     (localStorage.getItem('theme') as 'dark' | 'light') ?? 'system',
   );
+
+  const setTheme = (themeType: ThemeType): void => {
+    let newTheme = themeType;
+    if (theme === 'system' && newTheme !== 'system') {
+      const prefersDark = window.matchMedia(
+        '(prefers-color-scheme: dark)',
+      ).matches;
+
+      newTheme = prefersDark ? 'light' : 'dark';
+    }
+
+    setThemeState(newTheme);
+  };
 
   const handleMediaQuery = useCallback(() => {
     const root = window.document.documentElement;
