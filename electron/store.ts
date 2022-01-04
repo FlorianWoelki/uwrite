@@ -2,7 +2,18 @@ import { app } from 'electron';
 import path from 'path';
 import fs from 'fs';
 
-type StoreOptionsDefaults = Record<string, any>;
+type WindowsBounds = {
+  x?: number;
+  y?: number;
+  width: number;
+  height: number;
+};
+
+interface StoreData {
+  windowBounds: WindowsBounds;
+}
+
+type StoreOptionsDefaults = StoreData;
 
 interface StoreOptions {
   configName: string;
@@ -11,7 +22,7 @@ interface StoreOptions {
 
 export default class Store {
   private path: string;
-  private data: Record<string, any>;
+  private data: StoreData;
 
   constructor(options: StoreOptions) {
     const userDataPath = app.getPath('userData');
@@ -19,11 +30,11 @@ export default class Store {
     this.data = parseDataFile(this.path, options.defaults);
   }
 
-  get(key: string): any {
+  get(key: keyof StoreData): WindowsBounds {
     return this.data[key];
   }
 
-  set(key: string, val: any): void {
+  set(key: keyof StoreData, val: WindowsBounds): void {
     this.data[key] = val;
     fs.writeFileSync(this.path, JSON.stringify(this.data));
   }
