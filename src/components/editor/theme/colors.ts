@@ -1,4 +1,4 @@
-import * as monaco from 'monaco-editor';
+import { monaco } from '../../../monaco';
 
 export const getEditorThemeColors = (): monaco.editor.IColors => ({
   // Overall foreground color. This color is only used if not overridden by a component.

@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import './theme/font/font.css';
 import './editor.css';
-import * as monaco from 'monaco-editor';
+import { monaco } from '../../monaco';
 import { VimMode, initVimMode } from 'monaco-vim';
 import { getEditorThemeColors } from './theme/colors';
 import { getEditorThemeRules } from './theme/rules';
