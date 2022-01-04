@@ -12,6 +12,7 @@ const colors = {
   green: '#85E89D',
 
   text: '#d1d5da',
+  keyword: '#f97583',
 };
 
 export const getEditorThemeRules = (): Rule[] => {
@@ -25,7 +26,7 @@ export const getEditorThemeRules = (): Rule[] => {
   );
 
   rules.push(
-    { token: 'comment.md', foreground: colors.text },
+    { token: 'comment.md', foreground: colors.gray },
     { token: 'keyword.md', foreground: colors.text, fontStyle: 'bold' },
     { token: 'keyword.table.header.md', foreground: colors.text },
     { token: 'keyword.table.middle.md', foreground: colors.text },
@@ -37,7 +38,7 @@ export const getEditorThemeRules = (): Rule[] => {
   );
 
   rules.push(
-    { token: 'keyword', foreground: colors.red },
+    { token: 'keyword', foreground: colors.keyword },
     { token: 'string', foreground: colors.blue1 },
     { token: 'identifier', foreground: colors.purple },
     { token: 'type.identifier', foreground: colors.orange },
