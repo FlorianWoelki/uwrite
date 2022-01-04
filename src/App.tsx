@@ -3,9 +3,7 @@ import { useDarkMode } from './hooks/useDarkMode';
 
 const App = (): JSX.Element => {
   const handleResetThemeToSystem = async (): Promise<void> => {
-    // @ts-ignore
     if (window.darkMode) {
-      // @ts-ignore
       await window.darkMode.system();
     } else {
       setTheme('system');
@@ -13,9 +11,7 @@ const App = (): JSX.Element => {
   };
 
   const handleToggleTheme = async (): Promise<void> => {
-    // @ts-ignore
     if (window.darkMode) {
-      // @ts-ignore
       await window.darkMode.toggle();
     } else {
       setTheme(theme === 'dark' ? 'light' : 'dark');
