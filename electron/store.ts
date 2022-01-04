@@ -2,15 +2,13 @@ import { app } from 'electron';
 import path from 'path';
 import fs from 'fs';
 
-type WindowsBounds = {
-  x?: number;
-  y?: number;
-  width: number;
-  height: number;
-};
-
 interface StoreData {
-  windowBounds: WindowsBounds;
+  windowBounds: {
+    x?: number;
+    y?: number;
+    width: number;
+    height: number;
+  };
 }
 
 type StoreOptionsDefaults = StoreData;
@@ -30,11 +28,11 @@ export default class Store {
     this.data = parseDataFile(this.path, options.defaults);
   }
 
-  get(key: keyof StoreData): WindowsBounds {
+  get(key: keyof StoreData): StoreData[keyof StoreData] {
     return this.data[key];
   }
 
-  set(key: keyof StoreData, val: WindowsBounds): void {
+  set(key: keyof StoreData, val: StoreData[keyof StoreData]): void {
     this.data[key] = val;
     fs.writeFileSync(this.path, JSON.stringify(this.data));
   }
