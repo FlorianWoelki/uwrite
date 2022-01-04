@@ -11,8 +11,8 @@
     "build": "npm run build:vite -- --config vite.config-electron.ts && npm run build:electron",
     "build:vite": "tsc && vite build",
     "build:electron": "tsc -p electron",
-    "dist": "npm run build && electron-builder",
-    "pack": "npm run build && electron-builder --dir",
+    "dist": "npm run build && electron-builder --mac --windows --linux",
+    "pack": "npm run build && electron-builder --mac --windows --linux --dir",
     "clean": "rimraf dist main src/out"
   },
   "dependencies": {
@@ -49,7 +49,20 @@
     "vite-plugin-monaco-editor": "^1.0.10"
   },
   "build": {
-    "asar": true,
+    "appId": "com.florianwoelki.uwrite",
+    "productName": "uwrite",
+    "mac": {
+      "category": "public.app-category.lifestyle"
+    },
+    "dmg": {
+      "icon": false
+    },
+    "linux": {
+      "target": [
+        "AppImage"
+      ],
+      "category": "Office"
+    },
     "files": [
       "main",
       "src/out"
