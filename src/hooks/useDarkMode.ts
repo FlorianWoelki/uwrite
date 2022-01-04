@@ -1,0 +1,53 @@
+import { useCallback, useEffect, useRef, useState } from 'react';
+
+type ThemeType = 'dark' | 'light' | 'system';
+
+export const useDarkMode = () => {
+  const [theme, setTheme] = useState<ThemeType>(
+    (localStorage.getItem('theme') as 'dark' | 'light') ?? 'system',
+  );
+
+  const handleMediaQuery = useCallback(() => {
+    const root = window.document.documentElement;
+    const prefersDark = window.matchMedia(
+      '(prefers-color-scheme: dark)',
+    ).matches;
+
+    if (theme === 'system') {
+      root.classList.remove(prefersDark ? 'light' : 'dark');
+      root.classList.add(prefersDark ? 'dark' : 'light');
+    }
+  }, [theme]);
+
+  const mediaListener = useRef(handleMediaQuery);
+  mediaListener.current = handleMediaQuery;
+
+  useEffect(() => {
+    const root = window.document.documentElement;
+
+    if (theme !== 'system') {
+      root.classList.remove(theme === 'dark' ? 'light' : 'dark');
+      root.classList.add(theme);
+
+      localStorage.setItem('theme', theme);
+    } else {
+      mediaListener.current();
+      localStorage.removeItem('theme');
+    }
+  }, [theme]);
+
+  useEffect(() => {
+    const handler = () => mediaListener.current();
+
+    const media = window.matchMedia('(prefers-color-scheme: dark)');
+    media.addListener(handler);
+
+    handler();
+
+    return () => {
+      media.removeListener(handler);
+    };
+  }, []);
+
+  return [theme, setTheme] as const;
+};

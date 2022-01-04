@@ -2,7 +2,13 @@
 import { join } from 'path';
 
 // Packages
-import { BrowserWindow, app, ipcMain, IpcMainEvent } from 'electron';
+import {
+  BrowserWindow,
+  app,
+  ipcMain,
+  IpcMainEvent,
+  nativeTheme,
+} from 'electron';
 import isDev from 'electron-is-dev';
 import Store from './store';
 
@@ -62,11 +68,27 @@ const createWindow = (): void => {
     window.close();
   });
 
+  // Handle dark mode toggle switch.
+  ipcMain.handle('dark-mode:toggle', () => {
+    if (nativeTheme.shouldUseDarkColors) {
+      nativeTheme.themeSource = 'light';
+    } else {
+      nativeTheme.themeSource = 'dark';
+    }
+
+    return nativeTheme.shouldUseDarkColors;
+  });
+  ipcMain.handle('dark-mode:system', () => {
+    nativeTheme.themeSource = 'system';
+  });
+
+  // Handle resize window event and saving bounds.
   window.on('resize', () => {
     const { x, y, width, height } = window.getBounds();
     store.set('windowBounds', { x, y, width, height });
   });
 
+  // Handle moved window event and saving bounds.
   window.on('moved', () => {
     const { x, y, width, height } = window.getBounds();
     store.set('windowBounds', { x, y, width, height });
