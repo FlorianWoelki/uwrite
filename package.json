@@ -1,6 +1,7 @@
 {
   "name": "uwrite",
   "version": "0.0.0",
+  "license": "MIT",
   "main": "main/index.js",
   "author": "Florian Woelki",
   "description": "Take notes and capture code snippets with focus.",
