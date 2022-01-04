@@ -8,7 +8,9 @@ class IndexedDb {
     this.database = database;
   }
 
-  public async createObjectStore(tableNames: string[]) {
+  public async createObjectStore(
+    tableNames: string[],
+  ): Promise<false | undefined> {
     try {
       this.db = await openDB(this.database, 1, {
         upgrade(db: IDBPDatabase) {
@@ -29,7 +31,10 @@ class IndexedDb {
     }
   }
 
-  public async getValue(tableName: string, id: number): Promise<any> {
+  public async getValue<T>(
+    tableName: string,
+    id: number,
+  ): Promise<T | undefined> {
     if (!this.db) {
       console.log('Try to get data: `this.db` is not defined');
       return undefined;
@@ -39,10 +44,10 @@ class IndexedDb {
     const store = tx.objectStore(tableName);
     const result = await store.get(id);
     console.log('Get data', JSON.stringify(result));
-    return result;
+    return result as T;
   }
 
-  public async getAllValue(tableName: string): Promise<any[]> {
+  public async getAllValue<T>(tableName: string): Promise<T[]> {
     if (!this.db) {
       console.log('Try to get all data: `this.db` is not defined');
       return [];
@@ -52,13 +57,10 @@ class IndexedDb {
     const store = tx.objectStore(tableName);
     const result = await store.getAll();
     console.log('Get all data', JSON.stringify(result));
-    return result;
+    return result as T[];
   }
 
-  public async putValue(
-    tableName: string,
-    value: object,
-  ): Promise<IDBValidKey> {
+  public async putValue<T>(tableName: string, value: T): Promise<IDBValidKey> {
     if (!this.db) {
       console.log('Try to put value: `this.db` is not defined');
       return [];
@@ -71,10 +73,7 @@ class IndexedDb {
     return result;
   }
 
-  public async putBulkValue(
-    tableName: string,
-    values: object[],
-  ): Promise<any[]> {
+  public async putBulkValue<T>(tableName: string, values: T[]): Promise<T[]> {
     if (!this.db) {
       console.log('Try to put bulk value: `this.db` is not defined');
       return [];
@@ -86,6 +85,7 @@ class IndexedDb {
       const result = await store.put(value);
       console.log('Put bulk data', JSON.stringify(result));
     }
+
     return this.getAllValue(tableName);
   }
 
@@ -100,7 +100,7 @@ class IndexedDb {
     const result = await store.get(id);
     if (!result) {
       console.log('Id not found', id);
-      return result;
+      return -1;
     }
 
     await store.delete(id);
