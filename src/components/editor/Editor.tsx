@@ -104,7 +104,7 @@ export const Editor = (): JSX.Element => {
     <>
       <div className="w-full h-full" ref={editorRef}></div>
       <div
-        className="absolute inset-x-0 bottom-0 px-4 py-2 vim-status"
+        className="absolute inset-x-0 bottom-0 px-4 py-2 font-mono text-base vim-status"
         ref={statusRef}
       ></div>
     </>
