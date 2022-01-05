@@ -9,9 +9,19 @@ export const ButtonGroup: React.FC<ButtonGroupProps> = ({
 }): JSX.Element => {
   const childrenWithProps = React.Children.map(
     children,
-    (child: React.ReactElement) => {
+    (child: React.ReactElement, index) => {
+      let className = '';
+      if (index === 0) {
+        className = 'border-l rounded-l border-y';
+      } else if (index === children.length - 1) {
+        className = 'border-r rounded-r border-y';
+      } else {
+        className = 'border';
+      }
+
       return React.cloneElement(child, {
         grouped: true,
+        className: className,
       });
     },
   );
