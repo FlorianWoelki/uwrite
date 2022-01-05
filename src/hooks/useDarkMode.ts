@@ -53,12 +53,12 @@ export const useDarkMode = () => {
     const handler = () => mediaListener.current();
 
     const media = window.matchMedia('(prefers-color-scheme: dark)');
-    media.addListener(handler);
+    media.addEventListener('change', handler);
 
     handler();
 
     return () => {
-      media.removeListener(handler);
+      media.removeEventListener('change', handler);
     };
   }, []);
 
