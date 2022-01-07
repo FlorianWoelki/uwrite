@@ -2,9 +2,12 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 type ThemeType = 'dark' | 'light' | 'system';
 
-export const useDarkMode = () => {
+export const useDarkMode = (): readonly [
+  ThemeType,
+  (themeType: ThemeType) => void,
+] => {
   const [theme, setThemeState] = useState<ThemeType>(
-    (localStorage.getItem('theme') as 'dark' | 'light') ?? 'system',
+    (localStorage.getItem('theme') as 'dark' | 'light' | null) ?? 'system',
   );
 
   const setTheme = (themeType: ThemeType): void => {
