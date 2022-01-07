@@ -12,6 +12,7 @@ export const useDarkMode = (): readonly [
 
   const setTheme = (themeType: ThemeType): void => {
     let newTheme = themeType;
+    // Handles system theme switch to custom theme.
     if (theme === 'system' && newTheme !== 'system') {
       const prefersDark = window.matchMedia(
         '(prefers-color-scheme: dark)',
@@ -35,6 +36,7 @@ export const useDarkMode = (): readonly [
     }
   }, [theme]);
 
+  // Use `useRef` for not adding function `handleMediaQuery` to dependency array.
   const mediaListener = useRef(handleMediaQuery);
   mediaListener.current = handleMediaQuery;
 
@@ -42,11 +44,13 @@ export const useDarkMode = (): readonly [
     const root = window.document.documentElement;
 
     if (theme !== 'system') {
+      // Handle manual theme switching.
       root.classList.remove(theme === 'dark' ? 'light' : 'dark');
       root.classList.add(theme);
 
       localStorage.setItem('theme', theme);
     } else {
+      // Handle `use system default` functionality.
       mediaListener.current();
       localStorage.removeItem('theme');
     }
@@ -55,9 +59,11 @@ export const useDarkMode = (): readonly [
   useEffect(() => {
     const handler = () => mediaListener.current();
 
+    // Listen for theme system change events.
     const media = window.matchMedia('(prefers-color-scheme: dark)');
     media.addEventListener('change', handler);
 
+    // Call function to instantly change theme to system theme.
     handler();
 
     return () => {
