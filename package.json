@@ -17,6 +17,7 @@
     "clean": "rimraf dist main src/out"
   },
   "dependencies": {
+    "@headlessui/react": "^1.4.2",
     "electron-is-dev": "^2.0.0",
     "idb": "^7.0.0",
     "monaco-editor": "^0.31.1",

@@ -6,6 +6,7 @@ import { Modal } from './modal/Modal';
 import { ModalItemHeadline } from './modal/ModalItemHeadline';
 import { ReactComponent as SunIcon } from '../../assets/icons/sun.svg';
 import { ReactComponent as MoonIcon } from '../../assets/icons/moon.svg';
+import { Transition } from '@headlessui/react';
 
 interface ToolbarProps {
   onThemeChange: (themeType: ThemeType) => void;
@@ -33,7 +34,16 @@ export const Toolbar: React.FC<ToolbarProps> = ({
         >
           Settings
         </Button>
-        {isModalVisible && (
+        <Transition
+          as="div"
+          show={isModalVisible}
+          enter="transform transition duration-200"
+          enterFrom="opacity-0 scale-50"
+          enterTo="opacity-100 scale-100"
+          leave="transform duration-200 transition ease-in-out"
+          leaveFrom="opacity-100 scale-100"
+          leaveTo="opacity-0 scale-50"
+        >
           <Modal>
             <ModalItemHeadline>Theme:</ModalItemHeadline>
             <ButtonGroup>
@@ -52,7 +62,7 @@ export const Toolbar: React.FC<ToolbarProps> = ({
               </Button>
             </ButtonGroup>
           </Modal>
-        )}
+        </Transition>
       </div>
     </div>
   );
