@@ -69,18 +69,20 @@ const createWindow = (): void => {
   });
 
   // Handle dark mode toggle switch.
-  ipcMain.handle('dark-mode:toggle', () => {
-    if (nativeTheme.shouldUseDarkColors) {
-      nativeTheme.themeSource = 'light';
-    } else {
-      nativeTheme.themeSource = 'dark';
-    }
+  ipcMain.handle(
+    'theme:setTheme',
+    (_, themeType: Electron.NativeTheme['themeSource']) => {
+      if (themeType === 'system') {
+        nativeTheme.themeSource = 'system';
+      } else if (themeType === 'light') {
+        nativeTheme.themeSource = 'light';
+      } else {
+        nativeTheme.themeSource = 'dark';
+      }
 
-    return nativeTheme.shouldUseDarkColors;
-  });
-  ipcMain.handle('dark-mode:system', () => {
-    nativeTheme.themeSource = 'system';
-  });
+      return nativeTheme.shouldUseDarkColors;
+    },
+  );
 
   // Handle resize window event and saving bounds.
   window.on('resize', () => {

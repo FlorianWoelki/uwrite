@@ -3,18 +3,18 @@ import { Toolbar } from './components/Toolbar';
 import { ThemeType, useDarkMode } from './hooks/useDarkMode';
 
 const App = (): JSX.Element => {
-  const [theme, setTheme] = useDarkMode();
+  const [_, setTheme] = useDarkMode();
 
   const handleThemeChange = async (themeType: ThemeType): Promise<void> => {
     if (themeType === 'system') {
-      if (window.darkMode) {
-        await window.darkMode.system();
+      if (window.theme) {
+        await window.theme.setTheme('system');
       } else {
         setTheme('system');
       }
     } else {
-      if (window.darkMode) {
-        await window.darkMode.toggle();
+      if (window.theme) {
+        await window.theme.setTheme(themeType);
       } else {
         setTheme(themeType);
       }

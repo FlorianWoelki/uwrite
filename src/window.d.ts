@@ -1,10 +1,11 @@
+import { ThemeType } from './hooks/useDarkMode';
+
 export {};
 
 declare global {
   interface Window {
-    darkMode?: {
-      system: () => Promise<void>;
-      toggle: () => Promise<void>;
+    theme?: {
+      setTheme: (themeType: ThemeType) => Promise<void>;
     };
   }
 }

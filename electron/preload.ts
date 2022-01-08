@@ -45,7 +45,7 @@ contextBridge.exposeInMainWorld('Main', api);
  */
 contextBridge.exposeInMainWorld('ipcRenderer', ipcRenderer);
 
-contextBridge.exposeInMainWorld('darkMode', {
-  toggle: () => ipcRenderer.invoke('dark-mode:toggle'),
-  system: () => ipcRenderer.invoke('dark-mode:system'),
+contextBridge.exposeInMainWorld('theme', {
+  setTheme: (themeType: Electron.NativeTheme['themeSource']) =>
+    ipcRenderer.invoke('theme:setTheme', themeType),
 });
