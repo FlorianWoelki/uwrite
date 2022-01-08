@@ -1,9 +1,17 @@
 import { useState } from 'react';
+import { ThemeType } from '../hooks/useDarkMode';
 import { Button } from './button/Button';
 import { ButtonGroup } from './button/ButtonGroup';
 import { Modal } from './modal/Modal';
+import { ModalItemHeadline } from './modal/ModalItemHeadline';
 
-export const Toolbar: React.FC = (): JSX.Element => {
+interface ToolbarProps {
+  onThemeChange: (themeType: ThemeType) => void;
+}
+
+export const Toolbar: React.FC<ToolbarProps> = ({
+  onThemeChange,
+}): JSX.Element => {
   const [isModalVisible, setModalVisible] = useState<boolean>(false);
 
   return (
@@ -23,7 +31,16 @@ export const Toolbar: React.FC = (): JSX.Element => {
         >
           Settings
         </Button>
-        {isModalVisible && <Modal></Modal>}
+        {isModalVisible && (
+          <Modal>
+            <ModalItemHeadline>Theme:</ModalItemHeadline>
+            <ButtonGroup>
+              <Button onClick={() => onThemeChange('light')}>Light</Button>
+              <Button onClick={() => onThemeChange('system')}>System</Button>
+              <Button onClick={() => onThemeChange('dark')}>Dark</Button>
+            </ButtonGroup>
+          </Modal>
+        )}
       </div>
     </div>
   );

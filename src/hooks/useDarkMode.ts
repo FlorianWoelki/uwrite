@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-type ThemeType = 'dark' | 'light' | 'system';
+export type ThemeType = 'dark' | 'light' | 'system';
 
 export const useDarkMode = (): readonly [
   ThemeType,
