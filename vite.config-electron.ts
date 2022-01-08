@@ -1,6 +1,7 @@
 import { UserConfig, ConfigEnv } from 'vite';
 import react from '@vitejs/plugin-react';
 import monacoEditorPlugin from 'vite-plugin-monaco-editor';
+import svgrPlugin from 'vite-plugin-svgr';
 import { join } from 'path';
 
 const srcRoot = join(__dirname, 'src');
@@ -10,7 +11,11 @@ export default ({ command }: ConfigEnv): UserConfig => {
     return {
       root: srcRoot,
       base: '/',
-      plugins: [react(), monacoEditorPlugin()],
+      plugins: [
+        react(),
+        monacoEditorPlugin(),
+        svgrPlugin({ svgrOptions: { icon: true } }),
+      ],
       build: {
         outDir: join(srcRoot, '/out'),
         emptyOutDir: true,
@@ -28,7 +33,11 @@ export default ({ command }: ConfigEnv): UserConfig => {
   return {
     root: srcRoot,
     base: `${__dirname}/src/out/`,
-    plugins: [react(), monacoEditorPlugin()],
+    plugins: [
+      react(),
+      monacoEditorPlugin(),
+      svgrPlugin({ svgrOptions: { icon: true } }),
+    ],
     build: {
       outDir: join(srcRoot, '/out'),
       emptyOutDir: true,

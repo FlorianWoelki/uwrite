@@ -4,6 +4,8 @@ import { Button } from './button/Button';
 import { ButtonGroup } from './button/ButtonGroup';
 import { Modal } from './modal/Modal';
 import { ModalItemHeadline } from './modal/ModalItemHeadline';
+import { ReactComponent as SunIcon } from '../../assets/icons/sun.svg';
+import { ReactComponent as MoonIcon } from '../../assets/icons/moon.svg';
 
 interface ToolbarProps {
   onThemeChange: (themeType: ThemeType) => void;
@@ -35,9 +37,19 @@ export const Toolbar: React.FC<ToolbarProps> = ({
           <Modal>
             <ModalItemHeadline>Theme:</ModalItemHeadline>
             <ButtonGroup>
-              <Button onClick={() => onThemeChange('light')}>Light</Button>
+              <Button onClick={() => onThemeChange('light')}>
+                <div className="flex items-center space-x-2">
+                  <SunIcon />
+                  <span>Light</span>
+                </div>
+              </Button>
               <Button onClick={() => onThemeChange('system')}>System</Button>
-              <Button onClick={() => onThemeChange('dark')}>Dark</Button>
+              <Button onClick={() => onThemeChange('dark')}>
+                <div className="flex items-center space-x-2">
+                  <MoonIcon />
+                  <span>Dark</span>
+                </div>
+              </Button>
             </ButtonGroup>
           </Modal>
         )}
