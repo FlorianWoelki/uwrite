@@ -1,5 +1,5 @@
-import { Button } from './Button';
-import { ButtonGroup } from './ButtonGroup';
+import { Button } from './button/Button';
+import { ButtonGroup } from './button/ButtonGroup';
 
 export const Toolbar: React.FC = (): JSX.Element => {
   return (
