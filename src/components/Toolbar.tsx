@@ -18,6 +18,7 @@ export const Toolbar: React.FC = (): JSX.Element => {
 
       <div className="relative">
         <Button
+          active={isModalVisible}
           onClick={() => setModalVisible((isModalVisible) => !isModalVisible)}
         >
           Settings
