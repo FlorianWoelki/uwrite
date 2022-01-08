@@ -68,7 +68,6 @@ const createWindow = (): void => {
     window.close();
   });
 
-  // Handle dark mode toggle switch.
   ipcMain.handle(
     'theme:setTheme',
     (_, themeType: Electron.NativeTheme['themeSource']) => {
