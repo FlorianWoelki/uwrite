@@ -23,7 +23,7 @@ export const Button: React.FC<ButtonProps> = ({
   return (
     <button
       type="button"
-      className={`border-iron-900 relative px-4 py-2 transition duration-150 ease-in-out text-iron-300 bg-iron-700 hover:text-iron-200 hover:bg-iron-600 ${extraClasses}`}
+      className={`border-iron-900 px-4 py-2 transition duration-150 ease-in-out text-iron-300 bg-iron-700 hover:text-iron-200 hover:bg-iron-600 ${extraClasses}`}
       {...rest}
     >
       {children}

@@ -26,5 +26,5 @@ export const ButtonGroup: React.FC<ButtonGroupProps> = ({
     },
   );
 
-  return <div>{childrenWithProps}</div>;
+  return <div className="flex items-center">{childrenWithProps}</div>;
 };
