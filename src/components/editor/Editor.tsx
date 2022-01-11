@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { language } from '../../custom-markdown';
+import { language } from '../../monaco/custom-markdown';
 import './theme/font/font.css';
 import './editor.css';
 import { monaco } from '../../monaco';
