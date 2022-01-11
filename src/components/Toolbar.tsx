@@ -1,3 +1,4 @@
+import { Transition } from '@headlessui/react';
 import { useState } from 'react';
 import { ThemeType } from '../hooks/useDarkMode';
 import { Button } from './button/Button';
@@ -6,14 +7,15 @@ import { Modal } from './modal/Modal';
 import { ModalItemHeadline } from './modal/ModalItemHeadline';
 import { ReactComponent as SunIcon } from '../../assets/icons/sun.svg';
 import { ReactComponent as MoonIcon } from '../../assets/icons/moon.svg';
-import { Transition } from '@headlessui/react';
 
 interface ToolbarProps {
   onThemeChange: (themeType: ThemeType) => void;
+  onClickPreview: () => void;
 }
 
 export const Toolbar: React.FC<ToolbarProps> = ({
   onThemeChange,
+  onClickPreview,
 }): JSX.Element => {
   const [isModalVisible, setModalVisible] = useState<boolean>(false);
 
@@ -24,7 +26,7 @@ export const Toolbar: React.FC<ToolbarProps> = ({
       <ButtonGroup>
         <Button>Editor</Button>
         <Button>Split</Button>
-        <Button>Preview</Button>
+        <Button onClick={onClickPreview}>Preview</Button>
       </ButtonGroup>
 
       <div className="relative">

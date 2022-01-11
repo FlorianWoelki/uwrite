@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import { language } from '../../custom-markdown';
 import './theme/font/font.css';
 import './editor.css';
 import { monaco } from '../../monaco';
@@ -7,9 +8,16 @@ import { getEditorThemeColors } from './theme/colors';
 import { getEditorThemeRules } from './theme/rules';
 
 const createEditor = (editorEl: HTMLDivElement, statusEl: HTMLDivElement) => {
+  monaco.languages.register({ id: 'custom-markdown' });
+
+  monaco.languages.setMonarchTokensProvider('custom-markdown', {
+    ...language,
+  });
+
   const editor = monaco.editor.create(editorEl, {
-    value: 'This is a little **test**',
-    language: 'markdown',
+    value: `This is a little **test** $x = \\frac{a}{b}$
+[test]{https://test.com}`,
+    language: 'custom-markdown',
     ariaLabel: 'Markdown Editor',
     codeLens: false,
     contextmenu: false,
@@ -72,7 +80,7 @@ const defineTheme = () => {
   monaco.editor.setTheme('uwrite');
 };
 
-export const Editor = (): JSX.Element => {
+export const Editor: React.FC = (): JSX.Element => {
   const editorRef = useRef<HTMLDivElement | null>(null);
   const statusRef = useRef<HTMLDivElement | null>(null);
 
