@@ -80,9 +80,15 @@ const defineTheme = () => {
   monaco.editor.setTheme('uwrite');
 };
 
-export const Editor: React.FC = (): JSX.Element => {
-  const editorRef = useRef<HTMLDivElement | null>(null);
+interface EditorProps {
+  onSetupFinished?: (editor: monaco.editor.IStandaloneCodeEditor) => void;
+}
+
+export const Editor: React.FC<EditorProps> = ({
+  onSetupFinished,
+}): JSX.Element => {
   const statusRef = useRef<HTMLDivElement | null>(null);
+  const editorRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     if (!editorRef.current || !statusRef.current) {
@@ -101,6 +107,9 @@ export const Editor: React.FC = (): JSX.Element => {
     );
 
     editor.focus();
+    if (onSetupFinished) {
+      onSetupFinished(editor);
+    }
 
     return () => {
       editor.dispose();
