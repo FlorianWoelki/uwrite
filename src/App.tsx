@@ -31,8 +31,10 @@ const App = (): JSX.Element => {
     null,
   );
 
-  const renderPreview = useCallback((): void => {
-    if (!codeEditorRef.current) {
+  const [previewContent, setPreviewContent] = useState<string | null>(null);
+
+  const renderPreviewContent = (): void => {
+    if (!codeEditorRef.current || previewContent) {
       return;
     }
 
@@ -50,19 +52,31 @@ const App = (): JSX.Element => {
       throwOnError: true,
     });
 
-    console.log(htmlResult);
-  }, [codeEditorRef]);
+    setPreviewContent(htmlResult.innerHTML);
+  };
+
+  const renderEditorContent = (): void => {
+    setPreviewContent(null);
+  };
 
   return (
     <div className="relative antialiased">
       <Toolbar
-        onClickPreview={renderPreview}
+        onClickEditor={renderEditorContent}
+        onClickPreview={renderPreviewContent}
         onThemeChange={handleThemeChange}
       />
       <div className="relative w-full h-screen max-w-6xl m-auto">
-        <Editor
-          onSetupFinished={(editor) => (codeEditorRef.current = editor)}
-        />
+        {!previewContent ? (
+          <Editor
+            onSetupFinished={(editor) => (codeEditorRef.current = editor)}
+          />
+        ) : (
+          <div
+            className="pt-24 mx-20 text-white"
+            dangerouslySetInnerHTML={{ __html: previewContent }}
+          ></div>
+        )}
       </div>
     </div>
   );

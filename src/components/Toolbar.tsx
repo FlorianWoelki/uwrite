@@ -11,11 +11,13 @@ import { ReactComponent as MoonIcon } from '../../assets/icons/moon.svg';
 interface ToolbarProps {
   onThemeChange: (themeType: ThemeType) => void;
   onClickPreview: () => void;
+  onClickEditor: () => void;
 }
 
 export const Toolbar: React.FC<ToolbarProps> = ({
   onThemeChange,
   onClickPreview,
+  onClickEditor,
 }): JSX.Element => {
   const [isModalVisible, setModalVisible] = useState<boolean>(false);
 
@@ -24,7 +26,7 @@ export const Toolbar: React.FC<ToolbarProps> = ({
       <Button>Menu</Button>
 
       <ButtonGroup>
-        <Button>Editor</Button>
+        <Button onClick={onClickEditor}>Editor</Button>
         <Button>Split</Button>
         <Button onClick={onClickPreview}>Preview</Button>
       </ButtonGroup>
