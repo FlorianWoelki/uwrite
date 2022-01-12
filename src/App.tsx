@@ -1,9 +1,11 @@
 import 'katex/dist/katex.min.css';
 import renderMathInElement from 'katex/dist/contrib/auto-render';
+// @ts-ignore
+import { renderMarkdown } from 'monaco-editor/esm/vs/base/browser/markdownRenderer';
 import { Editor } from './components/editor/Editor';
 import { Toolbar } from './components/Toolbar';
 import { ThemeType, useDarkMode } from './hooks/useDarkMode';
-import { useCallback, useRef } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import { monaco } from './monaco';
 
 const App = (): JSX.Element => {
@@ -30,17 +32,25 @@ const App = (): JSX.Element => {
   );
 
   const renderPreview = useCallback((): void => {
-    if (codeEditorRef.current) {
-      renderMathInElement(codeEditorRef.current.getContainerDomNode(), {
-        delimiters: [
-          { left: '$$', right: '$$', display: true },
-          { left: '$', right: '$', display: false },
-          { left: '\\[', right: '\\]', display: true },
-          { left: '\\(', right: '\\)', display: false },
-        ],
-        throwOnError: true,
-      });
+    if (!codeEditorRef.current) {
+      return;
     }
+
+    const htmlResult = renderMarkdown({
+      value: codeEditorRef.current.getValue(),
+    }).element;
+
+    renderMathInElement(htmlResult, {
+      delimiters: [
+        { left: '$$', right: '$$', display: true },
+        { left: '$', right: '$', display: false },
+        { left: '\\[', right: '\\]', display: true },
+        { left: '\\(', right: '\\)', display: false },
+      ],
+      throwOnError: true,
+    });
+
+    console.log(htmlResult);
   }, [codeEditorRef]);
 
   return (
