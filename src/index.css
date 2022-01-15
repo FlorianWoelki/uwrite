@@ -4,5 +4,46 @@
   background-color: #2b3036;
 }
 
+.markdown {
+  @apply text-lg text-gray-100;
+}
+.markdown > * + * {
+  @apply mt-6;
+}
+.markdown li > p + p,
+.markdown li + li {
+  @apply mt-2;
+}
+.markdown strong {
+  @apply font-bold text-gray-200;
+}
+.markdown a {
+  @apply font-semibold text-gray-200 underline;
+}
+.markdown h1 {
+  @apply mt-10 mb-2 text-2xl font-bold text-gray-200;
+}
+.markdown h2 {
+  @apply mt-10 mb-2 text-xl font-bold text-gray-200;
+}
+.markdown h3 {
+  @apply mt-8 -mb-2 text-lg font-bold leading-5 text-gray-200;
+}
+.markdown ul {
+  @apply pl-10 list-disc;
+}
+.markdown ol {
+  @apply pl-10 list-decimal;
+}
+
+.markdown pre code {
+  @apply text-base rounded-xl;
+}
+
+.markdown p code,
+.markdown li code {
+  @apply px-2 py-1 text-base text-white bg-gray-600 rounded;
+}
+
 @tailwind components;
 @tailwind utilities;

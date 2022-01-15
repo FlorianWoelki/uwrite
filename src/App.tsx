@@ -73,7 +73,7 @@ const App = (): JSX.Element => {
           />
         ) : (
           <div
-            className="pt-24 mx-20 text-white"
+            className="pt-24 mx-20 text-white markdown"
             dangerouslySetInnerHTML={{ __html: previewContent }}
           ></div>
         )}
