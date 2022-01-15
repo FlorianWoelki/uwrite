@@ -7,7 +7,11 @@ import { VimMode, initVimMode } from 'monaco-vim';
 import { getEditorThemeColors } from './theme/colors';
 import { getEditorThemeRules } from './theme/rules';
 
-const createEditor = (editorEl: HTMLDivElement, statusEl: HTMLDivElement) => {
+const createEditor = (
+  value: string | null,
+  editorEl: HTMLDivElement,
+  statusEl: HTMLDivElement,
+) => {
   monaco.languages.register({ id: 'custom-markdown' });
 
   monaco.languages.setMonarchTokensProvider('custom-markdown', {
@@ -15,7 +19,9 @@ const createEditor = (editorEl: HTMLDivElement, statusEl: HTMLDivElement) => {
   });
 
   const editor = monaco.editor.create(editorEl, {
-    value: `This is a little **test** $x = \\frac{a}{b}$
+    value:
+      value ??
+      `This is a little **test** $x = \\frac{a}{b}$
 [test]{https://test.com}`,
     language: 'custom-markdown',
     ariaLabel: 'Markdown Editor',
@@ -81,10 +87,12 @@ const defineTheme = () => {
 };
 
 interface EditorProps {
+  value: string | null;
   onSetupFinished?: (editor: monaco.editor.IStandaloneCodeEditor) => void;
 }
 
 export const Editor: React.FC<EditorProps> = ({
+  value,
   onSetupFinished,
 }): JSX.Element => {
   const statusRef = useRef<HTMLDivElement | null>(null);
@@ -102,6 +110,7 @@ export const Editor: React.FC<EditorProps> = ({
     defineTheme();
 
     const { editor, vimMode } = createEditor(
+      value,
       editorRef.current,
       statusRef.current,
     );

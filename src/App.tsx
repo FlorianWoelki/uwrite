@@ -5,7 +5,7 @@ import { renderMarkdown } from 'monaco-editor/esm/vs/base/browser/markdownRender
 import { Editor } from './components/editor/Editor';
 import { Toolbar } from './components/Toolbar';
 import { ThemeType, useDarkMode } from './hooks/useDarkMode';
-import { useCallback, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { monaco } from './monaco';
 
 const App = (): JSX.Element => {
@@ -32,11 +32,16 @@ const App = (): JSX.Element => {
   );
 
   const [previewContent, setPreviewContent] = useState<string | null>(null);
+  const [cachedEditorContent, setCachedEditorContent] = useState<string | null>(
+    null,
+  );
 
   const renderPreviewContent = (): void => {
     if (!codeEditorRef.current || previewContent) {
       return;
     }
+
+    setCachedEditorContent(codeEditorRef.current.getValue());
 
     const htmlResult = renderMarkdown({
       value: codeEditorRef.current.getValue(),
@@ -57,6 +62,10 @@ const App = (): JSX.Element => {
 
   const renderEditorContent = (): void => {
     setPreviewContent(null);
+
+    if (cachedEditorContent && codeEditorRef.current) {
+      codeEditorRef.current.setValue(cachedEditorContent);
+    }
   };
 
   return (
@@ -69,6 +78,7 @@ const App = (): JSX.Element => {
       <div className="relative w-full h-screen max-w-6xl m-auto">
         {!previewContent ? (
           <Editor
+            value={cachedEditorContent}
             onSetupFinished={(editor) => (codeEditorRef.current = editor)}
           />
         ) : (
