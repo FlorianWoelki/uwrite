@@ -7,6 +7,21 @@ import { VimMode, initVimMode } from 'monaco-vim';
 import { getEditorThemeColors } from './theme/colors';
 import { getEditorThemeRules } from './theme/rules';
 
+export interface CachedEditorState {
+  content: string | null;
+  position: monaco.Position | null;
+}
+
+export const cachedEditorReducer = (
+  state: CachedEditorState,
+  action: CachedEditorState,
+) => {
+  return {
+    ...state,
+    ...action,
+  };
+};
+
 const createEditor = (
   value: string | null,
   editorEl: HTMLDivElement,
@@ -87,12 +102,12 @@ const defineTheme = () => {
 };
 
 interface EditorProps {
-  value: string | null;
+  cachedState: any;
   onSetupFinished?: (editor: monaco.editor.IStandaloneCodeEditor) => void;
 }
 
 export const Editor: React.FC<EditorProps> = ({
-  value,
+  cachedState,
   onSetupFinished,
 }): JSX.Element => {
   const statusRef = useRef<HTMLDivElement | null>(null);
@@ -110,10 +125,14 @@ export const Editor: React.FC<EditorProps> = ({
     defineTheme();
 
     const { editor, vimMode } = createEditor(
-      value,
+      cachedState.content,
       editorRef.current,
       statusRef.current,
     );
+
+    if (cachedState.position) {
+      editor.setPosition(cachedState.position);
+    }
 
     editor.focus();
     if (onSetupFinished) {

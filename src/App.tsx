@@ -2,10 +2,10 @@ import 'katex/dist/katex.min.css';
 import renderMathInElement from 'katex/dist/contrib/auto-render';
 // @ts-ignore
 import { renderMarkdown } from 'monaco-editor/esm/vs/base/browser/markdownRenderer';
-import { Editor } from './components/editor/Editor';
+import { cachedEditorReducer, Editor } from './components/editor/Editor';
 import { Toolbar } from './components/Toolbar';
 import { ThemeType, useDarkMode } from './hooks/useDarkMode';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useReducer, useRef, useState } from 'react';
 import { monaco } from './monaco';
 import { useKeyPress } from './hooks/useKeyPress';
 
@@ -33,16 +33,20 @@ const App = (): JSX.Element => {
   );
 
   const [previewContent, setPreviewContent] = useState<string | null>(null);
-  const [cachedEditorContent, setCachedEditorContent] = useState<string | null>(
-    null,
-  );
+  const [cachedEditor, cachedEditorDispatch] = useReducer(cachedEditorReducer, {
+    content: null,
+    position: null,
+  });
 
   const renderPreviewContent = (): void => {
     if (!codeEditorRef.current || previewContent) {
       return;
     }
 
-    setCachedEditorContent(codeEditorRef.current.getValue());
+    cachedEditorDispatch({
+      content: codeEditorRef.current.getValue(),
+      position: codeEditorRef.current.getPosition(),
+    });
 
     const htmlResult = renderMarkdown({
       value: codeEditorRef.current.getValue(),
@@ -64,8 +68,13 @@ const App = (): JSX.Element => {
   const renderEditorContent = (): void => {
     setPreviewContent(null);
 
-    if (cachedEditorContent && codeEditorRef.current) {
-      codeEditorRef.current.setValue(cachedEditorContent);
+    if (!codeEditorRef.current) {
+      return;
+    }
+
+    if (cachedEditor.content && cachedEditor.position) {
+      codeEditorRef.current.setValue(cachedEditor.content);
+      codeEditorRef.current.setPosition(cachedEditor.position);
     }
   };
 
@@ -108,7 +117,7 @@ const App = (): JSX.Element => {
       <div className="relative w-full h-screen max-w-6xl m-auto">
         {!previewContent ? (
           <Editor
-            value={cachedEditorContent}
+            cachedState={cachedEditor}
             onSetupFinished={(editor) => (codeEditorRef.current = editor)}
           />
         ) : (
