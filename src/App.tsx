@@ -5,8 +5,9 @@ import { renderMarkdown } from 'monaco-editor/esm/vs/base/browser/markdownRender
 import { Editor } from './components/editor/Editor';
 import { Toolbar } from './components/Toolbar';
 import { ThemeType, useDarkMode } from './hooks/useDarkMode';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { monaco } from './monaco';
+import { useKeyPress } from './hooks/useKeyPress';
 
 const App = (): JSX.Element => {
   const [_, setTheme] = useDarkMode();
@@ -67,6 +68,35 @@ const App = (): JSX.Element => {
       codeEditorRef.current.setValue(cachedEditorContent);
     }
   };
+
+  useKeyPress(
+    ['e'],
+    () => {
+      if (previewContent) {
+        renderEditorContent();
+      } else {
+        renderPreviewContent();
+      }
+    },
+    true,
+  );
+
+  useEffect(() => {
+    if (!codeEditorRef.current) {
+      return;
+    }
+
+    codeEditorRef.current.addCommand(
+      monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyE,
+      () => {
+        if (previewContent) {
+          renderEditorContent();
+        } else {
+          renderPreviewContent();
+        }
+      },
+    );
+  }, [previewContent]);
 
   return (
     <div className="relative antialiased">
