@@ -7,6 +7,7 @@ import { Modal } from './modal/Modal';
 import { ModalItemHeadline } from './modal/ModalItemHeadline';
 import { ReactComponent as SunIcon } from '../../assets/icons/sun.svg';
 import { ReactComponent as MoonIcon } from '../../assets/icons/moon.svg';
+import { ReactComponent as ChevronRight } from '../../assets/icons/chevron-right.svg';
 
 interface ToolbarProps {
   onThemeChange: (themeType: ThemeType) => void;
@@ -23,7 +24,9 @@ export const Toolbar: React.FC<ToolbarProps> = ({
 
   return (
     <div className="absolute inset-x-0 top-0 z-50 flex items-center justify-between px-8 py-4 shadow bg-iron-500">
-      <Button>Menu</Button>
+      <Button>
+        <ChevronRight />
+      </Button>
 
       <ButtonGroup>
         <Button onClick={onClickEditor}>Editor</Button>
