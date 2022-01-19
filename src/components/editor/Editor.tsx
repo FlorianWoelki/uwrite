@@ -36,8 +36,9 @@ const createEditor = (
   const editor = monaco.editor.create(editorEl, {
     value:
       value ??
-      `This is a little **test** $x = \\frac{a}{b}$
-[test]{https://test.com}`,
+      `# Hello World
+
+This is your first document in uwrite.`,
     language: 'custom-markdown',
     ariaLabel: 'Markdown Editor',
     codeLens: false,
