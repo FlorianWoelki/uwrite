@@ -11,11 +11,18 @@ export const useKeyPress = (
     callbackRef.current = callback;
   });
 
+  const isAppleDevice = useCallback(() => {
+    const expression = /(Mac|iPhone|iPod|iPad)/i;
+    return expression.test(navigator.platform);
+  }, []);
+
   const handleKeyPress = useCallback(
     (event: KeyboardEvent) => {
       if (keys.some((key) => event.key === key)) {
         if (ctrlCmd) {
-          if (event.ctrlKey || event.metaKey) {
+          if (isAppleDevice() && event.metaKey) {
+            callbackRef.current(event);
+          } else if (event.ctrlKey) {
             callbackRef.current(event);
           }
         } else {
