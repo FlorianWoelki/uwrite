@@ -9,8 +9,14 @@ import { ReactComponent as SunIcon } from '../../assets/icons/sun.svg';
 import { ReactComponent as MoonIcon } from '../../assets/icons/moon.svg';
 import { ReactComponent as ChevronRight } from '../../assets/icons/chevron-right.svg';
 
+export enum ToolbarTab {
+  EditorView = 0,
+  SplitView,
+  PreviewView,
+}
+
 interface ToolbarProps {
-  activeTab: number;
+  activeTab: ToolbarTab;
   onThemeChange: (themeType: ThemeType) => void;
   onClickPreview: () => void;
   onClickEditor: () => void;
@@ -31,11 +37,17 @@ export const Toolbar: React.FC<ToolbarProps> = ({
       </Button>
 
       <ButtonGroup>
-        <Button active={activeTab === 0} onClick={onClickEditor}>
+        <Button
+          active={activeTab === ToolbarTab.EditorView}
+          onClick={onClickEditor}
+        >
           Editor
         </Button>
-        <Button active={activeTab === 1}>Split</Button>
-        <Button active={activeTab === 2} onClick={onClickPreview}>
+        <Button active={activeTab === ToolbarTab.SplitView}>Split</Button>
+        <Button
+          active={activeTab === ToolbarTab.PreviewView}
+          onClick={onClickPreview}
+        >
           Preview
         </Button>
       </ButtonGroup>

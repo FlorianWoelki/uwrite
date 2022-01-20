@@ -3,7 +3,7 @@ import renderMathInElement from 'katex/dist/contrib/auto-render';
 // @ts-ignore
 import { renderMarkdown } from 'monaco-editor/esm/vs/base/browser/markdownRenderer';
 import { cachedEditorReducer, Editor } from './components/editor/Editor';
-import { Toolbar } from './components/Toolbar';
+import { Toolbar, ToolbarTab } from './components/Toolbar';
 import { ThemeType, useDarkMode } from './hooks/useDarkMode';
 import { useEffect, useReducer, useRef, useState } from 'react';
 import { monaco } from './monaco';
@@ -31,7 +31,7 @@ const App = (): JSX.Element => {
   const codeEditorRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(
     null,
   );
-  const [activeTab, setActiveTab] = useState<number>(0);
+  const [activeTab, setActiveTab] = useState<ToolbarTab>(ToolbarTab.EditorView);
 
   const [previewContent, setPreviewContent] = useState<string | null>(null);
   const [cachedEditor, cachedEditorDispatch] = useReducer(cachedEditorReducer, {
