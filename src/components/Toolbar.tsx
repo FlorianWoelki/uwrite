@@ -10,12 +10,14 @@ import { ReactComponent as MoonIcon } from '../../assets/icons/moon.svg';
 import { ReactComponent as ChevronRight } from '../../assets/icons/chevron-right.svg';
 
 interface ToolbarProps {
+  activeTab: number;
   onThemeChange: (themeType: ThemeType) => void;
   onClickPreview: () => void;
   onClickEditor: () => void;
 }
 
 export const Toolbar: React.FC<ToolbarProps> = ({
+  activeTab,
   onThemeChange,
   onClickPreview,
   onClickEditor,
@@ -29,9 +31,13 @@ export const Toolbar: React.FC<ToolbarProps> = ({
       </Button>
 
       <ButtonGroup>
-        <Button onClick={onClickEditor}>Editor</Button>
-        <Button>Split</Button>
-        <Button onClick={onClickPreview}>Preview</Button>
+        <Button active={activeTab === 0} onClick={onClickEditor}>
+          Editor
+        </Button>
+        <Button active={activeTab === 1}>Split</Button>
+        <Button active={activeTab === 2} onClick={onClickPreview}>
+          Preview
+        </Button>
       </ButtonGroup>
 
       <div className="relative">

@@ -31,6 +31,7 @@ const App = (): JSX.Element => {
   const codeEditorRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(
     null,
   );
+  const [activeTab, setActiveTab] = useState<number>(0);
 
   const [previewContent, setPreviewContent] = useState<string | null>(null);
   const [cachedEditor, cachedEditorDispatch] = useReducer(cachedEditorReducer, {
@@ -62,10 +63,12 @@ const App = (): JSX.Element => {
       throwOnError: true,
     });
 
+    setActiveTab(2);
     setPreviewContent(htmlResult.innerHTML);
   };
 
   const renderEditorContent = (): void => {
+    setActiveTab(0);
     setPreviewContent(null);
 
     if (!codeEditorRef.current) {
@@ -110,6 +113,7 @@ const App = (): JSX.Element => {
   return (
     <div className="relative antialiased">
       <Toolbar
+        activeTab={activeTab}
         onClickEditor={renderEditorContent}
         onClickPreview={renderPreviewContent}
         onThemeChange={handleThemeChange}
