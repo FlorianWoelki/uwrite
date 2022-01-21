@@ -8,7 +8,7 @@ import { getEditorThemeColors } from './theme/colors';
 import { getEditorThemeRules } from './theme/rules';
 
 export interface CachedEditorState {
-  content: string | null;
+  content: string;
   position: monaco.Position | null;
 }
 
@@ -23,7 +23,7 @@ export const cachedEditorReducer = (
 };
 
 const createEditor = (
-  value: string | null,
+  value: string,
   editorEl: HTMLDivElement,
   statusEl: HTMLDivElement,
 ) => {
@@ -34,11 +34,7 @@ const createEditor = (
   });
 
   const editor = monaco.editor.create(editorEl, {
-    value:
-      value ??
-      `# Hello World
-
-This is your first document in uwrite.`,
+    value,
     language: 'custom-markdown',
     ariaLabel: 'Markdown Editor',
     codeLens: false,
@@ -103,7 +99,7 @@ const defineTheme = () => {
 };
 
 interface EditorProps {
-  cachedState: any;
+  cachedState: CachedEditorState;
   onSetupFinished?: (editor: monaco.editor.IStandaloneCodeEditor) => void;
 }
 

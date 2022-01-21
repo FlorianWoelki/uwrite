@@ -36,7 +36,9 @@ const App = (): JSX.Element => {
 
   const [previewContent, setPreviewContent] = useState<string | null>(null);
   const [cachedEditor, cachedEditorDispatch] = useReducer(cachedEditorReducer, {
-    content: null,
+    content: `# Hello World
+
+This is your first document in uwrite.`,
     position: null,
   });
 
@@ -111,17 +113,7 @@ const App = (): JSX.Element => {
     );
   }, [previewContent]);
 
-  useIndexedDb(async (indexedDb) => {
-    if (!codeEditorRef.current) {
-      console.warn('`codeEditorRef.current` is not defined.');
-      return;
-    }
-
-    const val = await indexedDb.getValue('file', 1);
-    if (!val) {
-      indexedDb.putValue('file', { value: codeEditorRef.current.getValue() });
-    }
-  });
+  useIndexedDb(cachedEditor.content);
 
   return (
     <div className="relative antialiased">

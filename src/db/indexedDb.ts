@@ -3,9 +3,14 @@ import { IDBPDatabase, openDB } from 'idb';
 class IndexedDb {
   private database: string;
   private db: IDBPDatabase<unknown> | undefined;
+  private freshlyCreatedTables: boolean = false;
 
   constructor(database: string) {
     this.database = database;
+  }
+
+  public didFreshlyCreatedTables(): boolean {
+    return this.freshlyCreatedTables;
   }
 
   public async createObjectStore(
@@ -13,12 +18,13 @@ class IndexedDb {
   ): Promise<false | undefined> {
     try {
       this.db = await openDB(this.database, 1, {
-        upgrade(db: IDBPDatabase) {
+        upgrade: (db: IDBPDatabase) => {
           for (const tableName of tableNames) {
             if (db.objectStoreNames.contains(tableName)) {
               continue;
             }
 
+            this.freshlyCreatedTables = true;
             db.createObjectStore(tableName, {
               autoIncrement: true,
               keyPath: 'id',
