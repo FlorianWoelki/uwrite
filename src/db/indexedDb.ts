@@ -31,6 +31,10 @@ class IndexedDb {
     }
   }
 
+  public doesTableExist(tableName: string): boolean {
+    return this.db?.objectStoreNames.contains(tableName) ?? false;
+  }
+
   public async getValue<T>(
     tableName: string,
     id: number,

@@ -8,6 +8,7 @@ import { ThemeType, useDarkMode } from './hooks/useDarkMode';
 import { useEffect, useReducer, useRef, useState } from 'react';
 import { monaco } from './monaco';
 import { useKeyPress } from './hooks/useKeyPress';
+import { useIndexedDb } from './db/hooks/useIndexedDb';
 
 const App = (): JSX.Element => {
   const [_, setTheme] = useDarkMode();
@@ -109,6 +110,18 @@ const App = (): JSX.Element => {
       },
     );
   }, [previewContent]);
+
+  useIndexedDb(async (indexedDb) => {
+    if (!codeEditorRef.current) {
+      console.warn('`codeEditorRef.current` is not defined.');
+      return;
+    }
+
+    const val = await indexedDb.getValue('file', 1);
+    if (!val) {
+      indexedDb.putValue('file', { value: codeEditorRef.current.getValue() });
+    }
+  });
 
   return (
     <div className="relative antialiased">
