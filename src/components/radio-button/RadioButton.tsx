@@ -9,7 +9,7 @@ export const RadioButton: React.FC<RadioButtonProps> = ({
 }): JSX.Element => {
   return (
     <label className="inline-flex items-center">
-      <input type="radio" className="w-5 h-5 text-iron-400" checked />
+      <input type="radio" className="h-5 w-5 text-iron-400" checked />
       <span className="ml-2 text-gray-400">{children}</span>
     </label>
   );

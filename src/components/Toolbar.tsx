@@ -31,7 +31,7 @@ export const Toolbar: React.FC<ToolbarProps> = ({
   const [isModalVisible, setModalVisible] = useState<boolean>(false);
 
   return (
-    <div className="absolute inset-x-0 top-0 z-50 flex items-center justify-between px-8 py-4 shadow bg-iron-500">
+    <div className="absolute inset-x-0 top-0 z-50 flex items-center justify-between bg-iron-500 px-8 py-4 shadow">
       <Button>
         <ChevronRight />
       </Button>

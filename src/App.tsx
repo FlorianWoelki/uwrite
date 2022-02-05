@@ -123,7 +123,7 @@ This is your first document in uwrite.`,
         onClickPreview={renderPreviewContent}
         onThemeChange={handleThemeChange}
       />
-      <div className="relative w-full h-screen max-w-6xl m-auto">
+      <div className="relative m-auto h-screen w-full max-w-6xl">
         {!previewContent ? (
           <Editor
             cachedState={cachedEditor}
@@ -131,7 +131,7 @@ This is your first document in uwrite.`,
           />
         ) : (
           <div
-            className="pt-24 mx-20 text-white markdown"
+            className="markdown mx-20 pt-24 text-white"
             dangerouslySetInnerHTML={{ __html: previewContent }}
           ></div>
         )}

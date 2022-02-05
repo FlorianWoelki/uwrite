@@ -25,8 +25,8 @@ export const Button: React.FC<ButtonProps> = ({
   return (
     <button
       type="button"
-      className={`border-iron-900 px-4 py-2 transition duration-150 ease-in-out text-iron-300 bg-iron-700 hover:text-iron-200 hover:bg-iron-600 ${extraClasses} ${
-        active ? 'text-iron-200 bg-iron-600' : ''
+      className={`border-iron-900 bg-iron-700 px-4 py-2 text-iron-300 transition duration-150 ease-in-out hover:bg-iron-600 hover:text-iron-200 ${extraClasses} ${
+        active ? 'bg-iron-600 text-iron-200' : ''
       }`}
       {...rest}
     >

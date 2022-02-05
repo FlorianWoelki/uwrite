@@ -144,9 +144,9 @@ export const Editor: React.FC<EditorProps> = ({
 
   return (
     <>
-      <div className="w-full h-full" ref={editorRef}></div>
+      <div className="h-full w-full" ref={editorRef}></div>
       <div
-        className="absolute inset-x-0 bottom-0 px-4 py-2 font-mono text-base vim-status"
+        className="vim-status absolute inset-x-0 bottom-0 px-4 py-2 font-mono text-base"
         ref={statusRef}
       ></div>
     </>
