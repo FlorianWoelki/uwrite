@@ -84,7 +84,11 @@ class IndexedDb {
     return result;
   }
 
-  public async putBulkValue<T>(tableName: string, values: T[]): Promise<T[]> {
+  public async putBulkValue<T>(
+    tableName: string,
+    values: T[],
+    key: number,
+  ): Promise<T[]> {
     if (!this.db) {
       console.log('Try to put bulk value: `this.db` is not defined');
       return [];
@@ -93,7 +97,7 @@ class IndexedDb {
     const tx = this.db.transaction(tableName, 'readwrite');
     const store = tx.objectStore(tableName);
     for (const value of values) {
-      const result = await store.put(value);
+      const result = await store.put(value, key);
       console.log('Put bulk data', JSON.stringify(result));
     }
 
