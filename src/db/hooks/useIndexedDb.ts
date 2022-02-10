@@ -9,7 +9,7 @@ export const useIndexedDb = (defaultContentValue: string) => {
       await indexedDb.createObjectStore(['file']);
 
       if (indexedDb.didFreshlyCreatedTables()) {
-        indexedDb.putValue('file', { value: defaultContentValue });
+        indexedDb.putValue('file', { value: defaultContentValue }, 0);
       }
     })();
   }, []);

@@ -9,6 +9,7 @@ import { useEffect, useReducer, useRef, useState } from 'react';
 import { monaco } from './monaco';
 import { useKeyPress } from './hooks/useKeyPress';
 import { useIndexedDb } from './db/hooks/useIndexedDb';
+import { debounce } from './util/effects';
 
 const App = (): JSX.Element => {
   const [_, setTheme] = useDarkMode();
@@ -113,7 +114,29 @@ This is your first document in uwrite.`,
     );
   }, [previewContent]);
 
-  useIndexedDb(cachedEditor.content);
+  const indexedDb = useIndexedDb(cachedEditor.content);
+
+  useEffect(() => {
+    if (!codeEditorRef.current) {
+      return;
+    }
+
+    codeEditorRef.current.onDidChangeModelContent(
+      debounce(async () => {
+        if (!codeEditorRef.current) {
+          return;
+        }
+
+        await indexedDb.putValue(
+          'file',
+          {
+            value: codeEditorRef.current.getValue(),
+          },
+          0,
+        );
+      }),
+    );
+  }, []);
 
   return (
     <div className="relative antialiased">

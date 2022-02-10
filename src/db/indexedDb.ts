@@ -25,10 +25,7 @@ class IndexedDb {
             }
 
             this.freshlyCreatedTables = true;
-            db.createObjectStore(tableName, {
-              autoIncrement: true,
-              keyPath: 'id',
-            });
+            db.createObjectStore(tableName);
           }
         },
       });
@@ -70,7 +67,11 @@ class IndexedDb {
     return result as T[];
   }
 
-  public async putValue<T>(tableName: string, value: T): Promise<IDBValidKey> {
+  public async putValue<T>(
+    tableName: string,
+    value: T,
+    key: number,
+  ): Promise<IDBValidKey> {
     if (!this.db) {
       console.log('Try to put value: `this.db` is not defined');
       return [];
@@ -78,7 +79,7 @@ class IndexedDb {
 
     const tx = this.db.transaction(tableName, 'readwrite');
     const store = tx.objectStore(tableName);
-    const result = await store.put(value);
+    const result = await store.put(value, key);
     console.log('Put data', JSON.stringify(result));
     return result;
   }
