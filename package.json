@@ -55,6 +55,9 @@
     "vite-plugin-monaco-editor": "^1.0.10",
     "vite-plugin-svgr": "^0.6.0"
   },
+  "resolutions": {
+    "@types/react": "^17.0.33"
+  },
   "build": {
     "appId": "com.florianwoelki.uwrite",
     "productName": "uwrite",
