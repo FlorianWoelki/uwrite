@@ -11,6 +11,7 @@ import { useKeyPress } from './hooks/useKeyPress';
 import { useIndexedDb } from './db/hooks/useIndexedDb';
 import { debounce } from './util/effects';
 import { File } from './db/indexedDb';
+import { LoadingIndicator } from './components/LoadingIndicator';
 
 const App = (): JSX.Element => {
   const [_, setTheme] = useDarkMode();
@@ -38,11 +39,11 @@ const App = (): JSX.Element => {
 
   const [previewContent, setPreviewContent] = useState<string | null>(null);
   const [cachedEditor, cachedEditorDispatch] = useReducer(cachedEditorReducer, {
-    content: `# Hello World
-
-This is your first document in uwrite.`,
+    content: '',
     position: null,
   });
+
+  const [isLoading, setLoading] = useState<boolean>(true);
 
   const renderPreviewContent = (): void => {
     if (!codeEditorRef.current || previewContent) {
@@ -121,15 +122,23 @@ This is your first document in uwrite.`,
       return;
     }
 
-    codeEditorRef.current!.setValue(file.value);
-    cachedEditorDispatch({ content: file.value, position: null });
-  });
-
-  useEffect(() => {
     if (!codeEditorRef.current) {
       return;
     }
 
+    codeEditorRef.current.setValue(file.value);
+
+    cachedEditorDispatch({ content: file.value, position: null });
+    setLoading(false);
+
+    codeEditorRef.current.focus();
+  });
+
+  const monacoSetupFinished = (
+    editor: monaco.editor.IStandaloneCodeEditor,
+  ): void => {
+    codeEditorRef.current = editor;
+    codeEditorRef.current.focus();
     codeEditorRef.current.onDidChangeModelContent(
       debounce(async () => {
         if (!codeEditorRef.current) {
@@ -145,7 +154,7 @@ This is your first document in uwrite.`,
         );
       }),
     );
-  }, []);
+  };
 
   return (
     <div className="relative antialiased">
@@ -155,11 +164,20 @@ This is your first document in uwrite.`,
         onClickPreview={renderPreviewContent}
         onThemeChange={handleThemeChange}
       />
-      <div className="relative m-auto h-screen w-full max-w-6xl">
+      {isLoading && (
+        <div className="absolute m-auto flex h-screen w-full items-center justify-center">
+          <LoadingIndicator className="z-50 h-8 w-8 text-gray-500" />
+        </div>
+      )}
+      <div
+        className={`relative m-auto h-screen w-full max-w-6xl ${
+          isLoading ? 'hidden' : ''
+        }`}
+      >
         {!previewContent ? (
           <Editor
             cachedState={cachedEditor}
-            onSetupFinished={(editor) => (codeEditorRef.current = editor)}
+            onSetupFinished={monacoSetupFinished}
           />
         ) : (
           <div

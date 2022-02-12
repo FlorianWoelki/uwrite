@@ -131,7 +131,6 @@ export const Editor: React.FC<EditorProps> = ({
       editor.setPosition(cachedState.position);
     }
 
-    editor.focus();
     if (onSetupFinished) {
       onSetupFinished(editor);
     }
