@@ -1,5 +1,9 @@
 import { IDBPDatabase, openDB } from 'idb';
 
+export interface File {
+  value: string;
+}
+
 class IndexedDb {
   private database: string;
   private db: IDBPDatabase<unknown> | undefined;

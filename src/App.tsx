@@ -10,6 +10,7 @@ import { monaco } from './monaco';
 import { useKeyPress } from './hooks/useKeyPress';
 import { useIndexedDb } from './db/hooks/useIndexedDb';
 import { debounce } from './util/effects';
+import { File } from './db/indexedDb';
 
 const App = (): JSX.Element => {
   const [_, setTheme] = useDarkMode();
@@ -114,7 +115,15 @@ This is your first document in uwrite.`,
     );
   }, [previewContent]);
 
-  const indexedDb = useIndexedDb(cachedEditor.content);
+  const indexedDb = useIndexedDb(cachedEditor.content, async () => {
+    const file = await indexedDb.getValue<File>('file', 0);
+    if (!file) {
+      return;
+    }
+
+    codeEditorRef.current!.setValue(file.value);
+    cachedEditorDispatch({ content: file.value, position: null });
+  });
 
   useEffect(() => {
     if (!codeEditorRef.current) {

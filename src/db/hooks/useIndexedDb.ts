@@ -1,7 +1,10 @@
 import { useEffect } from 'react';
 import IndexedDb from '../indexedDb';
 
-export const useIndexedDb = (defaultContentValue: string) => {
+export const useIndexedDb = (
+  defaultContentValue: string,
+  callback: () => void,
+) => {
   const indexedDb = new IndexedDb('uwrite');
 
   useEffect(() => {
@@ -11,6 +14,8 @@ export const useIndexedDb = (defaultContentValue: string) => {
       if (indexedDb.didFreshlyCreatedTables()) {
         indexedDb.putValue('file', { value: defaultContentValue }, 0);
       }
+
+      callback();
     })();
   }, []);
 
