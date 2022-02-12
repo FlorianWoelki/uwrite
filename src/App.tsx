@@ -5,7 +5,7 @@ import { renderMarkdown } from 'monaco-editor/esm/vs/base/browser/markdownRender
 import { cachedEditorReducer, Editor } from './components/editor/Editor';
 import { Toolbar, ToolbarTab } from './components/Toolbar';
 import { ThemeType, useDarkMode } from './hooks/useDarkMode';
-import { useEffect, useReducer, useRef, useState } from 'react';
+import { useCallback, useEffect, useReducer, useRef, useState } from 'react';
 import { monaco } from './monaco';
 import { useKeyPress } from './hooks/useKeyPress';
 import { useIndexedDb } from './db/hooks/useIndexedDb';
@@ -116,23 +116,32 @@ const App = (): JSX.Element => {
     );
   }, [previewContent]);
 
-  const indexedDb = useIndexedDb(cachedEditor.content, async () => {
-    const file = await indexedDb.getValue<File>('file', 0);
-    if (!file) {
+  const indexedDb = useIndexedDb(cachedEditor.content);
+  useEffect(() => {
+    if (!indexedDb) {
       return;
     }
 
-    if (!codeEditorRef.current) {
-      return;
-    }
+    (async () => {
+      const file = await indexedDb.getValue<File>('file', 0);
+      if (!file) {
+        return;
+      }
 
-    codeEditorRef.current.setValue(file.value);
+      if (!codeEditorRef.current) {
+        return;
+      }
 
-    cachedEditorDispatch({ content: file.value, position: null });
-    setLoading(false);
+      codeEditorRef.current.setValue(file.value);
 
-    codeEditorRef.current.focus();
-  });
+      cachedEditorDispatch({ content: file.value, position: null });
+      setLoading(false);
+      codeEditorRef.current.focus();
+      codeEditorRef.current.onDidChangeModelContent(
+        handleMonacoChangeModelContent(),
+      );
+    })();
+  }, [indexedDb]);
 
   const monacoSetupFinished = (
     editor: monaco.editor.IStandaloneCodeEditor,
@@ -140,21 +149,25 @@ const App = (): JSX.Element => {
     codeEditorRef.current = editor;
     codeEditorRef.current.focus();
     codeEditorRef.current.onDidChangeModelContent(
-      debounce(async () => {
-        if (!codeEditorRef.current) {
-          return;
-        }
-
-        await indexedDb.putValue(
-          'file',
-          {
-            value: codeEditorRef.current.getValue(),
-          },
-          0,
-        );
-      }),
+      handleMonacoChangeModelContent(),
     );
   };
+
+  const handleMonacoChangeModelContent = useCallback(() => {
+    return debounce(async () => {
+      if (!codeEditorRef.current || !indexedDb) {
+        return;
+      }
+
+      await indexedDb.putValue(
+        'file',
+        {
+          value: codeEditorRef.current.getValue(),
+        },
+        0,
+      );
+    });
+  }, [indexedDb]);
 
   return (
     <div className="relative antialiased">
