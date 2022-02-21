@@ -197,7 +197,7 @@ export const EditorPage: React.FC = (): JSX.Element => {
           />
         ) : (
           <div
-            className="markdown mx-20 pt-16 text-white"
+            className="markdown mx-20 text-white"
             dangerouslySetInnerHTML={{ __html: previewContent }}
           ></div>
         )}

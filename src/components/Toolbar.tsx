@@ -33,7 +33,7 @@ export const Toolbar: React.FC<ToolbarProps> = ({
   const [isMenuVisible, setMenuVisible] = useState<boolean>(false);
 
   return (
-    <div className="absolute inset-x-0 top-0 z-10 flex items-center justify-between bg-iron-500 px-8 py-4 shadow">
+    <div className="mb-4 flex items-center justify-between bg-iron-500 px-8 py-4 shadow">
       <div className="relative">
         <Button
           active={isMenuVisible}
@@ -43,6 +43,7 @@ export const Toolbar: React.FC<ToolbarProps> = ({
         </Button>
         <Transition
           as="div"
+          className="absolute right-0 left-0 z-50"
           show={isMenuVisible}
           enter="transform transition duration-200"
           enterFrom="opacity-0 scale-50"
@@ -83,6 +84,7 @@ export const Toolbar: React.FC<ToolbarProps> = ({
         </Button>
         <Transition
           as="div"
+          className="absolute right-0 left-0 z-50"
           show={isModalVisible}
           enter="transform transition duration-200"
           enterFrom="opacity-0 scale-50"

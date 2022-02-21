@@ -52,9 +52,6 @@ const createEditor = (
     minimap: {
       enabled: false,
     },
-    padding: {
-      top: 96,
-    },
     quickSuggestions: false,
     roundedSelection: false,
     selectionHighlight: false,
