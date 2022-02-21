@@ -6,8 +6,8 @@ import { Modal } from './modal/Modal';
 import { ModalItemHeadline } from './modal/ModalItemHeadline';
 import { ReactComponent as SunIcon } from '../../assets/icons/sun.svg';
 import { ReactComponent as MoonIcon } from '../../assets/icons/moon.svg';
-import { ReactComponent as ChevronRight } from '../../assets/icons/chevron-right.svg';
-import { ReactComponent as ChevronLeft } from '../../assets/icons/chevron-left.svg';
+import { ReactComponent as MenuIcon } from '../../assets/icons/menu.svg';
+import { ReactComponent as CogIcon } from '../../assets/icons/cog.svg';
 import { ModalTransition } from './modal/ModalTransition';
 
 export enum ToolbarTab {
@@ -39,7 +39,7 @@ export const Toolbar: React.FC<ToolbarProps> = ({
           active={isMenuVisible}
           onClick={() => setMenuVisible((p) => !p)}
         >
-          {isMenuVisible ? <ChevronLeft /> : <ChevronRight />}
+          <MenuIcon />
         </Button>
         <ModalTransition show={isMenuVisible}>
           <Modal left>
@@ -70,7 +70,7 @@ export const Toolbar: React.FC<ToolbarProps> = ({
           active={isModalVisible}
           onClick={() => setModalVisible((isModalVisible) => !isModalVisible)}
         >
-          Settings
+          <CogIcon />
         </Button>
         <ModalTransition show={isModalVisible}>
           <Modal>
