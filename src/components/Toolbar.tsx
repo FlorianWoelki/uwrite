@@ -8,6 +8,7 @@ import { ModalItemHeadline } from './modal/ModalItemHeadline';
 import { ReactComponent as SunIcon } from '../../assets/icons/sun.svg';
 import { ReactComponent as MoonIcon } from '../../assets/icons/moon.svg';
 import { ReactComponent as ChevronRight } from '../../assets/icons/chevron-right.svg';
+import { ReactComponent as ChevronLeft } from '../../assets/icons/chevron-left.svg';
 
 export enum ToolbarTab {
   EditorView = 0,
@@ -29,12 +30,33 @@ export const Toolbar: React.FC<ToolbarProps> = ({
   onClickEditor,
 }): JSX.Element => {
   const [isModalVisible, setModalVisible] = useState<boolean>(false);
+  const [isMenuVisible, setMenuVisible] = useState<boolean>(false);
 
   return (
     <div className="absolute inset-x-0 top-0 z-10 flex items-center justify-between bg-iron-500 px-8 py-4 shadow">
-      <Button>
-        <ChevronRight />
-      </Button>
+      <div className="relative">
+        <Button
+          active={isMenuVisible}
+          onClick={() => setMenuVisible((p) => !p)}
+        >
+          {isMenuVisible ? <ChevronLeft /> : <ChevronRight />}
+        </Button>
+        <Transition
+          as="div"
+          show={isMenuVisible}
+          enter="transform transition duration-200"
+          enterFrom="opacity-0 scale-50"
+          enterTo="opacity-100 scale-100"
+          leave="transform duration-200 transition ease-in-out"
+          leaveFrom="opacity-100 scale-100"
+          leaveTo="opacity-0 scale-50"
+        >
+          <Modal left>
+            <ModalItemHeadline>Theme:</ModalItemHeadline>
+            test
+          </Modal>
+        </Transition>
+      </div>
 
       <ButtonGroup>
         <Button
