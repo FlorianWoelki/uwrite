@@ -12,8 +12,11 @@ import { useIndexedDb } from '../db/hooks/useIndexedDb';
 import { debounce } from '../util/effects';
 import { File } from '../db/indexedDb';
 import { LoadingIndicator } from '../components/LoadingIndicator';
+import { useEditorPageParams } from './useEditorPageParams';
 
 export const EditorPage: React.FC = (): JSX.Element => {
+  const { id } = useEditorPageParams();
+
   const [_, setTheme] = useDarkMode();
 
   const handleThemeChange = async (themeType: ThemeType): Promise<void> => {
@@ -123,7 +126,7 @@ export const EditorPage: React.FC = (): JSX.Element => {
     }
 
     (async () => {
-      const file = await indexedDb.getValue<File>('file', 0);
+      const file = await indexedDb.getValue<File>('file', id);
       if (!file) {
         return;
       }
@@ -164,7 +167,7 @@ export const EditorPage: React.FC = (): JSX.Element => {
         {
           value: codeEditorRef.current.getValue(),
         },
-        0,
+        id,
       );
     });
   }, [indexedDb]);
