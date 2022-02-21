@@ -1,4 +1,3 @@
-import { Transition } from '@headlessui/react';
 import { useState } from 'react';
 import { ThemeType } from '../hooks/useDarkMode';
 import { Button } from './button/Button';
@@ -9,6 +8,7 @@ import { ReactComponent as SunIcon } from '../../assets/icons/sun.svg';
 import { ReactComponent as MoonIcon } from '../../assets/icons/moon.svg';
 import { ReactComponent as ChevronRight } from '../../assets/icons/chevron-right.svg';
 import { ReactComponent as ChevronLeft } from '../../assets/icons/chevron-left.svg';
+import { ModalTransition } from './modal/ModalTransition';
 
 export enum ToolbarTab {
   EditorView = 0,
@@ -41,22 +41,12 @@ export const Toolbar: React.FC<ToolbarProps> = ({
         >
           {isMenuVisible ? <ChevronLeft /> : <ChevronRight />}
         </Button>
-        <Transition
-          as="div"
-          className="absolute right-0 left-0 z-50"
-          show={isMenuVisible}
-          enter="transform transition duration-200"
-          enterFrom="opacity-0 scale-50"
-          enterTo="opacity-100 scale-100"
-          leave="transform duration-200 transition ease-in-out"
-          leaveFrom="opacity-100 scale-100"
-          leaveTo="opacity-0 scale-50"
-        >
+        <ModalTransition show={isMenuVisible}>
           <Modal left>
             <ModalItemHeadline>Theme:</ModalItemHeadline>
             test
           </Modal>
-        </Transition>
+        </ModalTransition>
       </div>
 
       <ButtonGroup>
@@ -82,17 +72,7 @@ export const Toolbar: React.FC<ToolbarProps> = ({
         >
           Settings
         </Button>
-        <Transition
-          as="div"
-          className="absolute right-0 left-0 z-50"
-          show={isModalVisible}
-          enter="transform transition duration-200"
-          enterFrom="opacity-0 scale-50"
-          enterTo="opacity-100 scale-100"
-          leave="transform duration-200 transition ease-in-out"
-          leaveFrom="opacity-100 scale-100"
-          leaveTo="opacity-0 scale-50"
-        >
+        <ModalTransition show={isModalVisible}>
           <Modal>
             <ModalItemHeadline>Theme:</ModalItemHeadline>
             <ButtonGroup>
@@ -111,7 +91,7 @@ export const Toolbar: React.FC<ToolbarProps> = ({
               </Button>
             </ButtonGroup>
           </Modal>
-        </Transition>
+        </ModalTransition>
       </div>
     </div>
   );
