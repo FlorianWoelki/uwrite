@@ -48,7 +48,7 @@ export const EditorPage: React.FC = (): JSX.Element => {
 
   const [isLoading, setLoading] = useState<boolean>(true);
 
-  const renderPreviewContent = (): void => {
+  const renderPreviewContent = async (): Promise<void> => {
     if (!codeEditorRef.current || previewContent) {
       return;
     }
@@ -72,6 +72,8 @@ export const EditorPage: React.FC = (): JSX.Element => {
       throwOnError: true,
     });
 
+    await saveValue();
+    codeEditorRef.current = null;
     setActiveTab(2);
     setPreviewContent(htmlResult.innerHTML);
   };
@@ -156,21 +158,24 @@ export const EditorPage: React.FC = (): JSX.Element => {
     );
   };
 
-  const handleMonacoChangeModelContent = useCallback(() => {
-    return debounce(async () => {
-      if (!codeEditorRef.current || !indexedDb) {
-        return;
-      }
+  const handleMonacoChangeModelContent = useCallback(
+    () => debounce(saveValue),
+    [indexedDb],
+  );
 
-      await indexedDb.putValue(
-        'file',
-        {
-          value: codeEditorRef.current.getValue(),
-        },
-        id,
-      );
-    });
-  }, [indexedDb]);
+  const saveValue = async (): Promise<void> => {
+    if (!codeEditorRef.current || !indexedDb) {
+      return;
+    }
+
+    await indexedDb.putValue(
+      'file',
+      {
+        value: codeEditorRef.current.getValue(),
+      },
+      id,
+    );
+  };
 
   return (
     <div className="relative antialiased">

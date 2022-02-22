@@ -84,7 +84,7 @@ class IndexedDb {
     const tx = this.db.transaction(tableName, 'readwrite');
     const store = tx.objectStore(tableName);
     const result = await store.put(value, key);
-    console.log('Put data', JSON.stringify(result));
+    console.log('Put data', value);
     return result;
   }
 
