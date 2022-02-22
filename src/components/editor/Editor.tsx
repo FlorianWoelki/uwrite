@@ -140,7 +140,11 @@ export const Editor: React.FC<EditorProps> = ({
 
   return (
     <>
-      <div className="h-full w-full" ref={editorRef}></div>
+      <div
+        className="h-full w-full"
+        style={{ paddingBottom: '138px' }}
+        ref={editorRef}
+      ></div>
       <div
         className="vim-status absolute inset-x-0 bottom-0 px-4 py-2 font-mono text-base"
         ref={statusRef}

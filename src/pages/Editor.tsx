@@ -186,7 +186,7 @@ export const EditorPage: React.FC = (): JSX.Element => {
         </div>
       )}
       <div
-        className={`relative m-auto h-screen w-full max-w-6xl ${
+        className={`m-auto h-screen w-full max-w-6xl ${
           isLoading ? 'hidden' : ''
         }`}
       >

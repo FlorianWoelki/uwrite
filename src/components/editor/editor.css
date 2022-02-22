@@ -29,6 +29,7 @@
 
 .vim-status {
   color: #727579;
+  padding-bottom: 102px;
 }
 .vim-status input {
   background-color: #2b3036;
