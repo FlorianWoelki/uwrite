@@ -1,4 +1,11 @@
-import { useEffect, useRef } from 'react';
+import {
+  forwardRef,
+  MutableRefObject,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import { language } from '../../monaco/custom-markdown';
 import './theme/font/font.css';
 import './editor.css';
@@ -6,21 +13,7 @@ import { monaco } from '../../monaco';
 import { VimMode, initVimMode } from 'monaco-vim';
 import { getEditorThemeColors } from './theme/colors';
 import { getEditorThemeRules } from './theme/rules';
-
-export interface CachedEditorState {
-  content: string;
-  position: monaco.Position | null;
-}
-
-export const cachedEditorReducer = (
-  state: CachedEditorState,
-  action: CachedEditorState,
-) => {
-  return {
-    ...state,
-    ...action,
-  };
-};
+import { debounce } from '../../util/effects';
 
 const createEditor = (
   value: string,
@@ -95,17 +88,18 @@ const defineTheme = () => {
   monaco.editor.setTheme('uwrite');
 };
 
-interface EditorProps {
-  cachedState: CachedEditorState;
-  onSetupFinished?: (editor: monaco.editor.IStandaloneCodeEditor) => void;
+interface MonacoEditorProps {
+  value: string;
+  onCtrlCmdE: () => void;
+  onChange: (value: string) => void;
 }
 
-export const Editor: React.FC<EditorProps> = ({
-  cachedState,
-  onSetupFinished,
-}): JSX.Element => {
-  const statusRef = useRef<HTMLDivElement | null>(null);
+export const MonacoEditor = forwardRef<
+  monaco.editor.IStandaloneCodeEditor,
+  MonacoEditorProps
+>(({ value, onCtrlCmdE, onChange }, ref): JSX.Element => {
   const editorRef = useRef<HTMLDivElement | null>(null);
+  const statusRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     if (!editorRef.current || !statusRef.current) {
@@ -119,18 +113,27 @@ export const Editor: React.FC<EditorProps> = ({
     defineTheme();
 
     const { editor, vimMode } = createEditor(
-      cachedState.content,
+      value,
       editorRef.current,
       statusRef.current,
     );
 
-    if (cachedState.position) {
-      editor.setPosition(cachedState.position);
-    }
+    editor.onDidLayoutChange(() => {
+      editor.focus();
+    });
+    editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyE, () =>
+      onCtrlCmdE(),
+    );
+    editor.onDidChangeModelContent(
+      debounce(() => {
+        if (editor.hasTextFocus()) {
+          onChange(editor.getValue());
+        }
+      }),
+    );
 
-    if (onSetupFinished) {
-      onSetupFinished(editor);
-    }
+    (ref as MutableRefObject<monaco.editor.IStandaloneCodeEditor>).current =
+      editor;
 
     return () => {
       editor.dispose();
@@ -151,4 +154,4 @@ export const Editor: React.FC<EditorProps> = ({
       ></div>
     </>
   );
-};
+});

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import IndexedDb from '../indexedDb';
 
-export const useIndexedDb = (defaultContentValue: string) => {
+export const useIndexedDb = () => {
   const [indexedDb, setIndexedDb] = useState<IndexedDb | null>(null);
 
   useEffect(() => {
@@ -10,7 +10,7 @@ export const useIndexedDb = (defaultContentValue: string) => {
       await indexedDb.createObjectStore(['file']);
 
       if (indexedDb.didFreshlyCreatedTables()) {
-        indexedDb.putValue('file', { value: defaultContentValue }, 0);
+        indexedDb.putValue('file', { value: '# Hello World' }, 0);
       }
 
       setIndexedDb(indexedDb);

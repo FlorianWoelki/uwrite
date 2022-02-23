@@ -1,18 +1,11 @@
-import 'katex/dist/katex.min.css';
-import renderMathInElement from 'katex/dist/contrib/auto-render';
-// @ts-ignore
-import { renderMarkdown } from 'monaco-editor/esm/vs/base/browser/markdownRenderer';
-import { cachedEditorReducer, Editor } from '../components/editor/Editor';
 import { Toolbar, ToolbarTab } from '../components/Toolbar';
 import { ThemeType, useDarkMode } from '../hooks/useDarkMode';
-import { useCallback, useEffect, useReducer, useRef, useState } from 'react';
-import { monaco } from '../monaco';
-import { useKeyPress } from '../hooks/useKeyPress';
+import { useEffect, useState } from 'react';
 import { useIndexedDb } from '../db/hooks/useIndexedDb';
-import { debounce } from '../util/effects';
 import { File } from '../db/indexedDb';
 import { LoadingIndicator } from '../components/LoadingIndicator';
 import { useEditorPageParams } from './useEditorPageParams';
+import { ContentPane } from '../components/ContentPane';
 
 export const EditorPage: React.FC = (): JSX.Element => {
   const { id } = useEditorPageParams();
@@ -35,93 +28,20 @@ export const EditorPage: React.FC = (): JSX.Element => {
     }
   };
 
-  const codeEditorRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(
-    null,
-  );
   const [activeTab, setActiveTab] = useState<ToolbarTab>(ToolbarTab.EditorView);
 
-  const [previewContent, setPreviewContent] = useState<string | null>(null);
-  const [cachedEditor, cachedEditorDispatch] = useReducer(cachedEditorReducer, {
-    content: '',
-    position: null,
-  });
+  const [shouldRenderPreview, setShouldRenderPreview] =
+    useState<boolean>(false);
 
   const [isLoading, setLoading] = useState<boolean>(true);
 
-  const renderPreviewContent = async (): Promise<void> => {
-    if (!codeEditorRef.current || previewContent) {
-      return;
-    }
-
-    cachedEditorDispatch({
-      content: codeEditorRef.current.getValue(),
-      position: codeEditorRef.current.getPosition(),
-    });
-
-    const htmlResult = renderMarkdown({
-      value: codeEditorRef.current.getValue(),
-    }).element;
-
-    renderMathInElement(htmlResult, {
-      delimiters: [
-        { left: '$$', right: '$$', display: true },
-        { left: '$', right: '$', display: false },
-        { left: '\\[', right: '\\]', display: true },
-        { left: '\\(', right: '\\)', display: false },
-      ],
-      throwOnError: true,
-    });
-
-    await saveValue();
-    codeEditorRef.current = null;
-    setActiveTab(2);
-    setPreviewContent(htmlResult.innerHTML);
-  };
-
   const renderEditorContent = (): void => {
     setActiveTab(0);
-    setPreviewContent(null);
-
-    if (!codeEditorRef.current) {
-      return;
-    }
-
-    if (cachedEditor.content && cachedEditor.position) {
-      codeEditorRef.current.setValue(cachedEditor.content);
-      codeEditorRef.current.setPosition(cachedEditor.position);
-    }
+    setShouldRenderPreview(false);
   };
 
-  useKeyPress(
-    ['e'],
-    () => {
-      if (previewContent) {
-        renderEditorContent();
-      } else {
-        renderPreviewContent();
-      }
-    },
-    true,
-  );
-
-  useEffect(() => {
-    if (!codeEditorRef.current) {
-      return;
-    }
-
-    codeEditorRef.current.addCommand(
-      monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyE,
-      () => {
-        if (previewContent) {
-          renderEditorContent();
-        } else {
-          renderPreviewContent();
-        }
-      },
-    );
-  }, [previewContent]);
-
-  const indexedDb = useIndexedDb(cachedEditor.content);
+  const indexedDb = useIndexedDb();
+  const [fileValue, setFileValue] = useState<string>('');
   useEffect(() => {
     if (!indexedDb) {
       return;
@@ -133,45 +53,21 @@ export const EditorPage: React.FC = (): JSX.Element => {
         return;
       }
 
-      if (!codeEditorRef.current) {
-        return;
-      }
-
-      codeEditorRef.current.setValue(file.value);
-
-      cachedEditorDispatch({ content: file.value, position: null });
+      setFileValue(file.value);
       setLoading(false);
-      codeEditorRef.current.focus();
-      codeEditorRef.current.onDidChangeModelContent(
-        handleMonacoChangeModelContent(),
-      );
     })();
   }, [indexedDb]);
 
-  const monacoSetupFinished = (
-    editor: monaco.editor.IStandaloneCodeEditor,
-  ): void => {
-    codeEditorRef.current = editor;
-    codeEditorRef.current.focus();
-    codeEditorRef.current.onDidChangeModelContent(
-      handleMonacoChangeModelContent(),
-    );
-  };
-
-  const handleMonacoChangeModelContent = useCallback(
-    () => debounce(saveValue),
-    [indexedDb],
-  );
-
-  const saveValue = async (): Promise<void> => {
-    if (!codeEditorRef.current || !indexedDb) {
+  const saveValue = async (value: string) => {
+    if (!indexedDb) {
       return;
     }
 
+    setFileValue(value);
     await indexedDb.putValue(
       'file',
       {
-        value: codeEditorRef.current.getValue(),
+        value,
       },
       id,
     );
@@ -182,31 +78,23 @@ export const EditorPage: React.FC = (): JSX.Element => {
       <Toolbar
         activeTab={activeTab}
         onClickEditor={renderEditorContent}
-        onClickPreview={renderPreviewContent}
+        onClickPreview={() => setShouldRenderPreview(true)}
         onThemeChange={handleThemeChange}
       />
-      {isLoading && (
+      {isLoading ? (
         <div className="absolute m-auto flex h-screen w-full items-center justify-center">
           <LoadingIndicator className="z-50 h-8 w-8 text-gray-500" />
         </div>
-      )}
-      <div
-        className={`m-auto h-screen w-full max-w-6xl ${
-          isLoading ? 'hidden' : ''
-        }`}
-      >
-        {!previewContent ? (
-          <Editor
-            cachedState={cachedEditor}
-            onSetupFinished={monacoSetupFinished}
+      ) : (
+        <div className="m-auto h-screen w-full max-w-6xl">
+          <ContentPane
+            fileValue={fileValue}
+            shouldRenderPreview={shouldRenderPreview}
+            toggleRender={() => setShouldRenderPreview((p) => !p)}
+            onSave={saveValue}
           />
-        ) : (
-          <div
-            className="markdown mx-20 text-white"
-            dangerouslySetInnerHTML={{ __html: previewContent }}
-          ></div>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 };
