@@ -12,6 +12,9 @@ html.light,
 .markdown {
   @apply text-lg text-gray-100;
 }
+.light .markdown {
+  @apply text-iron-700;
+}
 .markdown > * + * {
   @apply mt-6;
 }
@@ -22,11 +25,20 @@ html.light,
 .markdown strong {
   @apply font-bold text-gray-200;
 }
+.light .markdown strong {
+  @apply text-iron-800;
+}
 .markdown a {
   @apply font-semibold text-gray-200 underline;
 }
+.light .markdown a {
+  @apply text-iron-800;
+}
 .markdown h1 {
   @apply mt-10 mb-2 text-2xl font-bold text-gray-200;
+}
+.light .markdown h1 {
+  @apply text-iron-800;
 }
 .markdown h1:first-child {
   @apply mt-0;
@@ -34,11 +46,17 @@ html.light,
 .markdown h2 {
   @apply mt-10 mb-2 text-xl font-bold text-gray-200;
 }
+.light .markdown h2 {
+  @apply text-iron-800;
+}
 .markdown h2:first-child {
   @apply mt-0;
 }
 .markdown h3 {
   @apply mt-8 -mb-2 text-lg font-bold leading-5 text-gray-200;
+}
+.light .markdown h3 {
+  @apply text-iron-800;
 }
 .markdown h3:first-child {
   @apply mt-0;
@@ -57,6 +75,10 @@ html.light,
 .markdown p code,
 .markdown li code {
   @apply rounded bg-gray-600 px-2 py-1 text-base text-white;
+}
+.light .markdown p code,
+.light .markdown li code {
+  @apply bg-gray-300 text-iron-800;
 }
 
 @tailwind components;
