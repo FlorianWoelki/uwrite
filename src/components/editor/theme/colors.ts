@@ -294,7 +294,7 @@ export const getEditorThemeColors = (
   // Background color of the border around highlighted symbols.
   // "editor.symbolHighlightBorder": ,
   // Color of the editor cursor.
-  'editorCursor.foreground': '#727579',
+  'editorCursor.foreground': isDarkMode ? '#727579' : '#cacbcd',
   // The background color of the editor cursor. Allows customizing the color of a character overlapped by a block cursor.
   'editorCursor.background': '#d1d5da',
   // Color of whitespace characters in the editor.

@@ -1,6 +1,6 @@
 import { Toolbar, ToolbarTab } from '../components/Toolbar';
 import { ThemeType, useDarkMode, useDarkModeMedia } from '../hooks/useDarkMode';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useIndexedDb } from '../db/hooks/useIndexedDb';
 import { File } from '../db/indexedDb';
 import { LoadingIndicator } from '../components/LoadingIndicator';
