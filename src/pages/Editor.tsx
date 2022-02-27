@@ -18,7 +18,15 @@ export const EditorPage: React.FC = (): JSX.Element => {
   });
 
   useEffect(() => {
-    updateTheme(theme === 'dark' ? 'uwrite-dark' : 'uwrite-light');
+    if (theme === 'system') {
+      const prefersDark = window.matchMedia(
+        '(prefers-color-scheme: dark)',
+      ).matches;
+      const type = prefersDark ? 'dark' : 'light';
+      updateTheme(type === 'dark' ? 'uwrite-dark' : 'uwrite-light');
+    } else {
+      updateTheme(theme === 'dark' ? 'uwrite-dark' : 'uwrite-light');
+    }
   }, [theme]);
 
   const handleThemeChange = async (themeType: ThemeType): Promise<void> => {
