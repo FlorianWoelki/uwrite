@@ -5,7 +5,7 @@ type Rule = monaco.editor.ITokenThemeRule;
 const colors = {
   red: '#dc2626',
   blue1: '#9ECBFF',
-  blue2: '79B8FF',
+  blue2: '#79B8FF',
   purple: '#B392F0',
   gray: '#6A737D',
   orange: '#FFAB70',
