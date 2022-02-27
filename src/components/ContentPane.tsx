@@ -63,7 +63,7 @@ export const ContentPane: React.FC<ContentPaneProps> = ({
     />
   ) : (
     <div
-      className="markdown mx-20 text-white"
+      className="markdown mx-20 text-iron-700 dark:text-white"
       dangerouslySetInnerHTML={{ __html: renderedPreviewContent }}
     ></div>
   );
