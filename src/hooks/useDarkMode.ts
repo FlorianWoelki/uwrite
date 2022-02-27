@@ -2,6 +2,41 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 export type ThemeType = 'dark' | 'light' | 'system';
 
+export const useDarkModeMedia = (
+  theme: ThemeType,
+  callback: (type: ThemeType) => void,
+): React.MutableRefObject<() => void> => {
+  const handleMediaQuery = useCallback(() => {
+    const prefersDark = window.matchMedia(
+      '(prefers-color-scheme: dark)',
+    ).matches;
+
+    if (theme === 'system') {
+      const type = prefersDark ? 'dark' : 'light';
+      callback(type);
+    }
+  }, [theme]);
+
+  const mediaListener = useRef(handleMediaQuery);
+  mediaListener.current = handleMediaQuery;
+
+  useEffect(() => {
+    const handler = () => mediaListener.current();
+
+    const media = window.matchMedia('(prefers-color-scheme: dark)');
+    media.addEventListener('change', handler);
+
+    // Call function to instantly change theme to system theme.
+    handler();
+
+    return () => {
+      media.removeEventListener('change', handler);
+    };
+  }, []);
+
+  return mediaListener;
+};
+
 export const useDarkMode = (): readonly [
   ThemeType,
   (themeType: ThemeType) => void,
@@ -10,25 +45,15 @@ export const useDarkMode = (): readonly [
     (localStorage.getItem('theme') as 'dark' | 'light' | null) ?? 'system',
   );
 
+  const mediaListener = useDarkModeMedia(theme, (type) => {
+    const root = window.document.documentElement;
+    root.classList.remove(type === 'dark' ? 'light' : 'dark');
+    root.classList.add(type === 'dark' ? 'dark' : 'light');
+  });
+
   const setTheme = (themeType: ThemeType): void => {
     setThemeState(themeType);
   };
-
-  const handleMediaQuery = useCallback(() => {
-    const root = window.document.documentElement;
-    const prefersDark = window.matchMedia(
-      '(prefers-color-scheme: dark)',
-    ).matches;
-
-    if (theme === 'system') {
-      root.classList.remove(prefersDark ? 'light' : 'dark');
-      root.classList.add(prefersDark ? 'dark' : 'light');
-    }
-  }, [theme]);
-
-  // Use `useRef` for not adding function `handleMediaQuery` to dependency array.
-  const mediaListener = useRef(handleMediaQuery);
-  mediaListener.current = handleMediaQuery;
 
   useEffect(() => {
     const root = window.document.documentElement;
@@ -45,21 +70,6 @@ export const useDarkMode = (): readonly [
       localStorage.removeItem('theme');
     }
   }, [theme]);
-
-  useEffect(() => {
-    const handler = () => mediaListener.current();
-
-    // Listen for theme system change events.
-    const media = window.matchMedia('(prefers-color-scheme: dark)');
-    media.addEventListener('change', handler);
-
-    // Call function to instantly change theme to system theme.
-    handler();
-
-    return () => {
-      media.removeEventListener('change', handler);
-    };
-  }, []);
 
   return [theme, setTheme] as const;
 };
