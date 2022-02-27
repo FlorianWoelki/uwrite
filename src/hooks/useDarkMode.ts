@@ -11,17 +11,7 @@ export const useDarkMode = (): readonly [
   );
 
   const setTheme = (themeType: ThemeType): void => {
-    let newTheme = themeType;
-    // Handles system theme switch to custom theme.
-    if (theme === 'system' && newTheme !== 'system') {
-      const prefersDark = window.matchMedia(
-        '(prefers-color-scheme: dark)',
-      ).matches;
-
-      newTheme = prefersDark ? 'light' : 'dark';
-    }
-
-    setThemeState(newTheme);
+    setThemeState(themeType);
   };
 
   const handleMediaQuery = useCallback(() => {
