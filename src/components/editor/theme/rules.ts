@@ -12,14 +12,15 @@ const colors = {
   green: '#85E89D',
 
   text: '#d1d5da',
+  lightText: '#2b3036',
   keyword: '#f97583',
 };
 
-export const getEditorThemeRules = (): Rule[] => {
+export const getEditorThemeRules = (isDarkMode: boolean): Rule[] => {
   const rules: Rule[] = [];
 
   rules.push(
-    { token: '', foreground: colors.text },
+    { token: '', foreground: isDarkMode ? colors.text : colors.lightText },
     { token: 'invalid', foreground: colors.red },
     { token: 'emphasis', fontStyle: 'italic' },
     { token: 'strong', fontStyle: 'bold' },
@@ -27,14 +28,40 @@ export const getEditorThemeRules = (): Rule[] => {
 
   rules.push(
     { token: 'comment.md', foreground: colors.gray },
-    { token: 'keyword.md', foreground: colors.text, fontStyle: 'bold' },
-    { token: 'keyword.table.header.md', foreground: colors.text },
-    { token: 'keyword.table.middle.md', foreground: colors.text },
-    { token: 'keyword.table.left.md', foreground: colors.text },
-    { token: 'keyword.table.right.md', foreground: colors.text },
-    { token: 'string.md', foreground: colors.text },
-    { token: 'string.link.md', foreground: colors.text },
-    { token: 'variable.md', foreground: colors.text, background: colors.text },
+    {
+      token: 'keyword.md',
+      foreground: isDarkMode ? colors.text : colors.lightText,
+      fontStyle: 'bold',
+    },
+    {
+      token: 'keyword.table.header.md',
+      foreground: isDarkMode ? colors.text : colors.lightText,
+    },
+    {
+      token: 'keyword.table.middle.md',
+      foreground: isDarkMode ? colors.text : colors.lightText,
+    },
+    {
+      token: 'keyword.table.left.md',
+      foreground: isDarkMode ? colors.text : colors.lightText,
+    },
+    {
+      token: 'keyword.table.right.md',
+      foreground: isDarkMode ? colors.text : colors.lightText,
+    },
+    {
+      token: 'string.md',
+      foreground: isDarkMode ? colors.text : colors.lightText,
+    },
+    {
+      token: 'string.link.md',
+      foreground: isDarkMode ? colors.text : colors.lightText,
+    },
+    {
+      token: 'variable.md',
+      foreground: isDarkMode ? colors.text : colors.lightText,
+      background: isDarkMode ? colors.text : colors.lightText,
+    },
   );
 
   rules.push(

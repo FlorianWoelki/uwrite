@@ -1,11 +1,4 @@
-import {
-  forwardRef,
-  MutableRefObject,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import { forwardRef, MutableRefObject, useEffect, useRef } from 'react';
 import { language } from '../../monaco/custom-markdown';
 import './theme/font/font.css';
 import './editor.css';
@@ -78,14 +71,24 @@ const createEditor = (
   };
 };
 
+export const updateTheme = (theme: 'uwrite-dark' | 'uwrite-light'): void => {
+  defineTheme();
+  monaco.editor.setTheme(theme);
+};
+
 const defineTheme = () => {
-  monaco.editor.defineTheme('uwrite', {
+  monaco.editor.defineTheme('uwrite-dark', {
     base: 'vs-dark',
     inherit: false,
-    colors: getEditorThemeColors(),
-    rules: getEditorThemeRules(),
+    colors: getEditorThemeColors(true),
+    rules: getEditorThemeRules(true),
   });
-  monaco.editor.setTheme('uwrite');
+  monaco.editor.defineTheme('uwrite-light', {
+    base: 'vs',
+    inherit: false,
+    colors: getEditorThemeColors(false),
+    rules: getEditorThemeRules(false),
+  });
 };
 
 interface MonacoEditorProps {

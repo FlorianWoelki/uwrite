@@ -4,6 +4,10 @@ html,
 #root {
   background-color: #2b3036;
 }
+html.light,
+.light #root {
+  background-color: #eaeaeb;
+}
 
 .markdown {
   @apply text-lg text-gray-100;

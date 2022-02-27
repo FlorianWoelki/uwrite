@@ -6,11 +6,16 @@ import { File } from '../db/indexedDb';
 import { LoadingIndicator } from '../components/LoadingIndicator';
 import { useEditorPageParams } from './useEditorPageParams';
 import { ContentPane } from '../components/ContentPane';
+import { updateTheme } from '../components/editor/MonacoEditor';
 
 export const EditorPage: React.FC = (): JSX.Element => {
   const { id } = useEditorPageParams();
 
-  const [_, setTheme] = useDarkMode();
+  const [theme, setTheme] = useDarkMode();
+
+  useEffect(() => {
+    updateTheme(theme === 'dark' ? 'uwrite-dark' : 'uwrite-light');
+  }, [theme]);
 
   const handleThemeChange = async (themeType: ThemeType): Promise<void> => {
     if (themeType === 'system') {

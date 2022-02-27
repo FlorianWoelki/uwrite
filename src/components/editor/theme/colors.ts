@@ -1,6 +1,8 @@
 import { monaco } from '../../../monaco';
 
-export const getEditorThemeColors = (): monaco.editor.IColors => ({
+export const getEditorThemeColors = (
+  isDarkMode: boolean,
+): monaco.editor.IColors => ({
   // Overall foreground color. This color is only used if not overridden by a component.
   // "foreground": ,
   // Overall foreground color for error messages. This color is only used if not overridden by a component.
@@ -98,9 +100,9 @@ export const getEditorThemeColors = (): monaco.editor.IColors => ({
   // Border color of hint boxes in the editor.
   // "editorHint.border": ,
   // Editor background color.
-  'editor.background': '#2b3036',
+  'editor.background': isDarkMode ? '#2b3036' : '#eaeaeb',
   // Editor default foreground color.
-  'editor.foreground': '#d1d5da',
+  'editor.foreground': isDarkMode ? '#d1d5da' : '#f4f5f5',
   // Background color of editor widgets, such as find/replace.
   // "editorWidget.background": ,
   // Foreground color of editor widgets, such as find/replace.

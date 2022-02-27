@@ -33,7 +33,7 @@ export const Toolbar: React.FC<ToolbarProps> = ({
   const [isMenuVisible, setMenuVisible] = useState<boolean>(false);
 
   return (
-    <div className="mb-4 flex items-center justify-between bg-iron-500 px-8 py-4 shadow">
+    <div className="mb-4 flex items-center justify-between bg-iron-100 px-8 py-4 shadow dark:bg-iron-500">
       <div className="relative">
         <Button
           active={isMenuVisible}
