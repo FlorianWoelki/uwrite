@@ -35,11 +35,6 @@ export const EditorPage: React.FC = (): JSX.Element => {
 
   const [isLoading, setLoading] = useState<boolean>(true);
 
-  const renderEditorContent = (): void => {
-    setActiveTab(0);
-    setShouldRenderPreview(false);
-  };
-
   const indexedDb = useIndexedDb();
   const [fileValue, setFileValue] = useState<string>('');
   useEffect(() => {
@@ -73,11 +68,19 @@ export const EditorPage: React.FC = (): JSX.Element => {
     );
   };
 
+  useEffect(() => {
+    if (shouldRenderPreview) {
+      setActiveTab(ToolbarTab.PreviewView);
+    } else {
+      setActiveTab(ToolbarTab.EditorView);
+    }
+  }, [shouldRenderPreview]);
+
   return (
     <div className="relative antialiased">
       <Toolbar
         activeTab={activeTab}
-        onClickEditor={renderEditorContent}
+        onClickEditor={() => setShouldRenderPreview(false)}
         onClickPreview={() => setShouldRenderPreview(true)}
         onThemeChange={handleThemeChange}
       />
