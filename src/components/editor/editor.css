@@ -35,3 +35,6 @@
   background-color: #2b3036;
   outline: none;
 }
+.light .vim-status input {
+  background-color: #eaeaeb;
+}
