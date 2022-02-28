@@ -43,8 +43,10 @@ export const Toolbar: React.FC<ToolbarProps> = ({
         </Button>
         <ModalTransition show={isMenuVisible}>
           <Modal left>
-            <ModalItemHeadline>Theme:</ModalItemHeadline>
-            test
+            <ModalItemHeadline>Files:</ModalItemHeadline>
+            <ul className="w-full min-w-max rounded bg-iron-500 px-3 py-1 text-sm text-iron-200">
+              <li className="">First File</li>
+            </ul>
           </Modal>
         </ModalTransition>
       </div>
