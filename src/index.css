@@ -62,10 +62,20 @@ html.light,
   @apply mt-0;
 }
 .markdown ul {
-  @apply list-disc pl-10;
+  @apply list-disc pl-4;
 }
 .markdown ol {
-  @apply list-decimal pl-10;
+  @apply list-decimal pl-4;
+}
+
+.markdown ul ul,
+.markdown ol ol {
+  @apply relative mt-2 ml-10;
+}
+.markdown ul ul::before,
+.markdown ol ol::before {
+  content: '';
+  @apply absolute -left-14 top-0 bottom-0 border-l border-iron-200 dark:border-iron-400;
 }
 
 .markdown pre code {
