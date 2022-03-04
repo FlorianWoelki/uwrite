@@ -8,17 +8,7 @@ import { getEditorThemeColors } from './theme/colors';
 import { getEditorThemeRules } from './theme/rules';
 import { debounce } from '../../util/effects';
 
-const createEditor = (
-  value: string,
-  editorEl: HTMLDivElement,
-  statusEl: HTMLDivElement,
-) => {
-  monaco.languages.register({ id: 'custom-markdown' });
-
-  monaco.languages.setMonarchTokensProvider('custom-markdown', {
-    ...language,
-  });
-
+const registerRules = (): void => {
   monaco.languages.setLanguageConfiguration('custom-markdown', {
     onEnterRules: [
       {
@@ -37,6 +27,20 @@ const createEditor = (
       },
     ],
   });
+};
+
+const createEditor = (
+  value: string,
+  editorEl: HTMLDivElement,
+  statusEl: HTMLDivElement,
+) => {
+  monaco.languages.register({ id: 'custom-markdown' });
+
+  monaco.languages.setMonarchTokensProvider('custom-markdown', {
+    ...language,
+  });
+
+  registerRules();
 
   const editor = monaco.editor.create(editorEl, {
     value,
