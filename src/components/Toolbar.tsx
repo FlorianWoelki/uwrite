@@ -9,6 +9,7 @@ import { ReactComponent as MoonIcon } from '../../assets/icons/moon.svg';
 import { ReactComponent as MenuIcon } from '../../assets/icons/menu.svg';
 import { ReactComponent as CogIcon } from '../../assets/icons/cog.svg';
 import { ModalTransition } from './modal/ModalTransition';
+import { FileDisplay } from './file/FileDisplay';
 
 export enum ToolbarTab {
   EditorView = 0,
@@ -44,9 +45,7 @@ export const Toolbar: React.FC<ToolbarProps> = ({
         <ModalTransition show={isMenuVisible}>
           <Modal left>
             <ModalItemHeadline>Files:</ModalItemHeadline>
-            <ul className="w-full min-w-max rounded bg-iron-500 px-3 py-1 text-sm text-iron-200">
-              <li className="">First File</li>
-            </ul>
+            <FileDisplay />
           </Modal>
         </ModalTransition>
       </div>
