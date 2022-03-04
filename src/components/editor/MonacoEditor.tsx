@@ -22,7 +22,14 @@ const createEditor = (
   monaco.languages.setLanguageConfiguration('custom-markdown', {
     onEnterRules: [
       {
-        beforeText: /(\*|-).+$/,
+        beforeText: /\*.+$/,
+        action: {
+          indentAction: monaco.languages.IndentAction.None,
+          appendText: '* ',
+        },
+      },
+      {
+        beforeText: /-.+$/,
         action: {
           indentAction: monaco.languages.IndentAction.None,
           appendText: '- ',
