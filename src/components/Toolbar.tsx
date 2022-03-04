@@ -39,6 +39,7 @@ export const Toolbar: React.FC<ToolbarProps> = ({
         <Button
           active={isMenuVisible}
           onClick={() => setMenuVisible((p) => !p)}
+          className="relative"
         >
           <MenuIcon />
         </Button>
@@ -48,6 +49,10 @@ export const Toolbar: React.FC<ToolbarProps> = ({
             <FileDisplay />
           </Modal>
         </ModalTransition>
+
+        <div className="absolute left-0 top-1/2 ml-14 min-w-max -translate-y-1/2 cursor-pointer text-sm text-iron-400">
+          ./First File.md
+        </div>
       </div>
 
       <ButtonGroup>
