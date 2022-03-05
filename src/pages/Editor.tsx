@@ -53,7 +53,11 @@ export const EditorPage: React.FC = (): JSX.Element => {
   const [isLoading, setLoading] = useState<boolean>(true);
 
   const indexedDb = useIndexedDb();
-  const [fileValue, setFileValue] = useState<string>('');
+  const [file, setFile] = useState<{ filename: string; value: string }>({
+    filename: 'Hello World',
+    value: '# Hello World',
+  });
+
   useEffect(() => {
     if (!indexedDb) {
       return;
@@ -65,7 +69,7 @@ export const EditorPage: React.FC = (): JSX.Element => {
         return;
       }
 
-      setFileValue(file.value);
+      setFile((p) => ({ ...p, value: file.value }));
       setLoading(false);
     })();
   }, [indexedDb]);
@@ -75,10 +79,11 @@ export const EditorPage: React.FC = (): JSX.Element => {
       return;
     }
 
-    setFileValue(value);
+    setFile((p) => ({ ...p, value: value }));
     await indexedDb.putValue(
       'file',
       {
+        filename: file.filename,
         value,
       },
       id,
@@ -108,7 +113,7 @@ export const EditorPage: React.FC = (): JSX.Element => {
       ) : (
         <div className="m-auto h-screen w-full max-w-6xl">
           <ContentPane
-            fileValue={fileValue}
+            fileValue={file.value}
             shouldRenderPreview={shouldRenderPreview}
             toggleRender={() => setShouldRenderPreview((p) => !p)}
             onSave={saveValue}

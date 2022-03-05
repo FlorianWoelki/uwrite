@@ -10,7 +10,11 @@ export const useIndexedDb = () => {
       await indexedDb.createObjectStore(['file']);
 
       if (indexedDb.didFreshlyCreatedTables()) {
-        indexedDb.putValue('file', { value: '# Hello World' }, 0);
+        indexedDb.putValue(
+          'file',
+          { filename: 'Hello World', value: '# Hello World' },
+          0,
+        );
       }
 
       setIndexedDb(indexedDb);
