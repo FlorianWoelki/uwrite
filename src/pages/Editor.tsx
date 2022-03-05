@@ -7,6 +7,12 @@ import { LoadingIndicator } from '../components/LoadingIndicator';
 import { useEditorPageParams } from './useEditorPageParams';
 import { ContentPane } from '../components/ContentPane';
 import { updateTheme } from '../components/editor/MonacoEditor';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  selectCurrentFile,
+  setCurrentFileContent,
+  setCurrentFileValue,
+} from '../store';
 
 export const EditorPage: React.FC = (): JSX.Element => {
   const { id } = useEditorPageParams();
@@ -53,10 +59,8 @@ export const EditorPage: React.FC = (): JSX.Element => {
   const [isLoading, setLoading] = useState<boolean>(true);
 
   const indexedDb = useIndexedDb();
-  const [file, setFile] = useState<{ filename: string; value: string }>({
-    filename: 'Hello World',
-    value: '# Hello World',
-  });
+  const currentFile = useSelector(selectCurrentFile);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (!indexedDb) {
@@ -69,7 +73,7 @@ export const EditorPage: React.FC = (): JSX.Element => {
         return;
       }
 
-      setFile((p) => ({ ...p, value: file.value }));
+      dispatch(setCurrentFileValue(file.value));
       setLoading(false);
     })();
   }, [indexedDb]);
@@ -79,11 +83,11 @@ export const EditorPage: React.FC = (): JSX.Element => {
       return;
     }
 
-    setFile((p) => ({ ...p, value: value }));
+    dispatch(setCurrentFileValue(value));
     await indexedDb.putValue(
       'file',
       {
-        filename: file.filename,
+        filename: currentFile.filename,
         value,
       },
       id,
@@ -113,7 +117,6 @@ export const EditorPage: React.FC = (): JSX.Element => {
       ) : (
         <div className="m-auto h-screen w-full max-w-6xl">
           <ContentPane
-            fileValue={file.value}
             shouldRenderPreview={shouldRenderPreview}
             toggleRender={() => setShouldRenderPreview((p) => !p)}
             onSave={saveValue}
