@@ -98,25 +98,27 @@ export const EditorPage: React.FC = (): JSX.Element => {
 
   return (
     <div className="relative antialiased">
-      <Toolbar
-        activeTab={activeTab}
-        onClickEditor={() => setShouldRenderPreview(false)}
-        onClickPreview={() => setShouldRenderPreview(true)}
-        onThemeChange={handleThemeChange}
-        onChangeFilename={saveContent}
-      />
       {isLoading ? (
         <div className="absolute m-auto flex h-screen w-full items-center justify-center">
           <LoadingIndicator className="z-50 h-8 w-8 text-gray-500" />
         </div>
       ) : (
-        <div className="m-auto h-screen w-full max-w-6xl">
-          <ContentPane
-            shouldRenderPreview={shouldRenderPreview}
-            toggleRender={() => setShouldRenderPreview((p) => !p)}
-            onSave={saveContent}
+        <>
+          <Toolbar
+            activeTab={activeTab}
+            onClickEditor={() => setShouldRenderPreview(false)}
+            onClickPreview={() => setShouldRenderPreview(true)}
+            onThemeChange={handleThemeChange}
+            onChangeFilename={saveContent}
           />
-        </div>
+          <div className="m-auto h-screen w-full max-w-6xl">
+            <ContentPane
+              shouldRenderPreview={shouldRenderPreview}
+              toggleRender={() => setShouldRenderPreview((p) => !p)}
+              onSave={saveContent}
+            />
+          </div>
+        </>
       )}
     </div>
   );
