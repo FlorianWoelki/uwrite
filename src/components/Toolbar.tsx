@@ -80,14 +80,17 @@ export const Toolbar: React.FC<ToolbarProps> = ({
           </Modal>
         </ModalTransition>
 
-        <input
-          ref={filenameRef}
-          className="absolute left-0 top-1/2 ml-14 min-w-max -translate-y-1/2 cursor-pointer bg-transparent text-sm text-iron-400 outline-none"
-          value={filename}
-          onChange={(e) => setFilename(e.target.value)}
-          onBlur={emitChangeFilenameEvent}
-          onKeyUp={handleKeyUpEvent}
-        />
+        <div className="absolute left-0 top-1/2 ml-14 min-w-max -translate-y-1/2 text-sm text-iron-400">
+          <span>./</span>
+          <input
+            ref={filenameRef}
+            className="cursor-pointer bg-transparent outline-none"
+            value={filename}
+            onChange={(e) => setFilename(e.target.value)}
+            onBlur={emitChangeFilenameEvent}
+            onKeyUp={handleKeyUpEvent}
+          />
+        </div>
       </div>
 
       <ButtonGroup>
