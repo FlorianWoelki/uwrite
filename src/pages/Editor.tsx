@@ -7,13 +7,12 @@ import { LoadingIndicator } from '../components/LoadingIndicator';
 import { useEditorPageParams } from './useEditorPageParams';
 import { ContentPane } from '../components/ContentPane';
 import { updateTheme } from '../components/editor/MonacoEditor';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import {
   FileContent,
-  selectCurrentFile,
   setCurrentFile,
   setCurrentFileContent,
-} from '../store';
+} from '../store/features/currentFile';
 
 export const EditorPage: React.FC = (): JSX.Element => {
   const { id } = useEditorPageParams();
@@ -60,7 +59,6 @@ export const EditorPage: React.FC = (): JSX.Element => {
   const [isLoading, setLoading] = useState<boolean>(true);
 
   const indexedDb = useIndexedDb();
-  const currentFile = useSelector(selectCurrentFile);
   const dispatch = useDispatch();
 
   useEffect(() => {
