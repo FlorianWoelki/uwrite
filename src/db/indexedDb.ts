@@ -1,6 +1,8 @@
 import { IDBPDatabase, openDB } from 'idb';
 
 export interface File {
+  id: number;
+  filename: string;
   value: string;
 }
 

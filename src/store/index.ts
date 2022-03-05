@@ -6,6 +6,8 @@ interface CurrentFileState {
   value: string;
 }
 
+export type FileContent = Omit<CurrentFileState, 'id'>;
+
 const initialState: CurrentFileState = {
   id: 0,
   filename: 'Hello World',
@@ -22,7 +24,7 @@ const currentFileSlice = createSlice({
     setCurrentFileValue: (state, action: PayloadAction<string>) => {
       state.value = action.payload;
     },
-    setCurrentFileContent: (state, action: PayloadAction<CurrentFileState>) => {
+    setCurrentFileContent: (state, action: PayloadAction<FileContent>) => {
       state.filename = action.payload.filename;
       state.value = action.payload.value;
     },

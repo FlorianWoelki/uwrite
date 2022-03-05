@@ -9,9 +9,10 @@ import { ContentPane } from '../components/ContentPane';
 import { updateTheme } from '../components/editor/MonacoEditor';
 import { useDispatch, useSelector } from 'react-redux';
 import {
+  FileContent,
   selectCurrentFile,
+  setCurrentFile,
   setCurrentFileContent,
-  setCurrentFileValue,
 } from '../store';
 
 export const EditorPage: React.FC = (): JSX.Element => {
@@ -73,25 +74,18 @@ export const EditorPage: React.FC = (): JSX.Element => {
         return;
       }
 
-      dispatch(setCurrentFileValue(file.value));
+      dispatch(setCurrentFile(file));
       setLoading(false);
     })();
   }, [indexedDb]);
 
-  const saveValue = async (value: string) => {
+  const saveContent = async (content: FileContent) => {
     if (!indexedDb) {
       return;
     }
 
-    dispatch(setCurrentFileValue(value));
-    await indexedDb.putValue(
-      'file',
-      {
-        filename: currentFile.filename,
-        value,
-      },
-      id,
-    );
+    dispatch(setCurrentFileContent(content));
+    await indexedDb.putValue('file', content, id);
   };
 
   useEffect(() => {
@@ -109,6 +103,7 @@ export const EditorPage: React.FC = (): JSX.Element => {
         onClickEditor={() => setShouldRenderPreview(false)}
         onClickPreview={() => setShouldRenderPreview(true)}
         onThemeChange={handleThemeChange}
+        onChangeFilename={saveContent}
       />
       {isLoading ? (
         <div className="absolute m-auto flex h-screen w-full items-center justify-center">
@@ -119,7 +114,7 @@ export const EditorPage: React.FC = (): JSX.Element => {
           <ContentPane
             shouldRenderPreview={shouldRenderPreview}
             toggleRender={() => setShouldRenderPreview((p) => !p)}
-            onSave={saveValue}
+            onSave={saveContent}
           />
         </div>
       )}

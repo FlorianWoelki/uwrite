@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { ThemeType } from '../hooks/useDarkMode';
 import { Button } from './button/Button';
 import { ButtonGroup } from './button/ButtonGroup';
@@ -10,6 +10,8 @@ import { ReactComponent as MenuIcon } from '../../assets/icons/menu.svg';
 import { ReactComponent as CogIcon } from '../../assets/icons/cog.svg';
 import { ModalTransition } from './modal/ModalTransition';
 import { FileDisplay } from './file/FileDisplay';
+import { useSelector } from 'react-redux';
+import { FileContent, selectCurrentFile } from '../store';
 
 export enum ToolbarTab {
   EditorView = 0,
@@ -22,6 +24,7 @@ interface ToolbarProps {
   onThemeChange: (themeType: ThemeType) => void;
   onClickPreview: () => void;
   onClickEditor: () => void;
+  onChangeFilename: (content: FileContent) => void;
 }
 
 export const Toolbar: React.FC<ToolbarProps> = ({
@@ -29,9 +32,36 @@ export const Toolbar: React.FC<ToolbarProps> = ({
   onThemeChange,
   onClickPreview,
   onClickEditor,
+  onChangeFilename,
 }): JSX.Element => {
   const [isModalVisible, setModalVisible] = useState<boolean>(false);
   const [isMenuVisible, setMenuVisible] = useState<boolean>(false);
+
+  const currentFile = useSelector(selectCurrentFile);
+  const [filename, setFilename] = useState<string>(currentFile.filename);
+  const filenameRef = useRef<HTMLInputElement | null>(null);
+
+  useEffect(() => {
+    setFilename(currentFile.filename);
+  }, [currentFile.filename]);
+
+  const handleKeyUpEvent = (e: React.KeyboardEvent): void => {
+    if (!filenameRef.current) {
+      return;
+    }
+
+    if (e.key === 'Enter') {
+      filenameRef.current.blur();
+    }
+  };
+
+  const emitChangeFilenameEvent = (): void => {
+    if (currentFile.filename === filename) {
+      return;
+    }
+
+    onChangeFilename({ ...currentFile, filename });
+  };
 
   return (
     <div className="mb-4 flex items-center justify-between bg-iron-100 px-8 py-4 shadow dark:bg-iron-500">
@@ -50,9 +80,14 @@ export const Toolbar: React.FC<ToolbarProps> = ({
           </Modal>
         </ModalTransition>
 
-        <div className="absolute left-0 top-1/2 ml-14 min-w-max -translate-y-1/2 cursor-pointer text-sm text-iron-400">
-          ./First File.md
-        </div>
+        <input
+          ref={filenameRef}
+          className="absolute left-0 top-1/2 ml-14 min-w-max -translate-y-1/2 cursor-pointer bg-transparent text-sm text-iron-400 outline-none"
+          value={filename}
+          onChange={(e) => setFilename(e.target.value)}
+          onBlur={emitChangeFilenameEvent}
+          onKeyUp={handleKeyUpEvent}
+        />
       </div>
 
       <ButtonGroup>
