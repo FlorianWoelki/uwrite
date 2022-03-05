@@ -11,7 +11,8 @@ import { ReactComponent as CogIcon } from '../../assets/icons/cog.svg';
 import { ModalTransition } from './modal/ModalTransition';
 import { FileDisplay } from './file/FileDisplay';
 import { useSelector } from 'react-redux';
-import { FileContent, selectCurrentFile } from '../store';
+import { selectCurrentFile } from '../store';
+import { FileContent } from '../store/features/currentFile';
 
 export enum ToolbarTab {
   EditorView = 0,

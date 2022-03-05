@@ -13,6 +13,7 @@ import {
   setCurrentFile,
   setCurrentFileContent,
 } from '../store/features/currentFile';
+import { setFiles } from '../store/features/files';
 
 export const EditorPage: React.FC = (): JSX.Element => {
   const { id } = useEditorPageParams();
@@ -74,6 +75,10 @@ export const EditorPage: React.FC = (): JSX.Element => {
 
       dispatch(setCurrentFile(file));
       setLoading(false);
+
+      indexedDb.getAllValue<File>('file').then((files) => {
+        dispatch(setFiles(files));
+      });
     })();
   }, [indexedDb]);
 
