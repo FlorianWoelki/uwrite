@@ -9,8 +9,10 @@ export const FileDisplay: React.FC = (): JSX.Element => {
 
   return (
     <ul className="w-full space-y-1 text-sm" style={{ minWidth: '14rem' }}>
-      {files.map((file) => (
-        <File active={currentFile.id === file.id}>{file.filename}</File>
+      {files.map((file, i) => (
+        <File key={i} active={currentFile.id === file.id}>
+          {file.filename}
+        </File>
       ))}
     </ul>
   );

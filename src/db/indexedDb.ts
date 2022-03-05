@@ -6,6 +6,8 @@ export interface File {
   value: string;
 }
 
+export type FileContent = Omit<File, 'id'>;
+
 class IndexedDb {
   private database: string;
   private db: IDBPDatabase<unknown> | undefined;

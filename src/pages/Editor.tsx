@@ -2,18 +2,17 @@ import { Toolbar, ToolbarTab } from '../components/Toolbar';
 import { ThemeType, useDarkMode, useDarkModeMedia } from '../hooks/useDarkMode';
 import { useEffect, useState } from 'react';
 import { useIndexedDb } from '../db/hooks/useIndexedDb';
-import { File } from '../db/indexedDb';
+import { File, FileContent } from '../db/indexedDb';
 import { LoadingIndicator } from '../components/LoadingIndicator';
 import { useEditorPageParams } from './useEditorPageParams';
 import { ContentPane } from '../components/ContentPane';
 import { updateTheme } from '../components/editor/MonacoEditor';
 import { useDispatch } from 'react-redux';
 import {
-  FileContent,
   setCurrentFile,
   setCurrentFileContent,
 } from '../store/features/currentFile';
-import { setFiles } from '../store/features/files';
+import { setFiles, updateFile } from '../store/features/files';
 
 export const EditorPage: React.FC = (): JSX.Element => {
   const { id } = useEditorPageParams();
@@ -88,6 +87,7 @@ export const EditorPage: React.FC = (): JSX.Element => {
     }
 
     dispatch(setCurrentFileContent(content));
+    dispatch(updateFile({ id, content }));
     await indexedDb.putValue('file', content, id);
   };
 

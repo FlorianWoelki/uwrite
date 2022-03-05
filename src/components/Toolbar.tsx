@@ -12,7 +12,7 @@ import { ModalTransition } from './modal/ModalTransition';
 import { FileDisplay } from './file/FileDisplay';
 import { useSelector } from 'react-redux';
 import { selectCurrentFile } from '../store';
-import { FileContent } from '../store/features/currentFile';
+import { FileContent } from '../db/indexedDb';
 
 export enum ToolbarTab {
   EditorView = 0,

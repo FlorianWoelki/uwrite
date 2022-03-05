@@ -1,8 +1,13 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { File } from '../../db/indexedDb';
+import { File, FileContent } from '../../db/indexedDb';
 
 interface FilesState {
   files: File[];
+}
+
+interface UpdateFilePayload {
+  id: number;
+  content: FileContent;
 }
 
 const initialState: FilesState = {
@@ -16,7 +21,18 @@ const filesSlice = createSlice({
     setFiles: (state, action: PayloadAction<File[]>) => {
       state.files = action.payload;
     },
-    updateFile: (state) => {},
+    updateFile: (state, action: PayloadAction<UpdateFilePayload>) => {
+      state.files = state.files.map((file) => {
+        if (file.id === action.payload.id) {
+          return {
+            ...file,
+            ...action.payload.content,
+          };
+        }
+
+        return file;
+      });
+    },
     addFile: (state) => {},
   },
 });

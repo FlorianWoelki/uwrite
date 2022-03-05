@@ -1,9 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { File } from '../../db/indexedDb';
+import { File, FileContent } from '../../db/indexedDb';
 
 type CurrentFileState = File;
-
-export type FileContent = Omit<CurrentFileState, 'id'>;
 
 const initialState: CurrentFileState = {
   id: 0,
