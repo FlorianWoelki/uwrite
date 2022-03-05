@@ -2,9 +2,10 @@ import 'katex/dist/katex.min.css';
 import { Position } from 'monaco-editor';
 import React, { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { FileContent } from '../db/indexedDb';
 import { useKeyPress } from '../hooks/useKeyPress';
 import { monaco } from '../monaco';
-import { FileContent, selectCurrentFile } from '../store';
+import { selectCurrentFile } from '../store';
 import { MonacoEditor } from './editor/MonacoEditor';
 import { renderPreview } from './util';
 
