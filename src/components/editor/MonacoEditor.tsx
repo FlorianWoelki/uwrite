@@ -26,6 +26,12 @@ const registerRules = (): void => {
         },
       },
     ],
+    autoClosingPairs: [
+      {
+        open: '$',
+        close: '$',
+      },
+    ],
   });
 };
 
