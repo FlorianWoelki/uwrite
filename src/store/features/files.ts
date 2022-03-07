@@ -7,7 +7,7 @@ interface FilesState {
 
 interface UpdateFilePayload {
   id: number;
-  content: FileContent;
+  content: Partial<FileContent>;
 }
 
 const initialState: FilesState = {

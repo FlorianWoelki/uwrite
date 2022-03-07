@@ -81,14 +81,23 @@ export const EditorPage: React.FC = (): JSX.Element => {
     })();
   }, [indexedDb]);
 
-  const saveContent = async (content: FileContent) => {
+  const saveContent = async (file: Partial<File>) => {
     if (!indexedDb) {
       return;
     }
 
-    dispatch(setCurrentFileContent(content));
-    dispatch(updateFile({ id, content }));
-    await indexedDb.putValue('file', content, id);
+    if (file.id && file.filename) {
+      dispatch(
+        updateFile({ id: file.id, content: { filename: file.filename } }),
+      );
+    } else if (!file.id && file.filename && file.value) {
+      dispatch(
+        setCurrentFileContent({ filename: file.filename, value: file.value }),
+      );
+      dispatch(updateFile({ id, content: file }));
+    }
+
+    await indexedDb.putValue('file', file, id);
   };
 
   useEffect(() => {

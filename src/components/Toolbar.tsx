@@ -12,7 +12,7 @@ import { ModalTransition } from './modal/ModalTransition';
 import { FileDisplay } from './file/FileDisplay';
 import { useSelector } from 'react-redux';
 import { selectCurrentFile } from '../store';
-import { FileContent } from '../db/indexedDb';
+import { File } from '../db/indexedDb';
 
 export enum ToolbarTab {
   EditorView = 0,
@@ -25,7 +25,7 @@ interface ToolbarProps {
   onThemeChange: (themeType: ThemeType) => void;
   onClickPreview: () => void;
   onClickEditor: () => void;
-  onChangeFilename: (content: FileContent) => void;
+  onChangeFilename: (content: Partial<File>) => void;
 }
 
 export const Toolbar: React.FC<ToolbarProps> = ({
@@ -56,7 +56,12 @@ export const Toolbar: React.FC<ToolbarProps> = ({
     }
   };
 
-  const emitChangeFilenameEvent = (): void => {
+  const emitChangeFilenameEvent = (file?: Partial<File>): void => {
+    if (file && file.id !== undefined) {
+      onChangeFilename({ ...file, id: file.id });
+      return;
+    }
+
     if (currentFile.filename === filename) {
       return;
     }
@@ -77,7 +82,7 @@ export const Toolbar: React.FC<ToolbarProps> = ({
         <ModalTransition show={isMenuVisible}>
           <Modal left>
             <ModalItemHeadline>Files:</ModalItemHeadline>
-            <FileDisplay />
+            <FileDisplay onSaveFilename={emitChangeFilenameEvent} />
           </Modal>
         </ModalTransition>
 
@@ -88,7 +93,7 @@ export const Toolbar: React.FC<ToolbarProps> = ({
             className="cursor-pointer bg-transparent outline-none"
             value={filename}
             onChange={(e) => setFilename(e.target.value)}
-            onBlur={emitChangeFilenameEvent}
+            onBlur={() => emitChangeFilenameEvent()}
             onKeyUp={handleKeyUpEvent}
           />
         </div>
