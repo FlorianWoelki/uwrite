@@ -7,12 +7,13 @@ import { LoadingIndicator } from '../components/LoadingIndicator';
 import { useEditorPageParams } from './useEditorPageParams';
 import { ContentPane } from '../components/ContentPane';
 import { updateTheme } from '../components/editor/MonacoEditor';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   setCurrentFile,
   setCurrentFileContent,
 } from '../store/features/currentFile';
 import { setFiles, updateFile } from '../store/features/files';
+import { selectCurrentFile } from '../store';
 
 export const EditorPage: React.FC = (): JSX.Element => {
   const { id } = useEditorPageParams();
@@ -60,6 +61,7 @@ export const EditorPage: React.FC = (): JSX.Element => {
 
   const indexedDb = useIndexedDb();
   const dispatch = useDispatch();
+  const currentFile = useSelector(selectCurrentFile);
 
   useEffect(() => {
     if (!indexedDb) {
@@ -81,23 +83,25 @@ export const EditorPage: React.FC = (): JSX.Element => {
     })();
   }, [indexedDb]);
 
-  const saveContent = async (file: Partial<File>) => {
+  const saveContent = async (file: File) => {
     if (!indexedDb) {
       return;
     }
 
-    if (file.id && file.filename) {
-      dispatch(
-        updateFile({ id: file.id, content: { filename: file.filename } }),
-      );
-    } else if (!file.id && file.filename && file.value) {
+    dispatch(
+      updateFile({
+        id: file.id,
+        content: { filename: file.filename, value: file.value },
+      }),
+    );
+
+    if (currentFile.id === file.id) {
       dispatch(
         setCurrentFileContent({ filename: file.filename, value: file.value }),
       );
-      dispatch(updateFile({ id, content: file }));
     }
 
-    await indexedDb.putValue('file', file, id);
+    await indexedDb.putValue('file', file, file.id);
   };
 
   useEffect(() => {

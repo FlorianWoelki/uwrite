@@ -2,7 +2,7 @@ import 'katex/dist/katex.min.css';
 import { Position } from 'monaco-editor';
 import React, { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { FileContent } from '../db/indexedDb';
+import { File } from '../db/indexedDb';
 import { useKeyPress } from '../hooks/useKeyPress';
 import { monaco } from '../monaco';
 import { selectCurrentFile } from '../store';
@@ -12,7 +12,7 @@ import { renderPreview } from './util';
 interface ContentPaneProps {
   shouldRenderPreview: boolean;
   toggleRender: () => void;
-  onSave: (content: FileContent) => void;
+  onSave: (file: File) => void;
 }
 
 export const ContentPane: React.FC<ContentPaneProps> = ({

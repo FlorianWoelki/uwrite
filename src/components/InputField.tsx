@@ -17,6 +17,10 @@ export const InputField: React.FC<InputFieldProps> = ({
   const [value, setValue] = useState<string>(initialValue);
 
   useEffect(() => {
+    setValue(initialValue);
+  }, [initialValue]);
+
+  useEffect(() => {
     if (!inputRef.current) {
       return;
     }

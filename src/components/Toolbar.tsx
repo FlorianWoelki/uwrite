@@ -26,7 +26,7 @@ interface ToolbarProps {
   onThemeChange: (themeType: ThemeType) => void;
   onClickPreview: () => void;
   onClickEditor: () => void;
-  onChangeFilename: (content: Partial<File>) => void;
+  onChangeFilename: (content: File) => void;
 }
 
 export const Toolbar: React.FC<ToolbarProps> = ({
@@ -41,18 +41,6 @@ export const Toolbar: React.FC<ToolbarProps> = ({
 
   const currentFile = useSelector(selectCurrentFile);
 
-  const emitChangeFilename = (file: File): void => {
-    onChangeFilename({ ...file, id: file.id });
-  };
-
-  const emitCurrentFilenameChange = (newValue: string): void => {
-    if (currentFile.filename === newValue) {
-      return;
-    }
-
-    onChangeFilename({ ...currentFile, filename: newValue });
-  };
-
   return (
     <div className="mb-4 flex items-center justify-between bg-iron-100 px-8 py-4 shadow dark:bg-iron-500">
       <div className="relative">
@@ -66,7 +54,7 @@ export const Toolbar: React.FC<ToolbarProps> = ({
         <ModalTransition show={isMenuVisible}>
           <Modal left>
             <ModalItemHeadline>Files:</ModalItemHeadline>
-            <FileDisplay onSaveFilename={emitChangeFilename} />
+            <FileDisplay onSaveFilename={onChangeFilename} />
           </Modal>
         </ModalTransition>
 
@@ -74,7 +62,9 @@ export const Toolbar: React.FC<ToolbarProps> = ({
           <span>./</span>
           <InputField
             initialValue={currentFile.filename}
-            onBlur={emitCurrentFilenameChange}
+            onBlur={(newValue) =>
+              onChangeFilename({ ...currentFile, filename: newValue })
+            }
           />
         </div>
       </div>
