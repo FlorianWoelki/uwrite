@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { File } from '../db/indexedDb';
 import { useKeyPress } from '../hooks/useKeyPress';
+import { useSaveContent } from '../hooks/useSaveContent';
 import { monaco } from '../monaco';
 import { selectCurrentFile } from '../store';
 import { MonacoEditor } from './editor/MonacoEditor';
@@ -12,13 +13,11 @@ import { renderPreview } from './util';
 interface ContentPaneProps {
   shouldRenderPreview: boolean;
   toggleRender: () => void;
-  onSave: (file: File) => void;
 }
 
 export const ContentPane: React.FC<ContentPaneProps> = ({
   shouldRenderPreview,
   toggleRender,
-  onSave,
 }): JSX.Element => {
   const codeEditorRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(
     null,
@@ -29,6 +28,7 @@ export const ContentPane: React.FC<ContentPaneProps> = ({
   const [editorPosition, setEditorPosition] = useState<Position | null>();
 
   const currentFile = useSelector(selectCurrentFile);
+  const [_, saveContent] = useSaveContent();
 
   useEffect(() => {
     if (!codeEditorRef.current) {
@@ -45,7 +45,7 @@ export const ContentPane: React.FC<ContentPaneProps> = ({
     }
 
     setEditorPosition(codeEditorRef.current.getPosition());
-    onSave({
+    saveContent({
       ...currentFile,
       value: codeEditorRef.current.getValue(),
     });
@@ -65,7 +65,7 @@ export const ContentPane: React.FC<ContentPaneProps> = ({
       value={currentFile.value}
       ref={codeEditorRef}
       onCtrlCmdE={toggleRender}
-      onChange={(value) => onSave({ ...currentFile, value })}
+      onChange={(value) => saveContent({ ...currentFile, value })}
     />
   ) : (
     <div

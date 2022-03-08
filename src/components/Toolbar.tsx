@@ -14,6 +14,7 @@ import { useSelector } from 'react-redux';
 import { selectCurrentFile } from '../store';
 import { File } from '../db/indexedDb';
 import { InputField } from './InputField';
+import { useSaveContent } from '../hooks/useSaveContent';
 
 export enum ToolbarTab {
   EditorView = 0,
@@ -26,7 +27,6 @@ interface ToolbarProps {
   onThemeChange: (themeType: ThemeType) => void;
   onClickPreview: () => void;
   onClickEditor: () => void;
-  onChangeFilename: (content: File) => void;
 }
 
 export const Toolbar: React.FC<ToolbarProps> = ({
@@ -34,12 +34,12 @@ export const Toolbar: React.FC<ToolbarProps> = ({
   onThemeChange,
   onClickPreview,
   onClickEditor,
-  onChangeFilename,
 }): JSX.Element => {
   const [isModalVisible, setModalVisible] = useState<boolean>(false);
   const [isMenuVisible, setMenuVisible] = useState<boolean>(false);
 
   const currentFile = useSelector(selectCurrentFile);
+  const [_, saveContent] = useSaveContent();
 
   return (
     <div className="mb-4 flex items-center justify-between bg-iron-100 px-8 py-4 shadow dark:bg-iron-500">
@@ -54,7 +54,7 @@ export const Toolbar: React.FC<ToolbarProps> = ({
         <ModalTransition show={isMenuVisible}>
           <Modal left>
             <ModalItemHeadline>Files:</ModalItemHeadline>
-            <FileDisplay onSaveFilename={onChangeFilename} />
+            <FileDisplay />
           </Modal>
         </ModalTransition>
 
@@ -63,7 +63,7 @@ export const Toolbar: React.FC<ToolbarProps> = ({
           <InputField
             initialValue={currentFile.filename}
             onBlur={(newValue) =>
-              onChangeFilename({ ...currentFile, filename: newValue })
+              saveContent({ ...currentFile, filename: newValue })
             }
           />
         </div>

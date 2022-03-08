@@ -1,10 +1,17 @@
 import { useEffect, useState } from 'react';
 import IndexedDb from '../indexedDb';
 
+let cachedIndexedDb: IndexedDb | null = null;
+
 export const useIndexedDb = () => {
   const [indexedDb, setIndexedDb] = useState<IndexedDb | null>(null);
 
   useEffect(() => {
+    if (cachedIndexedDb !== null) {
+      setIndexedDb(cachedIndexedDb);
+      return;
+    }
+
     const indexedDb = new IndexedDb('uwrite');
     (async (): Promise<void> => {
       await indexedDb.createObjectStore(['file']);
@@ -17,9 +24,10 @@ export const useIndexedDb = () => {
         );
       }
 
+      cachedIndexedDb = indexedDb;
       setIndexedDb(indexedDb);
     })();
   }, []);
 
-  return indexedDb;
+  return cachedIndexedDb ? cachedIndexedDb : indexedDb;
 };

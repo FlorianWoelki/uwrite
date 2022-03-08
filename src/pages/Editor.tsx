@@ -2,18 +2,15 @@ import { Toolbar, ToolbarTab } from '../components/Toolbar';
 import { ThemeType, useDarkMode, useDarkModeMedia } from '../hooks/useDarkMode';
 import { useEffect, useState } from 'react';
 import { useIndexedDb } from '../db/hooks/useIndexedDb';
-import { File, FileContent } from '../db/indexedDb';
+import { File } from '../db/indexedDb';
 import { LoadingIndicator } from '../components/LoadingIndicator';
 import { useEditorPageParams } from './useEditorPageParams';
 import { ContentPane } from '../components/ContentPane';
 import { updateTheme } from '../components/editor/MonacoEditor';
-import { useDispatch, useSelector } from 'react-redux';
-import {
-  setCurrentFile,
-  setCurrentFileContent,
-} from '../store/features/currentFile';
-import { setFiles, updateFile } from '../store/features/files';
-import { selectCurrentFile } from '../store';
+import { useDispatch } from 'react-redux';
+import { setCurrentFile } from '../store/features/currentFile';
+import { setFiles } from '../store/features/files';
+import { useSaveContent } from '../hooks/useSaveContent';
 
 export const EditorPage: React.FC = (): JSX.Element => {
   const { id } = useEditorPageParams();
@@ -59,9 +56,8 @@ export const EditorPage: React.FC = (): JSX.Element => {
 
   const [isLoading, setLoading] = useState<boolean>(true);
 
-  const indexedDb = useIndexedDb();
+  const [indexedDb, _] = useSaveContent();
   const dispatch = useDispatch();
-  const currentFile = useSelector(selectCurrentFile);
 
   useEffect(() => {
     if (!indexedDb) {
@@ -82,27 +78,6 @@ export const EditorPage: React.FC = (): JSX.Element => {
       });
     })();
   }, [indexedDb]);
-
-  const saveContent = async (file: File) => {
-    if (!indexedDb) {
-      return;
-    }
-
-    dispatch(
-      updateFile({
-        id: file.id,
-        content: { filename: file.filename, value: file.value },
-      }),
-    );
-
-    if (currentFile.id === file.id) {
-      dispatch(
-        setCurrentFileContent({ filename: file.filename, value: file.value }),
-      );
-    }
-
-    await indexedDb.putValue('file', file, file.id);
-  };
 
   useEffect(() => {
     if (shouldRenderPreview) {
@@ -125,13 +100,11 @@ export const EditorPage: React.FC = (): JSX.Element => {
             onClickEditor={() => setShouldRenderPreview(false)}
             onClickPreview={() => setShouldRenderPreview(true)}
             onThemeChange={handleThemeChange}
-            onChangeFilename={saveContent}
           />
           <div className="m-auto h-screen w-full max-w-6xl">
             <ContentPane
               shouldRenderPreview={shouldRenderPreview}
               toggleRender={() => setShouldRenderPreview((p) => !p)}
-              onSave={saveContent}
             />
           </div>
         </>
