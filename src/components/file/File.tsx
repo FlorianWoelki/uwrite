@@ -1,6 +1,7 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { ReactComponent as PencilIcon } from '../../../assets/icons/pencil.svg';
 import { ReactComponent as TrashIcon } from '../../../assets/icons/trash.svg';
+import { InputField } from '../InputField';
 
 interface FileProps {
   active?: boolean;
@@ -13,19 +14,7 @@ export const File: React.FC<FileProps> = ({
   children,
   onSaveFilename,
 }): JSX.Element => {
-  const inputRef = useRef<HTMLInputElement | null>(null);
   const [clickedRename, setClickedRename] = useState<boolean>(false);
-  const [filename, setFilename] = useState<string>(children);
-
-  useEffect(() => {
-    if (!inputRef.current) {
-      return;
-    }
-
-    if (clickedRename) {
-      inputRef.current.focus();
-    }
-  }, [clickedRename]);
 
   return (
     <li
@@ -35,13 +24,11 @@ export const File: React.FC<FileProps> = ({
           : 'text-iron-400'
       }`}
     >
-      <input
-        ref={inputRef}
-        value={filename}
-        className="cursor-pointer bg-transparent outline-none"
+      <InputField
+        notDisableFocus
+        initialValue={children}
         disabled={!clickedRename}
-        onChange={(e) => setFilename(e.target.value)}
-        onBlur={() => onSaveFilename(inputRef.current!.value)}
+        onBlur={onSaveFilename}
       />
       <div className="flex items-center space-x-1 text-iron-300">
         <button

@@ -1,16 +1,30 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 interface InputFieldProps {
   initialValue: string;
+  notDisableFocus?: boolean;
+  disabled?: boolean;
   onBlur: (newValue: string) => void;
 }
 
 export const InputField: React.FC<InputFieldProps> = ({
   initialValue,
+  disabled,
+  notDisableFocus,
   onBlur,
 }): JSX.Element => {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [value, setValue] = useState<string>(initialValue);
+
+  useEffect(() => {
+    if (!inputRef.current) {
+      return;
+    }
+
+    if (!disabled && notDisableFocus) {
+      inputRef.current.focus();
+    }
+  }, [disabled]);
 
   const emitChangeEvent = (): void => {
     onBlur(value);
