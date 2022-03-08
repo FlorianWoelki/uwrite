@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { ThemeType } from '../hooks/useDarkMode';
 import { Button } from './button/Button';
 import { ButtonGroup } from './button/ButtonGroup';
@@ -13,6 +13,7 @@ import { FileDisplay } from './file/FileDisplay';
 import { useSelector } from 'react-redux';
 import { selectCurrentFile } from '../store';
 import { File } from '../db/indexedDb';
+import { InputField } from './InputField';
 
 export enum ToolbarTab {
   EditorView = 0,
@@ -39,34 +40,17 @@ export const Toolbar: React.FC<ToolbarProps> = ({
   const [isMenuVisible, setMenuVisible] = useState<boolean>(false);
 
   const currentFile = useSelector(selectCurrentFile);
-  const [filename, setFilename] = useState<string>(currentFile.filename);
-  const filenameRef = useRef<HTMLInputElement | null>(null);
 
-  useEffect(() => {
-    setFilename(currentFile.filename);
-  }, [currentFile.filename]);
-
-  const handleKeyUpEvent = (e: React.KeyboardEvent): void => {
-    if (!filenameRef.current) {
-      return;
-    }
-
-    if (e.key === 'Enter') {
-      filenameRef.current.blur();
-    }
+  const emitChangeFilename = (file: File): void => {
+    onChangeFilename({ ...file, id: file.id });
   };
 
-  const emitChangeFilenameEvent = (file?: Partial<File>): void => {
-    if (file && file.id !== undefined) {
-      onChangeFilename({ ...file, id: file.id });
+  const emitCurrentFilenameChange = (newValue: string): void => {
+    if (currentFile.filename === newValue) {
       return;
     }
 
-    if (currentFile.filename === filename) {
-      return;
-    }
-
-    onChangeFilename({ ...currentFile, filename });
+    onChangeFilename({ ...currentFile, filename: newValue });
   };
 
   return (
@@ -82,19 +66,15 @@ export const Toolbar: React.FC<ToolbarProps> = ({
         <ModalTransition show={isMenuVisible}>
           <Modal left>
             <ModalItemHeadline>Files:</ModalItemHeadline>
-            <FileDisplay onSaveFilename={emitChangeFilenameEvent} />
+            <FileDisplay onSaveFilename={emitChangeFilename} />
           </Modal>
         </ModalTransition>
 
         <div className="absolute left-0 top-1/2 ml-14 min-w-max -translate-y-1/2 text-sm text-iron-400">
           <span>./</span>
-          <input
-            ref={filenameRef}
-            className="cursor-pointer bg-transparent outline-none"
-            value={filename}
-            onChange={(e) => setFilename(e.target.value)}
-            onBlur={() => emitChangeFilenameEvent()}
-            onKeyUp={handleKeyUpEvent}
+          <InputField
+            initialValue={currentFile.filename}
+            onBlur={emitCurrentFilenameChange}
           />
         </div>
       </div>
