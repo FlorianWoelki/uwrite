@@ -6,6 +6,7 @@ import { InputField } from '../InputField';
 interface FileProps {
   active?: boolean;
   onSaveFilename: (filename: string) => void;
+  onDelete: () => void;
   children: string;
 }
 
@@ -13,6 +14,7 @@ export const File: React.FC<FileProps> = ({
   active,
   children,
   onSaveFilename,
+  onDelete,
 }): JSX.Element => {
   const [clickedRename, setClickedRename] = useState<boolean>(false);
 
@@ -37,7 +39,10 @@ export const File: React.FC<FileProps> = ({
         >
           <PencilIcon className="h-4 w-4" />
         </button>
-        <button className="transition duration-150 ease-in-out hover:text-iron-400">
+        <button
+          className="transition duration-150 ease-in-out hover:text-iron-400"
+          onClick={onDelete}
+        >
           <TrashIcon className="h-4 w-4" />
         </button>
       </div>
