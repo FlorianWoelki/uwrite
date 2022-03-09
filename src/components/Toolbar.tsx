@@ -12,7 +12,6 @@ import { ModalTransition } from './modal/ModalTransition';
 import { FileDisplay } from './file/FileDisplay';
 import { useSelector } from 'react-redux';
 import { selectCurrentFile } from '../store';
-import { File } from '../db/indexedDb';
 import { InputField } from './InputField';
 import { useSaveContent } from '../hooks/useSaveContent';
 
@@ -61,9 +60,10 @@ export const Toolbar: React.FC<ToolbarProps> = ({
         <div className="absolute left-0 top-1/2 ml-14 min-w-max -translate-y-1/2 text-sm text-iron-400">
           <span>./</span>
           <InputField
-            initialValue={currentFile.filename}
+            initialValue={currentFile.file?.filename ?? 'No File'}
+            disabled={currentFile.file === undefined}
             onBlur={(newValue) =>
-              saveContent({ ...currentFile, filename: newValue })
+              saveContent({ ...currentFile.file!, filename: newValue })
             }
           />
         </div>
@@ -73,13 +73,20 @@ export const Toolbar: React.FC<ToolbarProps> = ({
         <Button
           active={activeTab === ToolbarTab.EditorView}
           onClick={onClickEditor}
+          disabled={currentFile.file === undefined}
         >
           Editor
         </Button>
-        <Button active={activeTab === ToolbarTab.SplitView}>Split</Button>
+        <Button
+          active={activeTab === ToolbarTab.SplitView}
+          disabled={currentFile.file === undefined}
+        >
+          Split
+        </Button>
         <Button
           active={activeTab === ToolbarTab.PreviewView}
           onClick={onClickPreview}
+          disabled={currentFile.file === undefined}
         >
           Preview
         </Button>

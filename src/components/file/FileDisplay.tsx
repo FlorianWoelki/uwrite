@@ -19,16 +19,20 @@ export const FileDisplay: React.FC = (): JSX.Element => {
 
   return (
     <ul className="w-full space-y-1 text-sm" style={{ minWidth: '14rem' }}>
-      {files.map((file, i) => (
-        <File
-          key={i}
-          active={currentFile.id === file.id}
-          onSaveFilename={(filename) => saveContent({ ...file, filename })}
-          onDelete={() => deleteFile(file.id)}
-        >
-          {file.filename}
-        </File>
-      ))}
+      {files.length === 0 ? (
+        <li className="text-iron-400">No files</li>
+      ) : (
+        files.map((file, i) => (
+          <File
+            key={i}
+            active={currentFile.file?.id === file.id}
+            onSaveFilename={(filename) => saveContent({ ...file, filename })}
+            onDelete={() => deleteFile(file.id)}
+          >
+            {file.filename}
+          </File>
+        ))
+      )}
     </ul>
   );
 };

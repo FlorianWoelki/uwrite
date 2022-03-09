@@ -50,6 +50,7 @@ export const InputField: React.FC<InputFieldProps> = ({
       className="cursor-pointer bg-transparent outline-none"
       type="text"
       value={value}
+      disabled={disabled}
       onChange={(e) => setValue(e.target.value)}
       onBlur={emitChangeEvent}
       onKeyUp={handleKeyUp}
