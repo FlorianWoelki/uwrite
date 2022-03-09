@@ -1,10 +1,13 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { selectAllFiles, selectCurrentFile } from '../../store';
 import { File } from './File';
 import { useSaveContent } from '../../hooks/useSaveContent';
+import { setCurrentFile } from '../../store/features/currentFile';
+import { File as DbFile } from '../../db/indexedDb';
 
 export const FileDisplay: React.FC = (): JSX.Element => {
+  const dispatch = useDispatch();
   const currentFile = useSelector(selectCurrentFile);
   const files = useSelector(selectAllFiles);
   const [indexedDb, saveContent] = useSaveContent();
@@ -15,6 +18,10 @@ export const FileDisplay: React.FC = (): JSX.Element => {
     }
 
     await indexedDb.deleteValue('file', id);
+  };
+
+  const selectFile = (file: DbFile) => {
+    dispatch(setCurrentFile(file));
   };
 
   return (
@@ -28,6 +35,7 @@ export const FileDisplay: React.FC = (): JSX.Element => {
             active={currentFile?.id === file.id}
             onSaveFilename={(filename) => saveContent({ ...file, filename })}
             onDelete={() => deleteFile(file.id)}
+            onSelect={() => selectFile(file)}
           >
             {file.filename}
           </File>

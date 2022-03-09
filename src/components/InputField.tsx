@@ -5,6 +5,7 @@ interface InputFieldProps {
   notDisableFocus?: boolean;
   disabled?: boolean;
   onBlur: (newValue: string) => void;
+  onClick?: () => void;
 }
 
 export const InputField: React.FC<InputFieldProps> = ({
@@ -12,6 +13,7 @@ export const InputField: React.FC<InputFieldProps> = ({
   disabled,
   notDisableFocus,
   onBlur,
+  onClick,
 }): JSX.Element => {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [value, setValue] = useState<string>(initialValue);
@@ -45,15 +47,23 @@ export const InputField: React.FC<InputFieldProps> = ({
   };
 
   return (
-    <input
-      ref={inputRef}
-      className="cursor-pointer bg-transparent outline-none"
-      type="text"
-      value={value}
-      disabled={disabled}
-      onChange={(e) => setValue(e.target.value)}
-      onBlur={emitChangeEvent}
-      onKeyUp={handleKeyUp}
-    />
+    <div
+      onClick={() => {
+        if (onClick && disabled) {
+          onClick();
+        }
+      }}
+    >
+      <input
+        ref={inputRef}
+        className="cursor-pointer bg-transparent outline-none"
+        type="text"
+        value={value}
+        disabled={disabled}
+        onChange={(e) => setValue(e.target.value)}
+        onBlur={emitChangeEvent}
+        onKeyUp={handleKeyUp}
+      />
+    </div>
   );
 };

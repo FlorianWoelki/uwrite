@@ -71,7 +71,7 @@ export const Toolbar: React.FC<ToolbarProps> = ({
           </Modal>
         </ModalTransition>
 
-        <div className="absolute left-0 top-1/2 ml-14 min-w-max -translate-y-1/2 text-sm text-iron-400">
+        <div className="absolute left-0 top-1/2 ml-14 flex min-w-max -translate-y-1/2 text-sm text-iron-400">
           <span>./</span>
           <InputField
             initialValue={currentFile?.filename ?? 'No File'}

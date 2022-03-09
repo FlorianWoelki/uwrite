@@ -7,6 +7,7 @@ interface FileProps {
   active?: boolean;
   onSaveFilename: (filename: string) => void;
   onDelete: () => void;
+  onSelect: () => void;
   children: string;
 }
 
@@ -15,6 +16,7 @@ export const File: React.FC<FileProps> = ({
   children,
   onSaveFilename,
   onDelete,
+  onSelect,
 }): JSX.Element => {
   const [clickedRename, setClickedRename] = useState<boolean>(false);
 
@@ -31,6 +33,7 @@ export const File: React.FC<FileProps> = ({
         initialValue={children}
         disabled={!clickedRename}
         onBlur={onSaveFilename}
+        onClick={onSelect}
       />
       <div className="flex items-center space-x-1 text-iron-300">
         <button

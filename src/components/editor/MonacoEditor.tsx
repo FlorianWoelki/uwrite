@@ -14,7 +14,6 @@ import { getEditorThemeColors } from './theme/colors';
 import { getEditorThemeRules } from './theme/rules';
 import { debounce } from '../../util/effects';
 import { useSelector } from 'react-redux';
-import currentFileSlice from '../../store/features/currentFile';
 import { selectCurrentFile } from '../../store';
 
 const registerRules = (): void => {
@@ -178,7 +177,7 @@ export const MonacoEditor = forwardRef<
       editor.dispose();
       vimMode.dispose();
     };
-  }, []);
+  }, [currentFile?.id]);
 
   useEffect(() => {
     if (!editor) {
