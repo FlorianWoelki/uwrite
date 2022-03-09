@@ -1,4 +1,10 @@
-import { forwardRef, MutableRefObject, useEffect, useRef } from 'react';
+import {
+  forwardRef,
+  MutableRefObject,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import { language } from '../../monaco/custom-markdown';
 import './theme/font/font.css';
 import './editor.css';
@@ -7,6 +13,9 @@ import { VimMode, initVimMode } from 'monaco-vim';
 import { getEditorThemeColors } from './theme/colors';
 import { getEditorThemeRules } from './theme/rules';
 import { debounce } from '../../util/effects';
+import { useSelector } from 'react-redux';
+import currentFileSlice from '../../store/features/currentFile';
+import { selectCurrentFile } from '../../store';
 
 const registerRules = (): void => {
   monaco.languages.setLanguageConfiguration('custom-markdown', {
@@ -132,6 +141,10 @@ export const MonacoEditor = forwardRef<
 >(({ value, onCtrlCmdE, onChange }, ref): JSX.Element => {
   const editorRef = useRef<HTMLDivElement | null>(null);
   const statusRef = useRef<HTMLDivElement | null>(null);
+  const currentFile = useSelector(selectCurrentFile);
+
+  const [editor, setEditor] =
+    useState<monaco.editor.IStandaloneCodeEditor | null>(null);
 
   useEffect(() => {
     if (!editorRef.current || !statusRef.current) {
@@ -149,19 +162,13 @@ export const MonacoEditor = forwardRef<
       editorRef.current,
       statusRef.current,
     );
+    setEditor(editor);
 
     editor.onDidLayoutChange(() => {
       editor.focus();
     });
     editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyE, () =>
       onCtrlCmdE(),
-    );
-    editor.onDidChangeModelContent(
-      debounce(() => {
-        if (editor.hasTextFocus()) {
-          onChange(editor.getValue());
-        }
-      }),
     );
 
     (ref as MutableRefObject<monaco.editor.IStandaloneCodeEditor>).current =
@@ -172,6 +179,20 @@ export const MonacoEditor = forwardRef<
       vimMode.dispose();
     };
   }, []);
+
+  useEffect(() => {
+    if (!editor) {
+      return;
+    }
+
+    editor.onDidChangeModelContent(
+      debounce(() => {
+        if (editor.hasTextFocus()) {
+          onChange(editor.getValue());
+        }
+      }),
+    );
+  }, [editor]);
 
   return (
     <>

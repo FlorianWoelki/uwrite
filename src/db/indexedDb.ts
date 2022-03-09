@@ -78,7 +78,7 @@ class IndexedDb {
   public async putValue<T>(
     tableName: string,
     value: T,
-    key: number,
+    key?: number,
   ): Promise<IDBValidKey> {
     if (!this.db) {
       console.log('Try to put value: `this.db` is not defined');
@@ -87,8 +87,21 @@ class IndexedDb {
 
     const tx = this.db.transaction(tableName, 'readwrite');
     const store = tx.objectStore(tableName);
-    const result = await store.put(value, key);
-    console.log('Put data', value);
+
+    let newKey = key;
+    if (newKey === undefined) {
+      const result = await store.getAll();
+      if (result.length === 0) {
+        newKey = 0;
+      } else {
+        const lastEntry = result[result.length - 1];
+        newKey = lastEntry.id + 1;
+      }
+    }
+
+    const newValue = { ...value, id: newKey };
+    const result = await store.put(newValue, newKey);
+    console.log('Put data', newValue);
     return result;
   }
 

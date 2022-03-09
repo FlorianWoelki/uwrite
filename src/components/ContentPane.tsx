@@ -2,7 +2,6 @@ import 'katex/dist/katex.min.css';
 import { Position } from 'monaco-editor';
 import React, { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { File } from '../db/indexedDb';
 import { useKeyPress } from '../hooks/useKeyPress';
 import { useSaveContent } from '../hooks/useSaveContent';
 import { monaco } from '../monaco';
@@ -46,7 +45,7 @@ export const ContentPane: React.FC<ContentPaneProps> = ({
 
     setEditorPosition(codeEditorRef.current.getPosition());
     saveContent({
-      ...currentFile,
+      ...currentFile!,
       value: codeEditorRef.current.getValue(),
     });
     setRenderedPreviewContent(renderPreview(codeEditorRef.current.getValue()));
@@ -62,10 +61,10 @@ export const ContentPane: React.FC<ContentPaneProps> = ({
 
   return !shouldRenderPreview || !renderedPreviewContent ? (
     <MonacoEditor
-      value={currentFile.value}
+      value={currentFile?.value ?? ''}
       ref={codeEditorRef}
       onCtrlCmdE={toggleRender}
-      onChange={(value) => saveContent({ ...currentFile, value })}
+      onChange={(value) => saveContent({ ...currentFile!, value })}
     />
   ) : (
     <div

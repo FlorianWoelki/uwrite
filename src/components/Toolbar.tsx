@@ -8,6 +8,7 @@ import { ReactComponent as SunIcon } from '../../assets/icons/sun.svg';
 import { ReactComponent as MoonIcon } from '../../assets/icons/moon.svg';
 import { ReactComponent as MenuIcon } from '../../assets/icons/menu.svg';
 import { ReactComponent as CogIcon } from '../../assets/icons/cog.svg';
+import { ReactComponent as PlusIcon } from '../../assets/icons/plus.svg';
 import { ModalTransition } from './modal/ModalTransition';
 import { FileDisplay } from './file/FileDisplay';
 import { useSelector } from 'react-redux';
@@ -24,15 +25,17 @@ export enum ToolbarTab {
 interface ToolbarProps {
   activeTab: ToolbarTab;
   onThemeChange: (themeType: ThemeType) => void;
-  onClickPreview: () => void;
-  onClickEditor: () => void;
+  onPreview: () => void;
+  onEditor: () => void;
+  onCreateFile: () => void;
 }
 
 export const Toolbar: React.FC<ToolbarProps> = ({
   activeTab,
   onThemeChange,
-  onClickPreview,
-  onClickEditor,
+  onPreview,
+  onEditor,
+  onCreateFile,
 }): JSX.Element => {
   const [isModalVisible, setModalVisible] = useState<boolean>(false);
   const [isMenuVisible, setMenuVisible] = useState<boolean>(false);
@@ -52,7 +55,18 @@ export const Toolbar: React.FC<ToolbarProps> = ({
         </Button>
         <ModalTransition show={isMenuVisible}>
           <Modal left>
-            <ModalItemHeadline>Files:</ModalItemHeadline>
+            <ModalItemHeadline>
+              <div className="flex w-full items-center justify-between">
+                <p>Files:</p>
+                <button
+                  type="button"
+                  className="cursor-pointer"
+                  onClick={onCreateFile}
+                >
+                  <PlusIcon className="h-4 w-4" />
+                </button>
+              </div>
+            </ModalItemHeadline>
             <FileDisplay />
           </Modal>
         </ModalTransition>
@@ -60,10 +74,10 @@ export const Toolbar: React.FC<ToolbarProps> = ({
         <div className="absolute left-0 top-1/2 ml-14 min-w-max -translate-y-1/2 text-sm text-iron-400">
           <span>./</span>
           <InputField
-            initialValue={currentFile.file?.filename ?? 'No File'}
-            disabled={currentFile.file === undefined}
+            initialValue={currentFile?.filename ?? 'No File'}
+            disabled={currentFile === undefined}
             onBlur={(newValue) =>
-              saveContent({ ...currentFile.file!, filename: newValue })
+              saveContent({ ...currentFile!, filename: newValue })
             }
           />
         </div>
@@ -72,21 +86,21 @@ export const Toolbar: React.FC<ToolbarProps> = ({
       <ButtonGroup>
         <Button
           active={activeTab === ToolbarTab.EditorView}
-          onClick={onClickEditor}
-          disabled={currentFile.file === undefined}
+          onClick={onEditor}
+          disabled={currentFile === undefined}
         >
           Editor
         </Button>
         <Button
           active={activeTab === ToolbarTab.SplitView}
-          disabled={currentFile.file === undefined}
+          disabled={currentFile === undefined}
         >
           Split
         </Button>
         <Button
           active={activeTab === ToolbarTab.PreviewView}
-          onClick={onClickPreview}
-          disabled={currentFile.file === undefined}
+          onClick={onPreview}
+          disabled={currentFile === undefined}
         >
           Preview
         </Button>

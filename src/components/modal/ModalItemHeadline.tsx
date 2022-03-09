@@ -1,13 +1,13 @@
 interface ModalItemHeadlineProps {
-  children: React.ReactText;
+  children: React.ReactNode | React.ReactText;
 }
 
 export const ModalItemHeadline: React.FC<ModalItemHeadlineProps> = ({
   children,
 }): JSX.Element => {
   return (
-    <p className="text-xs font-bold uppercase tracking-wide text-iron-400">
+    <div className="w-full text-xs font-bold uppercase tracking-wide text-iron-400">
       {children}
-    </p>
+    </div>
   );
 };

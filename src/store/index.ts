@@ -11,7 +11,7 @@ const store = configureStore({
 
 type RootState = ReturnType<typeof store.getState>;
 
-export const selectCurrentFile = (state: RootState) => state.currentFile;
+export const selectCurrentFile = (state: RootState) => state.currentFile.file;
 export const selectAllFiles = (state: RootState) => state.files.files;
 
 export default store;

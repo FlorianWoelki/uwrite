@@ -25,7 +25,7 @@ export const FileDisplay: React.FC = (): JSX.Element => {
         files.map((file, i) => (
           <File
             key={i}
-            active={currentFile.file?.id === file.id}
+            active={currentFile?.id === file.id}
             onSaveFilename={(filename) => saveContent({ ...file, filename })}
             onDelete={() => deleteFile(file.id)}
           >

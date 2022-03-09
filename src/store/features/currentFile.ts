@@ -33,7 +33,7 @@ const currentFileSlice = createSlice({
       state.file.filename = action.payload.filename;
       state.file.value = action.payload.value;
     },
-    setCurrentFile: (state, action: PayloadAction<File>) => {
+    setCurrentFile: (state, action: PayloadAction<File | undefined>) => {
       state.file = action.payload;
     },
   },

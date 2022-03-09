@@ -109,14 +109,13 @@ export const EditorPage: React.FC = (): JSX.Element => {
 
     (async () => {
       const file = await indexedDb.getValue<File>('file', id);
+      dispatch(setCurrentFile(file));
       setLoading(false);
 
       if (!file) {
         setNoFile(true);
         return;
       }
-
-      dispatch(setCurrentFile(file));
 
       indexedDb.getAllValue<File>('file').then((files) => {
         dispatch(setFiles(files));
@@ -131,6 +130,14 @@ export const EditorPage: React.FC = (): JSX.Element => {
       setActiveTab(ToolbarTab.EditorView);
     }
   }, [shouldRenderPreview]);
+
+  const createNewFile = async (): Promise<void> => {
+    if (!indexedDb) {
+      return;
+    }
+
+    await indexedDb.putValue('file', { filename: 'Unnamed', value: '' });
+  };
 
   return (
     <div className="relative antialiased">
@@ -149,8 +156,9 @@ export const EditorPage: React.FC = (): JSX.Element => {
         <>
           <Toolbar
             activeTab={activeTab}
-            onClickEditor={() => setShouldRenderPreview(false)}
-            onClickPreview={() => setShouldRenderPreview(true)}
+            onEditor={() => setShouldRenderPreview(false)}
+            onPreview={() => setShouldRenderPreview(true)}
+            onCreateFile={createNewFile}
             onThemeChange={handleThemeChange}
           />
 

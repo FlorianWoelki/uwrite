@@ -19,7 +19,7 @@ export const useSaveContent = () => {
       }),
     );
 
-    if (currentFile.id === file.id) {
+    if (currentFile?.id === file.id) {
       dispatch(
         setCurrentFileContent({ filename: file.filename, value: file.value }),
       );
