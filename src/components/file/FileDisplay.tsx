@@ -4,6 +4,7 @@ import { selectAllFiles, selectCurrentFile } from '../../store';
 import { File } from './File';
 import { useSaveContent } from '../../hooks/useSaveContent';
 import { setCurrentFile } from '../../store/features/currentFile';
+import { deleteFile as storeDeleteFile } from '../../store/features/files';
 import { File as DbFile } from '../../db/indexedDb';
 
 export const FileDisplay: React.FC = (): JSX.Element => {
@@ -17,6 +18,7 @@ export const FileDisplay: React.FC = (): JSX.Element => {
       return;
     }
 
+    dispatch(storeDeleteFile({ id }));
     await indexedDb.deleteValue('file', id);
   };
 

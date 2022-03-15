@@ -43,9 +43,15 @@ const filesSlice = createSlice({
         { id: lastId ? lastId + 1 : 0, filename: 'Unnamed', value: '' },
       ];
     },
+    deleteFile: (state, action: PayloadAction<{ id: number }>) => {
+      const newFiles = state.files.filter(
+        (file) => file.id !== action.payload.id,
+      );
+      state.files = newFiles;
+    },
   },
 });
 
-export const { setFiles, updateFile, addFile } = filesSlice.actions;
+export const { setFiles, updateFile, addFile, deleteFile } = filesSlice.actions;
 
 export default filesSlice;
