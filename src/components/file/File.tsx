@@ -19,6 +19,7 @@ export const File: React.FC<FileProps> = ({
   onSelect,
 }): JSX.Element => {
   const [clickedRename, setClickedRename] = useState<boolean>(false);
+  const [hovered, setHovered] = useState<boolean>(false);
 
   return (
     <li
@@ -27,6 +28,8 @@ export const File: React.FC<FileProps> = ({
           ? 'bg-iron-200 text-iron-900 dark:bg-iron-500 dark:text-iron-200'
           : 'text-iron-400'
       }`}
+      onMouseOver={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
     >
       <InputField
         notDisableFocus
@@ -35,20 +38,22 @@ export const File: React.FC<FileProps> = ({
         onBlur={onSaveFilename}
         onClick={onSelect}
       />
-      <div className="flex items-center space-x-1 text-iron-300">
-        <button
-          className="transition duration-150 ease-in-out hover:text-iron-400"
-          onClick={() => setClickedRename(true)}
-        >
-          <PencilIcon className="h-4 w-4" />
-        </button>
-        <button
-          className="transition duration-150 ease-in-out hover:text-iron-400"
-          onClick={onDelete}
-        >
-          <TrashIcon className="h-4 w-4" />
-        </button>
-      </div>
+      {hovered && (
+        <div className="flex items-center space-x-1 text-iron-300">
+          <button
+            className="transition duration-150 ease-in-out hover:text-iron-400"
+            onClick={() => setClickedRename(true)}
+          >
+            <PencilIcon className="h-4 w-4" />
+          </button>
+          <button
+            className="transition duration-150 ease-in-out hover:text-iron-400"
+            onClick={onDelete}
+          >
+            <TrashIcon className="h-4 w-4" />
+          </button>
+        </div>
+      )}
     </li>
   );
 };
