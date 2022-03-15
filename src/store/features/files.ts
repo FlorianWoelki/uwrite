@@ -33,10 +33,19 @@ const filesSlice = createSlice({
         return file;
       });
     },
-    addFile: (state) => {},
+    addFile: (state) => {
+      let lastId = 0;
+      if (state.files.length > 0) {
+        lastId = state.files[state.files.length - 1].id + 1;
+      }
+      state.files = [
+        ...state.files,
+        { id: lastId ? lastId + 1 : 0, filename: 'Unnamed', value: '' },
+      ];
+    },
   },
 });
 
-export const { setFiles, updateFile } = filesSlice.actions;
+export const { setFiles, updateFile, addFile } = filesSlice.actions;
 
 export default filesSlice;

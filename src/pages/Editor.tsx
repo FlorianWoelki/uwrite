@@ -8,7 +8,7 @@ import { ContentPane } from '../components/ContentPane';
 import { updateTheme } from '../components/editor/MonacoEditor';
 import { useDispatch } from 'react-redux';
 import { setCurrentFile } from '../store/features/currentFile';
-import { setFiles } from '../store/features/files';
+import { addFile, setFiles } from '../store/features/files';
 import { useSaveContent } from '../hooks/useSaveContent';
 
 const NotFoundIcon: React.FC = (): JSX.Element => {
@@ -136,6 +136,7 @@ export const EditorPage: React.FC = (): JSX.Element => {
       return;
     }
 
+    dispatch(addFile());
     await indexedDb.putValue('file', { filename: 'Unnamed', value: '' });
   };
 
