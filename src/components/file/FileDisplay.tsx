@@ -20,6 +20,10 @@ export const FileDisplay: React.FC = (): JSX.Element => {
 
     dispatch(storeDeleteFile({ id }));
     await indexedDb.deleteValue('file', id);
+
+    if (currentFile?.id === id) {
+      dispatch(setCurrentFile(undefined));
+    }
   };
 
   const selectFile = (file: DbFile) => {
