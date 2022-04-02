@@ -95,7 +95,7 @@ export const EditorPage: React.FC = (): JSX.Element => {
 
   return (
     <div className="relative antialiased">
-      {!currentFile && (
+      {!isLoading && !currentFile && (
         <div className="absolute m-auto flex h-screen w-full flex-col items-center justify-center">
           <p className="text-iron-300">No active file found.</p>
         </div>
