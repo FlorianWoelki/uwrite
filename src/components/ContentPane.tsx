@@ -59,12 +59,18 @@ export const ContentPane: React.FC<ContentPaneProps> = ({
     true,
   );
 
+  const [newValue, setNewValue] = useState<string>(currentFile?.value ?? '');
+
+  useEffect(() => {
+    saveContent({ ...currentFile!, value: newValue });
+  }, [newValue]);
+
   return !shouldRenderPreview || !renderedPreviewContent ? (
     <MonacoEditor
       value={currentFile?.value ?? ''}
       ref={codeEditorRef}
       onCtrlCmdE={toggleRender}
-      onChange={(value) => saveContent({ ...currentFile!, value })}
+      onChange={(value) => setNewValue(value)}
     />
   ) : (
     <div
