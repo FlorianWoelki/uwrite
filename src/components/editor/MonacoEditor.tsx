@@ -15,9 +15,14 @@ import { getEditorThemeRules } from './theme/rules';
 import { debounce } from '../../util/effects';
 import { useSelector } from 'react-redux';
 import { selectCurrentFile } from '../../store';
+import { editor, KeyCode } from 'monaco-editor';
 
 const registerRules = (): void => {
   monaco.languages.setLanguageConfiguration('custom-markdown', {
+    indentationRules: {
+      decreaseIndentPattern: /^\**.+$/,
+      increaseIndentPattern: /^\**.+$/,
+    },
     onEnterRules: [
       {
         beforeText: /\*.+$/,
@@ -93,6 +98,15 @@ const createEditor = (
       horizontal: 'hidden',
       verticalSliderSize: 5,
       useShadows: false,
+    },
+  });
+
+  editor.addAction({
+    id: 'markdown.extension.editing.onTabKey',
+    label: '',
+    keybindings: [KeyCode.Tab],
+    run(_: editor.ICodeEditor): void | Promise<void> {
+      return editor.getAction('editor.action.indentLines').run();
     },
   });
 
