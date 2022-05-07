@@ -115,6 +115,8 @@ const createEditor = (
           return editor.getAction('editor.action.indentLines').run();
         }
       }
+
+      return editor.trigger('source', 'tab', {});
     },
   });
 
