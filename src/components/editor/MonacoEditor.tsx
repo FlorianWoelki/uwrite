@@ -106,7 +106,15 @@ const createEditor = (
     label: '',
     keybindings: [KeyCode.Tab],
     run(_: editor.ICodeEditor): void | Promise<void> {
-      return editor.getAction('editor.action.indentLines').run();
+      const model = editor.getModel();
+      const position = editor.getPosition();
+      if (model && position) {
+        const lineText = model.getLineContent(position.lineNumber);
+        const match = /^\s*([-+*]|[0-9]+[.)]) +(\[[ x]\] +)?/.exec(lineText);
+        if (match) {
+          return editor.getAction('editor.action.indentLines').run();
+        }
+      }
     },
   });
 
