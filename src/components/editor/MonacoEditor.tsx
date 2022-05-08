@@ -9,7 +9,7 @@ import { language } from '../../monaco/custom-markdown';
 import './theme/font/font.css';
 import './editor.css';
 import { monaco } from '../../monaco';
-import { VimMode, initVimMode } from 'monaco-vim';
+import { VimMode, initVimMode, EditorVimMode } from 'monaco-vim';
 import { getEditorThemeColors } from './theme/colors';
 import { getEditorThemeRules } from './theme/rules';
 import { debounce } from '../../util/effects';
@@ -45,6 +45,27 @@ const registerRules = (): void => {
         close: '$',
       },
     ],
+  });
+};
+
+const addActions = (editor: editor.IStandaloneCodeEditor): void => {
+  editor.addAction({
+    id: 'markdown.extension.editing.onTabKey',
+    label: '',
+    keybindings: [KeyCode.Tab],
+    run(_: editor.ICodeEditor): void | Promise<void> {
+      const model = editor.getModel();
+      const position = editor.getPosition();
+      if (model && position) {
+        const lineText = model.getLineContent(position.lineNumber);
+        const match = /^\s*([-+*]|[0-9]+[.)]) +(\[[ x]\] +)?/.exec(lineText);
+        if (match) {
+          return editor.getAction('editor.action.indentLines').run();
+        }
+      }
+
+      return editor.trigger('source', 'tab', {});
+    },
   });
 };
 
@@ -101,24 +122,7 @@ const createEditor = (
     },
   });
 
-  editor.addAction({
-    id: 'markdown.extension.editing.onTabKey',
-    label: '',
-    keybindings: [KeyCode.Tab],
-    run(_: editor.ICodeEditor): void | Promise<void> {
-      const model = editor.getModel();
-      const position = editor.getPosition();
-      if (model && position) {
-        const lineText = model.getLineContent(position.lineNumber);
-        const match = /^\s*([-+*]|[0-9]+[.)]) +(\[[ x]\] +)?/.exec(lineText);
-        if (match) {
-          return editor.getAction('editor.action.indentLines').run();
-        }
-      }
-
-      return editor.trigger('source', 'tab', {});
-    },
-  });
+  addActions(editor);
 
   const vimMode = initVimMode(editor, statusEl);
 
