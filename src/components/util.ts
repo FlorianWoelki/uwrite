@@ -1,11 +1,13 @@
 import renderMathInElement from 'katex/dist/contrib/auto-render';
-// @ts-ignore
-import { renderMarkdown } from 'monaco-editor/esm/vs/base/browser/markdownRenderer';
+import Showdown from 'showdown';
+
+const converter = new Showdown.Converter();
 
 export const renderPreview = (value: string): string => {
-  const htmlResult = renderMarkdown({ value }).element as HTMLElement;
+  const el = document.createElement('div');
+  el.innerHTML = converter.makeHtml(value);
 
-  renderMathInElement(htmlResult, {
+  renderMathInElement(el, {
     delimiters: [
       { left: '$$', right: '$$', display: true },
       { left: '$', right: '$', display: false },
@@ -15,5 +17,5 @@ export const renderPreview = (value: string): string => {
     throwOnError: true,
   });
 
-  return htmlResult.innerHTML;
+  return el.innerHTML;
 };
