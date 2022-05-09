@@ -1,11 +1,26 @@
 import renderMathInElement from 'katex/dist/contrib/auto-render';
-import Showdown from 'showdown';
+import { Remarkable } from 'remarkable';
+import hljs from 'highlight.js';
 
-const converter = new Showdown.Converter();
+const md = new Remarkable({
+  highlight: (str: string, lang: string) => {
+    if (lang && hljs.getLanguage(lang)) {
+      try {
+        return hljs.highlight(lang, str).value;
+      } catch (error) {}
+    }
+
+    try {
+      return hljs.highlightAuto(str).value;
+    } catch (error) {}
+
+    return '';
+  },
+});
 
 export const renderPreview = (value: string): string => {
   const el = document.createElement('div');
-  el.innerHTML = converter.makeHtml(value);
+  el.innerHTML = md.render(value);
 
   renderMathInElement(el, {
     delimiters: [
