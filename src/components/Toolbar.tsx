@@ -9,6 +9,7 @@ import { ReactComponent as MoonIcon } from '../../assets/icons/moon.svg';
 import { ReactComponent as MenuIcon } from '../../assets/icons/menu.svg';
 import { ReactComponent as CogIcon } from '../../assets/icons/cog.svg';
 import { ReactComponent as PlusIcon } from '../../assets/icons/plus.svg';
+import { ReactComponent as CircleIcon } from '../../assets/icons/circle.svg';
 import { ModalTransition } from './modal/ModalTransition';
 import { FileDisplay } from './file/FileDisplay';
 import { useSelector } from 'react-redux';
@@ -115,22 +116,41 @@ export const Toolbar: React.FC<ToolbarProps> = ({
         </Button>
         <ModalTransition show={isModalVisible}>
           <Modal>
-            <ModalItemHeadline>Theme:</ModalItemHeadline>
-            <ButtonGroup>
-              <Button onClick={() => onThemeChange('light')}>
-                <div className="flex items-center space-x-2">
-                  <SunIcon />
-                  <span>Light</span>
-                </div>
-              </Button>
-              <Button onClick={() => onThemeChange('system')}>System</Button>
-              <Button onClick={() => onThemeChange('dark')}>
-                <div className="flex items-center space-x-2">
-                  <MoonIcon />
-                  <span>Dark</span>
-                </div>
-              </Button>
-            </ButtonGroup>
+            <div className="space-y-1">
+              <ModalItemHeadline>Theme:</ModalItemHeadline>
+              <ButtonGroup>
+                <Button onClick={() => onThemeChange('light')}>
+                  <div className="flex items-center space-x-2">
+                    <SunIcon />
+                    <span>Light</span>
+                  </div>
+                </Button>
+                <Button onClick={() => onThemeChange('system')}>System</Button>
+                <Button onClick={() => onThemeChange('dark')}>
+                  <div className="flex items-center space-x-2">
+                    <MoonIcon />
+                    <span>Dark</span>
+                  </div>
+                </Button>
+              </ButtonGroup>
+            </div>
+            <div className="space-y-1">
+              <ModalItemHeadline>VIM:</ModalItemHeadline>
+              <ButtonGroup>
+                <Button active>
+                  <div className="flex items-center space-x-2">
+                    <CircleIcon className="h-3 w-3" />
+                    <span>On</span>
+                  </div>
+                </Button>
+                <Button>
+                  <div className="flex items-center space-x-2">
+                    <CircleIcon className="h-3 w-3 text-gray-400" />
+                    <span>Off</span>
+                  </div>
+                </Button>
+              </ButtonGroup>
+            </div>
           </Modal>
         </ModalTransition>
       </div>

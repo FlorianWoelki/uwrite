@@ -13,7 +13,7 @@ export const Modal: React.FC<ModalProps> = ({
         left ? 'left-0' : 'right-0'
       }`}
     >
-      <div className="flex flex-col items-start space-y-1">{children}</div>
+      <div className="flex flex-col items-start space-y-4">{children}</div>
     </div>
   );
 };
