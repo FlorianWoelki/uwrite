@@ -1,20 +1,7 @@
 import { monaco } from '../../../monaco';
+import { getCodeColor } from './codeColors';
 
 type Rule = monaco.editor.ITokenThemeRule;
-
-const githubDarkColors = {
-  keyword: '#ff7b72',
-  number: '#79c0ff',
-  string: '#a5d6ff',
-  function: '#d2a8ff',
-};
-
-const githubLightColors = {
-  keyword: '#d73a49',
-  number: '#005cc5',
-  string: '#032f62',
-  function: '#6f42c1',
-};
 
 const colors = {
   red: '#dc2626',
@@ -82,29 +69,21 @@ export const getEditorThemeRules = (isDarkMode: boolean): Rule[] => {
   rules.push(
     {
       token: 'keyword',
-      foreground: isDarkMode
-        ? githubDarkColors.keyword
-        : githubLightColors.keyword,
+      foreground: getCodeColor(isDarkMode, 'keyword'),
     },
     {
       token: 'string',
-      foreground: isDarkMode
-        ? githubDarkColors.string
-        : githubLightColors.string,
+      foreground: getCodeColor(isDarkMode, 'string'),
     },
     {
       token: 'identifier',
-      foreground: isDarkMode
-        ? githubDarkColors.function
-        : githubLightColors.function,
+      foreground: getCodeColor(isDarkMode, 'function'),
     },
     { token: 'type.identifier', foreground: colors.orange },
     { token: 'comment', foreground: colors.gray },
     {
       token: 'number',
-      foreground: isDarkMode
-        ? githubDarkColors.number
-        : githubLightColors.number,
+      foreground: getCodeColor(isDarkMode, 'number'),
     },
     { token: 'tag', foreground: colors.green },
     { token: 'tag.css', foreground: colors.purple },
