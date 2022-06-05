@@ -14,9 +14,9 @@ export const ButtonGroup: React.FC<ButtonGroupProps> = ({
       if (index === 0) {
         className = 'border-l rounded-l border-y';
       } else if (index === children.length - 1) {
-        className = 'border-r rounded-r border-y';
+        className = 'border-l rounded-r border-y border-r';
       } else {
-        className = 'border';
+        className = 'border-l border-y';
       }
 
       return React.cloneElement(child, {
