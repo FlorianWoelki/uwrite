@@ -139,6 +139,12 @@ const createEditor = (
 export const updateTheme = (theme: 'uwrite-dark' | 'uwrite-light'): void => {
   defineTheme();
   monaco.editor.setTheme(theme);
+
+  if (theme === 'uwrite-light') {
+    import('highlight.js/styles/github.css');
+  } else {
+    import('highlight.js/styles/github-dark.css');
+  }
 };
 
 const defineTheme = () => {
