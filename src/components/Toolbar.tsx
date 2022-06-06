@@ -16,6 +16,7 @@ import { useSelector } from 'react-redux';
 import { selectCurrentFile } from '../store';
 import { InputField } from './InputField';
 import { useSaveContent } from '../hooks/useSaveContent';
+import { useVim } from '../hooks/useVim';
 
 export enum ToolbarTab {
   EditorView = 0,
@@ -43,6 +44,8 @@ export const Toolbar: React.FC<ToolbarProps> = ({
 
   const currentFile = useSelector(selectCurrentFile);
   const [_, saveContent] = useSaveContent();
+
+  const [isVimActive, toggleVim] = useVim();
 
   return (
     <div className="mb-4 flex items-center justify-between bg-iron-100 px-8 py-4 shadow dark:bg-iron-500">
@@ -137,13 +140,13 @@ export const Toolbar: React.FC<ToolbarProps> = ({
             <div className="space-y-1">
               <ModalItemHeadline>VIM:</ModalItemHeadline>
               <ButtonGroup>
-                <Button active>
+                <Button active={isVimActive} onClick={() => toggleVim(true)}>
                   <div className="flex items-center space-x-2">
                     <CircleIcon className="h-3 w-3" />
                     <span>On</span>
                   </div>
                 </Button>
-                <Button>
+                <Button active={!isVimActive} onClick={() => toggleVim(false)}>
                   <div className="flex items-center space-x-2">
                     <CircleIcon className="h-3 w-3 text-gray-400" />
                     <span>Off</span>
