@@ -16,7 +16,6 @@ export const useVim = (): [boolean, (isActive: boolean) => void] => {
   const toggleVim = (isActive: boolean): void => {
     setIsVimActive(() => {
       localStorage.setItem(localStorageKey, String(isActive));
-      console.log(isActive);
       return isActive;
     });
   };

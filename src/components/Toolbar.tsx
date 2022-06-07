@@ -17,6 +17,7 @@ import { selectCurrentFile } from '../store';
 import { InputField } from './InputField';
 import { useSaveContent } from '../hooks/useSaveContent';
 import { useVim } from '../hooks/useVim';
+import { classes } from '../util/classes';
 
 export enum ToolbarTab {
   EditorView = 0,
@@ -142,13 +143,23 @@ export const Toolbar: React.FC<ToolbarProps> = ({
               <ButtonGroup>
                 <Button active={isVimActive} onClick={() => toggleVim(true)}>
                   <div className="flex items-center space-x-2">
-                    <CircleIcon className="h-3 w-3" />
+                    <CircleIcon
+                      className={classes(
+                        { 'text-gray-400': isVimActive },
+                        'h-3 w-3',
+                      )}
+                    />
                     <span>On</span>
                   </div>
                 </Button>
                 <Button active={!isVimActive} onClick={() => toggleVim(false)}>
                   <div className="flex items-center space-x-2">
-                    <CircleIcon className="h-3 w-3 text-gray-400" />
+                    <CircleIcon
+                      className={classes(
+                        { 'text-gray-400': !isVimActive },
+                        'h-3 w-3',
+                      )}
+                    />
                     <span>Off</span>
                   </div>
                 </Button>
