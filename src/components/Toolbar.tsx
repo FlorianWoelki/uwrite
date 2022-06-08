@@ -12,12 +12,12 @@ import { ReactComponent as PlusIcon } from '../../assets/icons/plus.svg';
 import { ReactComponent as CircleIcon } from '../../assets/icons/circle.svg';
 import { ModalTransition } from './modal/ModalTransition';
 import { FileDisplay } from './file/FileDisplay';
-import { useSelector } from 'react-redux';
-import { selectCurrentFile } from '../store';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectIsVimActive, selectCurrentFile } from '../store';
 import { InputField } from './InputField';
 import { useSaveContent } from '../hooks/useSaveContent';
-import { useVim } from '../hooks/useVim';
 import { classes } from '../util/classes';
+import { toggleVim } from '../store/features/editor';
 
 export enum ToolbarTab {
   EditorView = 0,
@@ -40,13 +40,15 @@ export const Toolbar: React.FC<ToolbarProps> = ({
   onEditor,
   onCreateFile,
 }): JSX.Element => {
+  const dispatch = useDispatch();
+
   const [isModalVisible, setModalVisible] = useState<boolean>(false);
   const [isMenuVisible, setMenuVisible] = useState<boolean>(false);
 
   const currentFile = useSelector(selectCurrentFile);
   const [_, saveContent] = useSaveContent();
 
-  const [isVimActive, toggleVim] = useVim();
+  const isVimActive = useSelector(selectIsVimActive);
 
   return (
     <div className="mb-4 flex items-center justify-between bg-iron-100 px-8 py-4 shadow dark:bg-iron-500">
@@ -141,7 +143,10 @@ export const Toolbar: React.FC<ToolbarProps> = ({
             <div className="space-y-1">
               <ModalItemHeadline>VIM:</ModalItemHeadline>
               <ButtonGroup>
-                <Button active={isVimActive} onClick={() => toggleVim(true)}>
+                <Button
+                  active={isVimActive}
+                  onClick={() => dispatch(toggleVim(true))}
+                >
                   <div className="flex items-center space-x-2">
                     <CircleIcon
                       className={classes(
@@ -152,7 +157,10 @@ export const Toolbar: React.FC<ToolbarProps> = ({
                     <span>On</span>
                   </div>
                 </Button>
-                <Button active={!isVimActive} onClick={() => toggleVim(false)}>
+                <Button
+                  active={!isVimActive}
+                  onClick={() => dispatch(toggleVim(false))}
+                >
                   <div className="flex items-center space-x-2">
                     <CircleIcon
                       className={classes(

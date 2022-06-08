@@ -14,9 +14,8 @@ import { getEditorThemeColors } from './theme/colors';
 import { getEditorThemeRules } from './theme/rules';
 import { debounce } from '../../util/effects';
 import { useSelector } from 'react-redux';
-import { selectCurrentFile } from '../../store';
+import { selectCurrentFile, selectIsVimActive } from '../../store';
 import { editor, KeyCode } from 'monaco-editor';
-import { useVim } from '../../hooks/useVim';
 
 const registerRules = (): void => {
   monaco.languages.setLanguageConfiguration('custom-markdown', {
@@ -183,11 +182,10 @@ export const MonacoEditor = forwardRef<
   const editorRef = useRef<HTMLDivElement | null>(null);
   const statusRef = useRef<HTMLDivElement | null>(null);
   const currentFile = useSelector(selectCurrentFile);
+  const isVimActive = useSelector(selectIsVimActive);
 
   const [editor, setEditor] =
     useState<monaco.editor.IStandaloneCodeEditor | null>(null);
-
-  const [isVimActive, _] = useVim();
 
   useEffect(() => {
     if (!editorRef.current || !statusRef.current) {
