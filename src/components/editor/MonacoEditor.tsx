@@ -9,13 +9,14 @@ import { language } from '../../monaco/custom-markdown';
 import './theme/font/font.css';
 import './editor.css';
 import { monaco } from '../../monaco';
-import { VimMode, initVimMode, EditorVimMode } from 'monaco-vim';
+import { VimMode, initVimMode } from 'monaco-vim';
 import { getEditorThemeColors } from './theme/colors';
 import { getEditorThemeRules } from './theme/rules';
 import { debounce } from '../../util/effects';
 import { useSelector } from 'react-redux';
 import { selectCurrentFile } from '../../store';
 import { editor, KeyCode } from 'monaco-editor';
+import { useVim } from '../../hooks/useVim';
 
 const registerRules = (): void => {
   monaco.languages.setLanguageConfiguration('custom-markdown', {
@@ -73,6 +74,7 @@ const createEditor = (
   value: string,
   editorEl: HTMLDivElement,
   statusEl: HTMLDivElement,
+  isVimActive: boolean,
 ) => {
   monaco.languages.register({ id: 'custom-markdown' });
 
@@ -124,15 +126,21 @@ const createEditor = (
 
   addActions(editor);
 
-  const vimMode = initVimMode(editor, statusEl);
+  if (isVimActive) {
+    const vimMode = initVimMode(editor, statusEl);
 
-  const { Vim } = VimMode;
-  Vim.map('jj', '<Esc>', 'insert');
-  Vim.map('jk', '<Esc>', 'insert');
+    const { Vim } = VimMode;
+    Vim.map('jj', '<Esc>', 'insert');
+    Vim.map('jk', '<Esc>', 'insert');
+
+    return {
+      editor,
+      vimMode,
+    };
+  }
 
   return {
     editor,
-    vimMode,
   };
 };
 
@@ -179,6 +187,8 @@ export const MonacoEditor = forwardRef<
   const [editor, setEditor] =
     useState<monaco.editor.IStandaloneCodeEditor | null>(null);
 
+  const [isVimActive, _] = useVim();
+
   useEffect(() => {
     if (!editorRef.current || !statusRef.current) {
       return;
@@ -194,6 +204,7 @@ export const MonacoEditor = forwardRef<
       value,
       editorRef.current,
       statusRef.current,
+      isVimActive,
     );
     setEditor(editor);
 
@@ -209,7 +220,7 @@ export const MonacoEditor = forwardRef<
 
     return () => {
       editor.dispose();
-      vimMode.dispose();
+      vimMode?.dispose();
     };
   }, [currentFile?.id]);
 

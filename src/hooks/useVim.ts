@@ -1,17 +1,17 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 const localStorageKey = 'isVimActive';
 
 export const useVim = (): [boolean, (isActive: boolean) => void] => {
-  const [isVimActive, setIsVimActive] = useState<boolean>(false);
-
-  useEffect(() => {
-    const item = localStorage.getItem(localStorageKey);
-    if (item) {
-      const isActive = JSON.parse(item) ?? false;
-      setIsVimActive(isActive);
+  const [isVimActive, setIsVimActive] = useState(() => {
+    try {
+      const item = localStorage.getItem(localStorageKey);
+      return item ? JSON.parse(item) : false;
+    } catch (error) {
+      console.log(error);
+      return false;
     }
-  }, []);
+  });
 
   const toggleVim = (isActive: boolean): void => {
     setIsVimActive(() => {
