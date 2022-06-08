@@ -220,7 +220,7 @@ export const MonacoEditor = forwardRef<
       editor.dispose();
       vimMode?.dispose();
     };
-  }, [currentFile?.id]);
+  }, [currentFile?.id, isVimActive]);
 
   useEffect(() => {
     if (!editor) {
