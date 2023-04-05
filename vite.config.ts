@@ -12,7 +12,7 @@ export default ({ command }: ConfigEnv): UserConfig => {
       root: srcRoot,
       plugins: [
         react(),
-        monacoEditorPlugin(),
+        monacoEditorPlugin({}),
         svgrPlugin({ svgrOptions: { icon: true } }),
       ],
       server: {
@@ -28,7 +28,7 @@ export default ({ command }: ConfigEnv): UserConfig => {
     root: srcRoot,
     plugins: [
       react(),
-      monacoEditorPlugin(),
+      monacoEditorPlugin({}),
       svgrPlugin({ svgrOptions: { icon: true } }),
     ],
     build: {
