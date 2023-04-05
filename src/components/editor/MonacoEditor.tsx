@@ -60,7 +60,7 @@ const addActions = (editor: editor.IStandaloneCodeEditor): void => {
         const lineText = model.getLineContent(position.lineNumber);
         const match = /^\s*([-+*]|[0-9]+[.)]) +(\[[ x]\] +)?/.exec(lineText);
         if (match) {
-          return editor.getAction('editor.action.indentLines').run();
+          return editor.getAction('editor.action.indentLines')?.run();
         }
       }
 
@@ -91,7 +91,7 @@ const createEditor = (
     contextmenu: false,
     copyWithSyntaxHighlighting: false,
     cursorBlinking: 'smooth',
-    cursorSmoothCaretAnimation: true,
+    cursorSmoothCaretAnimation: 'on',
     cursorSurroundingLines: 3,
     cursorWidth: 3,
     fontSize: 20,
@@ -239,12 +239,12 @@ export const MonacoEditor = forwardRef<
   return (
     <>
       <div
-        className="h-full w-full"
+        className="w-full h-full"
         style={{ paddingBottom: '138px' }}
         ref={editorRef}
       ></div>
       <div
-        className="vim-status absolute inset-x-0 bottom-0 px-4 py-2 font-mono text-base"
+        className="absolute inset-x-0 bottom-0 px-4 py-2 font-mono text-base vim-status"
         ref={statusRef}
       ></div>
     </>
