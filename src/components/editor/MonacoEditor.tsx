@@ -98,7 +98,7 @@ const createEditor = (
     fontWeight: '450',
     glyphMargin: false,
     lineHeight: 40,
-    lineNumbers: 'relative',
+    lineNumbers: isVimActive ? 'relative' : 'on',
     minimap: {
       enabled: false,
     },
