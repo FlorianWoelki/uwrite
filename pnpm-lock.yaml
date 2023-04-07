@@ -48,6 +48,9 @@ devDependencies:
   '@types/katex':
     specifier: ^0.11.1
     version: 0.11.1
+  '@types/node':
+    specifier: ^18.15.11
+    version: 18.15.11
   '@types/react':
     specifier: ^17.0.33
     version: 17.0.56
@@ -819,6 +822,10 @@ packages:
 
   /@types/katex@0.11.1:
     resolution: {integrity: sha512-DUlIj2nk0YnJdlWgsFuVKcX27MLW0KbKmGVoUHmFr+74FYYNUDAaj9ZqTADvsbE8rfxuVmSFc7KczYn5Y09ozg==}
+    dev: true
+
+  /@types/node@18.15.11:
+    resolution: {integrity: sha512-E5Kwq2n4SbMzQOn6wnmBjuK9ouqlURrcZDVfbo9ftDDTFt3nk7ZKK4GMOzoYgnpQJKcxwQw+lGaBvvlMo0qN/Q==}
     dev: true
 
   /@types/parse-json@4.0.0:
