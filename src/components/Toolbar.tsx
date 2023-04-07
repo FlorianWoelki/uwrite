@@ -9,7 +9,6 @@ import { ReactComponent as MoonIcon } from '../../assets/icons/moon.svg';
 import { ReactComponent as MenuIcon } from '../../assets/icons/menu.svg';
 import { ReactComponent as CogIcon } from '../../assets/icons/cog.svg';
 import { ReactComponent as PlusIcon } from '../../assets/icons/plus.svg';
-import { ReactComponent as CircleIcon } from '../../assets/icons/circle.svg';
 import { ModalTransition } from './modal/ModalTransition';
 import { FileDisplay } from './file/FileDisplay';
 import { useDispatch, useSelector } from 'react-redux';
@@ -51,7 +50,7 @@ export const Toolbar: React.FC<ToolbarProps> = ({
   const isVimActive = useSelector(selectIsVimActive);
 
   return (
-    <div className="mb-4 flex items-center justify-between bg-iron-100 px-8 py-4 shadow dark:bg-iron-500">
+    <div className="flex items-center justify-between px-8 py-4 mb-4 shadow bg-iron-100 dark:bg-iron-500">
       <div className="relative">
         <Button
           active={isMenuVisible}
@@ -63,14 +62,14 @@ export const Toolbar: React.FC<ToolbarProps> = ({
         <ModalTransition show={isMenuVisible}>
           <Modal left>
             <ModalItemHeadline>
-              <div className="flex w-full items-center justify-between">
+              <div className="flex items-center justify-between w-full">
                 <p>Files:</p>
                 <button
                   type="button"
                   className="cursor-pointer"
                   onClick={onCreateFile}
                 >
-                  <PlusIcon className="h-4 w-4" />
+                  <PlusIcon className="w-4 h-4" />
                 </button>
               </div>
             </ModalItemHeadline>
@@ -78,7 +77,7 @@ export const Toolbar: React.FC<ToolbarProps> = ({
           </Modal>
         </ModalTransition>
 
-        <div className="absolute left-0 top-1/2 ml-14 flex min-w-max -translate-y-1/2 text-sm text-iron-400">
+        <div className="absolute left-0 flex text-sm -translate-y-1/2 top-1/2 ml-14 min-w-max text-iron-400">
           <span>./</span>
           <InputField
             initialValue={currentFile?.filename ?? 'No File'}
@@ -147,13 +146,15 @@ export const Toolbar: React.FC<ToolbarProps> = ({
                   active={isVimActive}
                   onClick={() => dispatch(toggleVim(true))}
                 >
-                  <div className="flex items-center space-x-2">
-                    <CircleIcon
+                  <div className="flex items-center space-x-2 text-gray-400">
+                    <div
                       className={classes(
-                        { 'text-gray-400': isVimActive },
-                        'h-3 w-3',
+                        {
+                          'bg-gray-400': isVimActive,
+                        },
+                        'w-2.5 h-2.5 border border-gray-400 rounded-full',
                       )}
-                    />
+                    ></div>
                     <span>On</span>
                   </div>
                 </Button>
@@ -162,12 +163,14 @@ export const Toolbar: React.FC<ToolbarProps> = ({
                   onClick={() => dispatch(toggleVim(false))}
                 >
                   <div className="flex items-center space-x-2">
-                    <CircleIcon
+                    <div
                       className={classes(
-                        { 'text-gray-400': !isVimActive },
-                        'h-3 w-3',
+                        {
+                          'bg-gray-400': !isVimActive,
+                        },
+                        'w-2.5 h-2.5 border border-gray-400 rounded-full',
                       )}
-                    />
+                    ></div>
                     <span>Off</span>
                   </div>
                 </Button>
