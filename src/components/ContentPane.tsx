@@ -15,7 +15,7 @@ interface ContentPaneProps {
   toggleRender: () => void;
 }
 
-const useCodeMirrorEditor = true;
+const useCodeMirrorEditor = false;
 
 export const ContentPane: React.FC<ContentPaneProps> = ({
   shouldRenderPreview,
