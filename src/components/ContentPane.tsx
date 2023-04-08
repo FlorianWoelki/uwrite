@@ -8,11 +8,14 @@ import { monaco } from '../monaco';
 import { selectCurrentFile } from '../store';
 import { MonacoEditor } from './editor/MonacoEditor';
 import { renderPreview } from './util';
+import { CodeMirrorEditor } from './editor/CodeMirrorEditor';
 
 interface ContentPaneProps {
   shouldRenderPreview: boolean;
   toggleRender: () => void;
 }
+
+const useCodeMirrorEditor = true;
 
 export const ContentPane: React.FC<ContentPaneProps> = ({
   shouldRenderPreview,
@@ -66,15 +69,22 @@ export const ContentPane: React.FC<ContentPaneProps> = ({
   }, [newValue]);
 
   return !shouldRenderPreview || !renderedPreviewContent ? (
-    <MonacoEditor
-      value={currentFile?.value ?? ''}
-      ref={codeEditorRef}
-      onCtrlCmdE={toggleRender}
-      onChange={(value) => setNewValue(value)}
-    />
+    useCodeMirrorEditor ? (
+      <CodeMirrorEditor
+        value={currentFile?.value ?? ''}
+        onChange={(value: string) => setNewValue(value)}
+      />
+    ) : (
+      <MonacoEditor
+        value={currentFile?.value ?? ''}
+        ref={codeEditorRef}
+        onCtrlCmdE={toggleRender}
+        onChange={(value) => setNewValue(value)}
+      />
+    )
   ) : (
     <div
-      className="markdown mx-20 text-iron-700 dark:text-white"
+      className="mx-20 markdown text-iron-700 dark:text-white"
       dangerouslySetInnerHTML={{ __html: renderedPreviewContent }}
     ></div>
   );
