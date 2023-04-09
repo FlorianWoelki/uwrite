@@ -13,7 +13,12 @@ export const useCodeMirror = (extensions: Extension[]) => {
     }
 
     const view = new EditorView({
-      extensions: [basicSetup, uwriteDark, ...extensions],
+      extensions: [
+        basicSetup,
+        uwriteDark,
+        EditorView.lineWrapping,
+        ...extensions,
+      ],
       parent: ref.current,
     });
 

@@ -7,7 +7,7 @@ export const defaultSettingsXcodeDark: CreateThemeOptions['settings'] = {
   gutterActiveForeground: '#c6c6c6',
   gutterForeground: '#858585',
   foreground: '#d1d5da',
-  caret: '#727579',
+  caret: '#bababa',
   selection: '#195081',
   selectionMatch: '#195081',
   lineHighlight: 'transparent',

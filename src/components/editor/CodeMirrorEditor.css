@@ -1,0 +1,29 @@
+.cm-focused .cm-cursorLayer {
+  animation-timing-function: ease-in-out !important;
+}
+.cm-focused .cm-cursorLayer .cm-cursor {
+  transition: all 0.2s ease-in-out;
+}
+
+@keyframes cm-blink {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@keyframes cm-blink2 {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}

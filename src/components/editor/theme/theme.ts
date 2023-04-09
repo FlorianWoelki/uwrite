@@ -82,6 +82,7 @@ export const createTheme = ({
     };
     themeOptions['.cm-cursor, .cm-dropCursor'] = {
       borderLeftColor: settings.caret,
+      borderLeftWidth: '2px',
     };
   }
   let activeLineGutterStyle: any = {};

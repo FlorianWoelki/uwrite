@@ -1,5 +1,5 @@
 import { useCodeEditor } from '../../hooks/useCodeEditor';
-import './theme/font/font.css';
+import './CodeMirrorEditor.css';
 
 export const CodeMirrorEditor: React.FC<any> = ({
   value,
