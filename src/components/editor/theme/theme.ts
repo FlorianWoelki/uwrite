@@ -24,6 +24,7 @@ export interface Settings {
   gutterActiveForeground?: string;
   gutterBorder?: string;
   fontFamily?: string;
+  lineHeight?: string;
   fontSize?: string;
 }
 
@@ -53,8 +54,15 @@ export const createTheme = ({
       fontSize: settings.fontSize,
     };
   }
+  if (settings.lineHeight) {
+    themeOptions['&.cm-editor .cm-scroller'] = {
+      ...themeOptions['&.cm-editor .cm-scroller'],
+      lineHeight: settings.lineHeight,
+    };
+  }
   if (settings.fontFamily) {
     themeOptions['&.cm-editor .cm-scroller'] = {
+      ...themeOptions['&.cm-editor .cm-scroller'],
       fontFamily: settings.fontFamily,
     };
   }

@@ -4,12 +4,16 @@ import { createTheme, CreateThemeOptions } from './theme';
 export const defaultSettingsXcodeDark: CreateThemeOptions['settings'] = {
   background: '#2b3036',
   gutterBackground: '#2b3036',
+  gutterActiveForeground: '#c6c6c6',
+  gutterForeground: '#858585',
   foreground: '#d1d5da',
   caret: '#727579',
   selection: '#195081',
   selectionMatch: '#195081',
   lineHighlight: 'transparent',
   fontSize: '20px',
+  lineHeight: '40px',
+  fontFamily: 'Menlo, Monaco, "Courier New", monospace',
 };
 
 export const uwriteDarkInit = () => {

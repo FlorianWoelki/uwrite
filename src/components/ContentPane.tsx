@@ -15,8 +15,6 @@ interface ContentPaneProps {
   toggleRender: () => void;
 }
 
-const useCodeMirrorEditor = false;
-
 export const ContentPane: React.FC<ContentPaneProps> = ({
   shouldRenderPreview,
   toggleRender,
@@ -69,19 +67,19 @@ export const ContentPane: React.FC<ContentPaneProps> = ({
   }, [newValue]);
 
   return !shouldRenderPreview || !renderedPreviewContent ? (
-    useCodeMirrorEditor ? (
+    <>
       <CodeMirrorEditor
+        className="px-11"
         value={currentFile?.value ?? ''}
         onChange={(value: string) => setNewValue(value)}
       />
-    ) : (
-      <MonacoEditor
+      {/* <MonacoEditor
         value={currentFile?.value ?? ''}
         ref={codeEditorRef}
         onCtrlCmdE={toggleRender}
         onChange={(value) => setNewValue(value)}
-      />
-    )
+      /> */}
+    </>
   ) : (
     <div
       className="mx-20 markdown text-iron-700 dark:text-white"
