@@ -5,9 +5,10 @@ export const CodeMirrorEditor: React.FC<any> = ({
   value,
   className,
   onChange,
+  onModE,
   extensions = [],
 }): JSX.Element => {
-  const ref = useCodeEditor({ value, onChange, extensions });
+  const ref = useCodeEditor({ value, onChange, onModE, extensions });
 
   return <div ref={ref} className={className} />;
 };

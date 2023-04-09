@@ -2,7 +2,7 @@
   animation-timing-function: ease-in-out !important;
 }
 .cm-focused .cm-cursorLayer .cm-cursor {
-  transition: all 0.2s ease-in-out;
+  transition: all 0.15s ease-in-out;
 }
 
 @keyframes cm-blink {

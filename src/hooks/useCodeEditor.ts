@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { EditorView, ViewUpdate } from '@codemirror/view';
+import { EditorView, ViewUpdate, keymap } from '@codemirror/view';
 import { useCodeMirror } from './useCodeMirror';
 import { Extension } from '@codemirror/state';
 
@@ -18,11 +18,30 @@ const onUpdate = (onChange: OnChange) => {
 interface Options {
   value: string;
   onChange: OnChange;
+  onModE: () => boolean;
   extensions: Extension[];
 }
 
-export const useCodeEditor = ({ value, onChange, extensions }: Options) => {
-  const { ref, view } = useCodeMirror([onUpdate(onChange), ...extensions]);
+export const useCodeEditor = ({
+  value,
+  onModE,
+  onChange,
+  extensions,
+}: Options) => {
+  const { ref, view } = useCodeMirror([
+    onUpdate(onChange),
+    keymap.of([
+      {
+        key: 'Mod-e',
+        run: () => {
+          onModE();
+          return true;
+        },
+        preventDefault: true,
+      },
+    ]),
+    ...extensions,
+  ]);
 
   useEffect(() => {
     if (view) {

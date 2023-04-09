@@ -72,6 +72,10 @@ export const ContentPane: React.FC<ContentPaneProps> = ({
         className="px-11"
         value={currentFile?.value ?? ''}
         onChange={(value: string) => setNewValue(value)}
+        onModE={() => {
+          toggleRender();
+          return true;
+        }}
       />
       {/* <MonacoEditor
         value={currentFile?.value ?? ''}

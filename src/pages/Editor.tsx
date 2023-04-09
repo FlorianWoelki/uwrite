@@ -96,14 +96,14 @@ export const EditorPage: React.FC = (): JSX.Element => {
   return (
     <div className="relative antialiased">
       {!isLoading && !currentFile && (
-        <div className="absolute m-auto flex h-screen w-full flex-col items-center justify-center">
+        <div className="absolute flex flex-col items-center justify-center w-full h-screen m-auto">
           <p className="text-iron-300">No active file found.</p>
         </div>
       )}
 
       {isLoading ? (
-        <div className="absolute m-auto flex h-screen w-full items-center justify-center">
-          <LoadingIndicator className="z-50 h-8 w-8 text-gray-500" />
+        <div className="absolute flex items-center justify-center w-full h-screen m-auto">
+          <LoadingIndicator className="z-50 w-8 h-8 text-gray-500" />
         </div>
       ) : (
         <>
@@ -116,10 +116,10 @@ export const EditorPage: React.FC = (): JSX.Element => {
           />
 
           {currentFile && (
-            <div className="m-auto h-screen w-full max-w-6xl">
+            <div className="w-full h-screen max-w-6xl m-auto">
               <ContentPane
                 shouldRenderPreview={shouldRenderPreview}
-                toggleRender={() => setShouldRenderPreview((p) => !p)}
+                toggleRender={() => setShouldRenderPreview(true)}
               />
             </div>
           )}
