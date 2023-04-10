@@ -4,16 +4,28 @@ import './CodeMirrorEditor.css';
 
 export const CodeMirrorEditor: React.FC<any> = ({
   value,
+  cursorPosition,
   className,
   onChange,
-  onModE,
+  onSelectionChange,
   extensions = [],
 }): JSX.Element => {
-  const { ref, view } = useCodeEditor({ value, onChange, onModE, extensions });
+  const { ref, view } = useCodeEditor({
+    value,
+    onChange,
+    onSelectionChange,
+    extensions,
+  });
 
   useEffect(() => {
     if (view) {
       view.focus();
+      view!.dispatch({
+        selection: {
+          anchor: cursorPosition,
+          head: cursorPosition,
+        },
+      });
     }
   }, [view]);
 

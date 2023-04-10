@@ -1,5 +1,4 @@
 import 'katex/dist/katex.min.css';
-import { Position } from 'monaco-editor';
 import React, { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useKeyPress } from '../hooks/useKeyPress';
@@ -25,7 +24,7 @@ export const ContentPane: React.FC<ContentPaneProps> = ({
   const [renderedPreviewContent, setRenderedPreviewContent] = useState<
     string | null
   >(null);
-  const [editorPosition, setEditorPosition] = useState<Position | null>();
+  const [cursorPosition, setCursorPosition] = useState<number>(0);
 
   const currentFile = useSelector(selectCurrentFile);
   const [_, saveContent] = useSaveContent();
@@ -37,10 +36,7 @@ export const ContentPane: React.FC<ContentPaneProps> = ({
 
     if (!shouldRenderPreview) {
       setRenderedPreviewContent(null);
-      if (editorPosition) {
-        // codeEditorRef.current.setPosition(editorPosition);
-      }
-
+      // codeEditorRef.current.setPosition(editorPosition);
       return;
     }
 
@@ -51,7 +47,6 @@ export const ContentPane: React.FC<ContentPaneProps> = ({
     setRenderedPreviewContent(renderPreview(currentFile?.value ?? ''));
   }, [shouldRenderPreview]);
 
-  console.log(shouldRenderPreview);
   useKeyPress(
     ['e'],
     () => {
@@ -70,8 +65,12 @@ export const ContentPane: React.FC<ContentPaneProps> = ({
     <>
       <CodeMirrorEditor
         className="px-11"
+        cursorPosition={cursorPosition}
         value={currentFile?.value ?? ''}
         onChange={(value: string) => setNewValue(value)}
+        onSelectionChange={(cursorPosition: number) =>
+          setCursorPosition(cursorPosition)
+        }
       />
       {/* <MonacoEditor
         value={currentFile?.value ?? ''}
