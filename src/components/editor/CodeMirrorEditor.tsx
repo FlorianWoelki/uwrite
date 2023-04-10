@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useCodeEditor } from '../../hooks/useCodeEditor';
 import './CodeMirrorEditor.css';
 
@@ -8,7 +9,13 @@ export const CodeMirrorEditor: React.FC<any> = ({
   onModE,
   extensions = [],
 }): JSX.Element => {
-  const ref = useCodeEditor({ value, onChange, onModE, extensions });
+  const { ref, view } = useCodeEditor({ value, onChange, onModE, extensions });
+
+  useEffect(() => {
+    if (view) {
+      view.focus();
+    }
+  }, [view]);
 
   return <div ref={ref} className={className} />;
 };

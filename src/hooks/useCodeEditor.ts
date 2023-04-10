@@ -58,5 +58,5 @@ export const useCodeEditor = ({
     }
   }, [value, view]);
 
-  return ref;
+  return { view, ref };
 };
