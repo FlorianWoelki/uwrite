@@ -31,27 +31,27 @@ export const ContentPane: React.FC<ContentPaneProps> = ({
   const [_, saveContent] = useSaveContent();
 
   useEffect(() => {
-    if (!codeEditorRef.current) {
-      return;
-    }
+    // if (!codeEditorRef.current) {
+    //   return;
+    // }
 
     if (!shouldRenderPreview) {
       setRenderedPreviewContent(null);
       if (editorPosition) {
-        codeEditorRef.current.setPosition(editorPosition);
+        // codeEditorRef.current.setPosition(editorPosition);
       }
 
       return;
     }
 
-    setEditorPosition(codeEditorRef.current.getPosition());
+    // setEditorPosition(codeEditorRef.current.getPosition());
     saveContent({
       ...currentFile!,
-      value: codeEditorRef.current.getValue(),
     });
-    setRenderedPreviewContent(renderPreview(codeEditorRef.current.getValue()));
+    setRenderedPreviewContent(renderPreview(currentFile?.value ?? ''));
   }, [shouldRenderPreview]);
 
+  console.log(shouldRenderPreview);
   useKeyPress(
     ['e'],
     () => {
@@ -72,10 +72,6 @@ export const ContentPane: React.FC<ContentPaneProps> = ({
         className="px-11"
         value={currentFile?.value ?? ''}
         onChange={(value: string) => setNewValue(value)}
-        onModE={() => {
-          toggleRender();
-          return true;
-        }}
       />
       {/* <MonacoEditor
         value={currentFile?.value ?? ''}
