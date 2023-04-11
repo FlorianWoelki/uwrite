@@ -30,17 +30,11 @@ export const ContentPane: React.FC<ContentPaneProps> = ({
   const [_, saveContent] = useSaveContent();
 
   useEffect(() => {
-    // if (!codeEditorRef.current) {
-    //   return;
-    // }
-
     if (!shouldRenderPreview) {
       setRenderedPreviewContent(null);
-      // codeEditorRef.current.setPosition(editorPosition);
       return;
     }
 
-    // setEditorPosition(codeEditorRef.current.getPosition());
     saveContent({
       ...currentFile!,
     });
