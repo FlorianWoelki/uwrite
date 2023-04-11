@@ -1,7 +1,7 @@
 import { tags as t } from '@lezer/highlight';
 import { createTheme, CreateThemeOptions } from './theme';
 
-export const defaultSettingsXcodeDark: CreateThemeOptions['settings'] = {
+export const defaultSettingsUwriteDark: CreateThemeOptions['settings'] = {
   background: '#2b3036',
   gutterBackground: '#2b3036',
   gutterActiveForeground: '#c6c6c6',
@@ -19,7 +19,7 @@ export const defaultSettingsXcodeDark: CreateThemeOptions['settings'] = {
 export const uwriteDarkInit = () => {
   return createTheme({
     settings: {
-      ...defaultSettingsXcodeDark,
+      ...defaultSettingsUwriteDark,
     },
     styles: [
       { tag: [t.standard(t.tagName), t.tagName], color: '#7ee787' },
