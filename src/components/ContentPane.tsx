@@ -8,13 +8,17 @@ import { selectCurrentFile } from '../store';
 import { MonacoEditor } from './editor/MonacoEditor';
 import { renderPreview } from './util';
 import { CodeMirrorEditor } from './editor/CodeMirrorEditor';
+import { ThemeType } from '../hooks/useDarkMode';
+import { uwriteDark, uwriteLight } from './editor/theme/uwrite';
 
 interface ContentPaneProps {
+  theme: ThemeType;
   shouldRenderPreview: boolean;
   toggleRender: () => void;
 }
 
 export const ContentPane: React.FC<ContentPaneProps> = ({
+  theme,
   shouldRenderPreview,
   toggleRender,
 }): JSX.Element => {
@@ -55,6 +59,7 @@ export const ContentPane: React.FC<ContentPaneProps> = ({
     saveContent({ ...currentFile!, value: newValue });
   }, [newValue]);
 
+  console.log(theme);
   return !shouldRenderPreview || !renderedPreviewContent ? (
     <>
       <CodeMirrorEditor
@@ -65,6 +70,7 @@ export const ContentPane: React.FC<ContentPaneProps> = ({
         onSelectionChange={(cursorPosition: number) =>
           setCursorPosition(cursorPosition)
         }
+        extensions={[theme === 'dark' ? uwriteDark : uwriteLight]}
       />
       {/* <MonacoEditor
         value={currentFile?.value ?? ''}

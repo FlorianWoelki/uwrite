@@ -1,6 +1,8 @@
 import { useEffect } from 'react';
 import { useCodeEditor } from '../../hooks/useCodeEditor';
 import './CodeMirrorEditor.css';
+import { StateEffect } from '@codemirror/state';
+import { defaultExtensions } from '../../hooks/useCodeMirror';
 
 export const CodeMirrorEditor: React.FC<any> = ({
   value,
@@ -16,6 +18,17 @@ export const CodeMirrorEditor: React.FC<any> = ({
     onSelectionChange,
     extensions,
   });
+
+  useEffect(() => {
+    if (view) {
+      view.dispatch({
+        effects: StateEffect.reconfigure.of([
+          ...defaultExtensions,
+          ...extensions,
+        ]),
+      });
+    }
+  }, [extensions]);
 
   useEffect(() => {
     if (view) {

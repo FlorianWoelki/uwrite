@@ -1,7 +1,7 @@
 import { tags as t } from '@lezer/highlight';
 import { createTheme, CreateThemeOptions } from './theme';
 
-export const defaultSettingsUwriteLight: CreateThemeOptions['settings'] = {
+const defaultSettingsUwriteDark: CreateThemeOptions['settings'] = {
   background: '#2b3036',
   gutterBackground: '#2b3036',
   gutterActiveForeground: '#c6c6c6',
@@ -16,7 +16,7 @@ export const defaultSettingsUwriteLight: CreateThemeOptions['settings'] = {
   fontFamily: 'Menlo, Monaco, "Courier New", monospace',
 };
 
-export const defaultSettingsUwriteDark: CreateThemeOptions['settings'] = {
+const defaultSettingsUwriteLight: CreateThemeOptions['settings'] = {
   background: '#eaeaeb',
   gutterBackground: '#eaeaeb',
   gutterActiveForeground: '#0b216f',
@@ -34,7 +34,7 @@ export const defaultSettingsUwriteDark: CreateThemeOptions['settings'] = {
 export const uwriteLightInit = () => {
   return createTheme({
     settings: {
-      ...defaultSettingsUwriteDark,
+      ...defaultSettingsUwriteLight,
     },
     styles: [
       { tag: [t.standard(t.tagName), t.tagName], color: '#7ee787' },

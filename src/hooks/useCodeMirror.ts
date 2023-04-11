@@ -1,7 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
 import { EditorView, basicSetup } from 'codemirror';
 import { Extension } from '@codemirror/state';
-import { uwriteLight, uwriteDark } from '../components/editor/theme/uwrite';
+
+export const defaultExtensions: Extension[] = [
+  basicSetup,
+  EditorView.lineWrapping,
+];
 
 export const useCodeMirror = (extensions: Extension[]) => {
   const ref = useRef<HTMLDivElement | null>(null);
@@ -13,12 +17,7 @@ export const useCodeMirror = (extensions: Extension[]) => {
     }
 
     const view = new EditorView({
-      extensions: [
-        basicSetup,
-        uwriteLight,
-        EditorView.lineWrapping,
-        ...extensions,
-      ],
+      extensions: [...defaultExtensions, ...extensions],
       parent: ref.current,
     });
 

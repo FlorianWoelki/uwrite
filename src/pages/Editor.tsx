@@ -118,6 +118,7 @@ export const EditorPage: React.FC = (): JSX.Element => {
           {currentFile && (
             <div className="w-full h-screen max-w-6xl m-auto">
               <ContentPane
+                theme={theme}
                 shouldRenderPreview={shouldRenderPreview}
                 toggleRender={() => setShouldRenderPreview((p) => !p)}
               />
