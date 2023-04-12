@@ -1,11 +1,10 @@
 import { Toolbar, ToolbarTab } from '../components/Toolbar';
-import { ThemeType, useDarkMode, useDarkModeMedia } from '../hooks/useDarkMode';
+import { ThemeType, useDarkMode } from '../hooks/useDarkMode';
 import { useEffect, useState } from 'react';
 import { File } from '../db/indexedDb';
 import { LoadingIndicator } from '../components/LoadingIndicator';
 import { useEditorPageParams } from './useEditorPageParams';
 import { ContentPane } from '../components/ContentPane';
-import { updateTheme } from '../components/editor/MonacoEditor';
 import { useDispatch, useSelector } from 'react-redux';
 import { setCurrentFile } from '../store/features/currentFile';
 import { addFile, setFiles } from '../store/features/files';
@@ -16,23 +15,7 @@ export const EditorPage: React.FC = (): JSX.Element => {
   const { id } = useEditorPageParams();
   const currentFile = useSelector(selectCurrentFile);
 
-  const [theme, setTheme] = useDarkMode();
-
-  useDarkModeMedia(theme, (type) => {
-    updateTheme(type === 'dark' ? 'uwrite-dark' : 'uwrite-light');
-  });
-
-  useEffect(() => {
-    if (theme === 'system') {
-      const prefersDark = window.matchMedia(
-        '(prefers-color-scheme: dark)',
-      ).matches;
-      const type = prefersDark ? 'dark' : 'light';
-      updateTheme(type === 'dark' ? 'uwrite-dark' : 'uwrite-light');
-    } else {
-      updateTheme(theme === 'dark' ? 'uwrite-dark' : 'uwrite-light');
-    }
-  }, [theme]);
+  const [theme, setTheme] = useDarkMode((type) => setTheme(type));
 
   const handleThemeChange = async (themeType: ThemeType): Promise<void> => {
     if (themeType === 'system') {

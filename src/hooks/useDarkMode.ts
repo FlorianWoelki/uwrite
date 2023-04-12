@@ -15,7 +15,7 @@ export const useDarkModeMedia = (
       const type = prefersDark ? 'dark' : 'light';
       callback(type);
     }
-  }, [theme]);
+  }, [theme, callback]);
 
   const mediaListener = useRef(handleMediaQuery);
   mediaListener.current = handleMediaQuery;
@@ -32,15 +32,14 @@ export const useDarkModeMedia = (
     return () => {
       media.removeEventListener('change', handler);
     };
-  }, []);
+  }, [mediaListener.current]);
 
   return mediaListener;
 };
 
-export const useDarkMode = (): readonly [
-  ThemeType,
-  (themeType: ThemeType) => void,
-] => {
+export const useDarkMode = (
+  mediaChangeCallback?: (type: ThemeType) => void,
+): readonly [ThemeType, (themeType: ThemeType) => void] => {
   const [theme, setThemeState] = useState<ThemeType>(
     (localStorage.getItem('theme') as 'dark' | 'light' | null) ?? 'system',
   );
@@ -49,6 +48,7 @@ export const useDarkMode = (): readonly [
     const root = window.document.documentElement;
     root.classList.remove(type === 'dark' ? 'light' : 'dark');
     root.classList.add(type === 'dark' ? 'dark' : 'light');
+    mediaChangeCallback?.(type);
   });
 
   const setTheme = (themeType: ThemeType): void => {
