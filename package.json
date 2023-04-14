@@ -10,6 +10,8 @@
     "dev:vite": "vite",
     "build": "tauri build",
     "build:vite": "vite build",
+    "test": "vitest",
+    "test:ci": "vitest run",
     "clean": "rimraf dist main src/out"
   },
   "dependencies": {
@@ -62,7 +64,8 @@
     "typescript": "^4.9.5",
     "vite": "^2.9.15",
     "vite-plugin-monaco-editor": "^1.1.0",
-    "vite-plugin-svgr": "^1.1.0"
+    "vite-plugin-svgr": "^1.1.0",
+    "vitest": "^0.30.1"
   },
   "resolutions": {
     "@types/react": "^17.0.33"
