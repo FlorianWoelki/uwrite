@@ -1,4 +1,4 @@
-import { classes } from '../../util/classes';
+import clsx from 'clsx';
 
 interface ButtonProps {
   grouped?: boolean;
@@ -16,7 +16,7 @@ export const Button: React.FC<ButtonProps> = ({
   active,
   ...rest
 }): JSX.Element => {
-  const extraClasses = classes(
+  const extraClasses = clsx(
     {
       'border rounded': !grouped,
     },

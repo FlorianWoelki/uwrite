@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import clsx from 'clsx';
 import { ThemeType } from '../hooks/useDarkMode';
 import { Button } from './button/Button';
 import { ButtonGroup } from './button/ButtonGroup';
@@ -15,7 +16,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { selectIsVimActive, selectCurrentFile } from '../store';
 import { InputField } from './InputField';
 import { useSaveContent } from '../hooks/useSaveContent';
-import { classes } from '../util/classes';
 import { toggleVim } from '../store/features/editor';
 
 export enum ToolbarTab {
@@ -148,11 +148,11 @@ export const Toolbar: React.FC<ToolbarProps> = ({
                 >
                   <div className="flex items-center space-x-2 text-gray-400">
                     <div
-                      className={classes(
+                      className={clsx(
+                        'w-2.5 h-2.5 border border-gray-400 rounded-full',
                         {
                           'bg-gray-400': isVimActive,
                         },
-                        'w-2.5 h-2.5 border border-gray-400 rounded-full',
                       )}
                     ></div>
                     <span>On</span>
@@ -164,11 +164,11 @@ export const Toolbar: React.FC<ToolbarProps> = ({
                 >
                   <div className="flex items-center space-x-2">
                     <div
-                      className={classes(
+                      className={clsx(
+                        'w-2.5 h-2.5 border border-gray-400 rounded-full',
                         {
                           'bg-gray-400': !isVimActive,
                         },
-                        'w-2.5 h-2.5 border border-gray-400 rounded-full',
                       )}
                     ></div>
                     <span>Off</span>
