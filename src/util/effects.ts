@@ -6,8 +6,9 @@
  */
 export const debounce = (callback: () => void, timeout: number = 400) => {
   let timer: NodeJS.Timeout;
-  return (): void => {
+  return (): NodeJS.Timeout => {
     clearTimeout(timer);
     timer = setTimeout(callback, timeout);
+    return timer;
   };
 };

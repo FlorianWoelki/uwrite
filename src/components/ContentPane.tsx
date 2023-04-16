@@ -1,5 +1,5 @@
 import 'katex/dist/katex.min.css';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useKeyPress } from '../hooks/useKeyPress';
 import { useSaveContent } from '../hooks/useSaveContent';
@@ -51,15 +51,14 @@ export const ContentPane: React.FC<ContentPaneProps> = ({
   );
 
   useEffect(() => {
-    debouncedSave();
-  }, [newValue]);
-
-  const debouncedSave = useCallback(
-    debounce(() => {
+    const executeDeboucne = debounce(() => {
       saveContent({ ...currentFile!, value: newValue });
-    }),
-    [],
-  );
+    })();
+
+    return () => {
+      clearTimeout(executeDeboucne);
+    };
+  }, [newValue]);
 
   return !shouldRenderPreview || !renderedPreviewContent ? (
     <CodeMirrorEditor
