@@ -1,7 +1,8 @@
 import { useEffect } from 'react';
+import { markdown } from '@codemirror/lang-markdown';
+import { StateEffect } from '@codemirror/state';
 import { useCodeEditor } from '../../hooks/useCodeEditor';
 import './CodeMirrorEditor.css';
-import { StateEffect } from '@codemirror/state';
 import { defaultExtensions } from '../../hooks/useCodeMirror';
 
 export const CodeMirrorEditor: React.FC<any> = ({
@@ -16,15 +17,17 @@ export const CodeMirrorEditor: React.FC<any> = ({
     value,
     onChange,
     onSelectionChange,
-    extensions,
+    extensions: [...extensions, markdown()],
   });
 
   useEffect(() => {
     if (view) {
+      // TODO: Is there a more effective way to dispatch this effect?
       view.dispatch({
         effects: StateEffect.reconfigure.of([
           ...defaultExtensions,
           ...extensions,
+          markdown(),
         ]),
       });
     }
