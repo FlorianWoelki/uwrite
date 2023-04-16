@@ -23,13 +23,13 @@ export const CodeMirrorEditor: React.FC<any> = ({
   useEffect(() => {
     if (view) {
       // TODO: Is there a more effective way to dispatch this effect?
-      view.dispatch({
-        effects: StateEffect.reconfigure.of([
-          ...defaultExtensions,
-          ...extensions,
-          markdown(),
-        ]),
-      });
+      // view.dispatch({
+      //   effects: StateEffect.reconfigure.of([
+      //     ...defaultExtensions,
+      //     ...extensions,
+      //     markdown(),
+      //   ]),
+      // });
     }
   }, [extensions]);
 
