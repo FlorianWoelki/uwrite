@@ -1,5 +1,5 @@
 import 'katex/dist/katex.min.css';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useKeyPress } from '../hooks/useKeyPress';
 import { useSaveContent } from '../hooks/useSaveContent';
@@ -8,6 +8,7 @@ import { renderPreview } from './util';
 import { CodeMirrorEditor } from './editor/CodeMirrorEditor';
 import { ThemeType } from '../hooks/useDarkMode';
 import { uwriteDark, uwriteLight } from './editor/theme/uwrite';
+import { debounce } from '../util/effects';
 
 interface ContentPaneProps {
   theme: ThemeType;
@@ -27,6 +28,7 @@ export const ContentPane: React.FC<ContentPaneProps> = ({
 
   const currentFile = useSelector(selectCurrentFile);
   const [_, saveContent] = useSaveContent();
+  const [newValue, setNewValue] = useState<string>(currentFile?.value ?? '');
 
   useEffect(() => {
     if (!shouldRenderPreview) {
@@ -48,17 +50,22 @@ export const ContentPane: React.FC<ContentPaneProps> = ({
     true,
   );
 
-  const [newValue, setNewValue] = useState<string>(currentFile?.value ?? '');
-
   useEffect(() => {
-    saveContent({ ...currentFile!, value: newValue });
+    debouncedSave();
   }, [newValue]);
+
+  const debouncedSave = useCallback(
+    debounce(() => {
+      saveContent({ ...currentFile!, value: newValue });
+    }),
+    [],
+  );
 
   return !shouldRenderPreview || !renderedPreviewContent ? (
     <CodeMirrorEditor
       className="px-11"
       cursorPosition={cursorPosition}
-      value={currentFile?.value ?? ''}
+      value={newValue}
       onChange={(value: string) => setNewValue(value)}
       onSelectionChange={(cursorPosition: number) =>
         setCursorPosition(cursorPosition)
