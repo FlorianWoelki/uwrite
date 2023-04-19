@@ -3,7 +3,7 @@ import { ThemeType, useDarkMode } from '../hooks/useDarkMode';
 import { useEffect, useState } from 'react';
 import { File } from '../db/indexedDb';
 import { LoadingIndicator } from '../components/LoadingIndicator';
-import { useEditorPageParams } from './useEditorPageParams';
+import { useEditorPageParams } from '../hooks/useEditorPageParams';
 import { ContentPane } from '../components/ContentPane';
 import { useDispatch, useSelector } from 'react-redux';
 import { setCurrentFile } from '../store/features/currentFile';
