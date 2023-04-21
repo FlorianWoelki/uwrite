@@ -1,9 +1,13 @@
 import { useEffect } from 'react';
 import { markdown } from '@codemirror/lang-markdown';
-import { StateEffect } from '@codemirror/state';
+import { tags as t } from '@lezer/highlight';
 import { useCodeEditor } from '../../hooks/useCodeEditor';
 import './CodeMirrorEditor.css';
-import { defaultExtensions } from '../../hooks/useCodeMirror';
+
+const katexDelim = {
+  resolve: 'Katex',
+  mark: 'KatexMark',
+};
 
 export const CodeMirrorEditor: React.FC<any> = ({
   value,
@@ -17,7 +21,39 @@ export const CodeMirrorEditor: React.FC<any> = ({
     value,
     onChange,
     onSelectionChange,
-    extensions: [...extensions, markdown()],
+    extensions: [
+      ...extensions,
+      markdown({
+        extensions: [
+          // Custom katex highlighting.
+          {
+            defineNodes: [
+              {
+                name: 'Katex',
+                style: { 'Katex/...': t.atom },
+              },
+              {
+                name: 'KatexMark',
+                style: t.processingInstruction,
+              },
+            ],
+            parseInline: [
+              {
+                name: 'Katex',
+                parse: (cx, next, pos) => {
+                  const character: number = 36; // $
+                  if (next !== character) {
+                    return -1;
+                  }
+
+                  return cx.addDelimiter(katexDelim, pos, pos + 1, true, true);
+                },
+              },
+            ],
+          },
+        ],
+      }),
+    ],
   });
 
   useEffect(() => {
