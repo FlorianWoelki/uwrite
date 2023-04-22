@@ -39,7 +39,7 @@ export const ContentPane: React.FC<ContentPaneProps> = ({
     saveContent({
       ...currentFile!,
     });
-    setRenderedPreviewContent(renderPreview(currentFile?.value ?? ''));
+    setRenderedPreviewContent(renderPreview(newValue));
   }, [shouldRenderPreview]);
 
   useKeyPress(
