@@ -7,8 +7,8 @@ import {
 import { tags as t } from '@lezer/highlight';
 
 const katexDelim = {
-  resolve: 'Katex',
-  mark: 'KatexMark',
+  resolve: 'InlineKatex',
+  mark: 'InlineKatexMark',
 };
 
 class MathBlockParser implements LeafBlockParser {
@@ -33,17 +33,17 @@ export const mathExtensions: MarkdownExtension[] = [
   {
     defineNodes: [
       {
-        name: 'Katex',
-        style: { 'Katex/...': t.atom },
+        name: 'InlineKatex',
+        style: { 'InlineKatex/...': t.atom },
       },
       {
-        name: 'KatexMark',
+        name: 'InlineKatexMark',
         style: t.processingInstruction,
       },
     ],
     parseInline: [
       {
-        name: 'Katex',
+        name: 'InlineKatex',
         parse: (cx, next, pos) => {
           const character: number = 36; // $
           if (next !== character) {
