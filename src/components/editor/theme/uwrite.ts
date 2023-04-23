@@ -78,7 +78,10 @@ export const uwriteDarkInit = () => {
         tag: [t.keyword, t.typeName, t.typeOperator, t.typeName],
         color: '#ff7b72',
       },
-      { tag: [t.string, t.meta, t.regexp], color: '#a5d6ff' },
+      {
+        tag: [t.string, t.meta, t.regexp, t.monospace],
+        color: '#a5d6ff',
+      },
       { tag: [t.name, t.quote], color: '#7ee787' },
       { tag: [t.heading], color: '#d2a8ff', fontWeight: 'bold' },
       { tag: [t.emphasis], color: '#d2a8ff', fontStyle: 'italic' },
