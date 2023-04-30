@@ -146,12 +146,12 @@ export const Toolbar: React.FC<ToolbarProps> = ({
                   active={isVimActive}
                   onClick={() => dispatch(toggleVim(true))}
                 >
-                  <div className="flex items-center space-x-2 text-gray-400">
+                  <div className="flex items-center space-x-2 text-iron-500 dark:text-iron-300">
                     <div
                       className={clsx(
-                        'w-2.5 h-2.5 border border-gray-400 rounded-full',
+                        'w-2.5 h-2.5 border border-iron-400 rounded-full',
                         {
-                          'bg-gray-400': isVimActive,
+                          'bg-iron-400': isVimActive,
                         },
                       )}
                     ></div>
@@ -162,7 +162,7 @@ export const Toolbar: React.FC<ToolbarProps> = ({
                   active={!isVimActive}
                   onClick={() => dispatch(toggleVim(false))}
                 >
-                  <div className="flex items-center space-x-2">
+                  <div className="flex items-center space-x-2 text-iron-500 dark:text-iron-300">
                     <div
                       className={clsx(
                         'w-2.5 h-2.5 border border-gray-400 rounded-full',
