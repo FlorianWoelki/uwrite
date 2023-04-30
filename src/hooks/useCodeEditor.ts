@@ -38,16 +38,16 @@ export const useCodeEditor = ({
   onSelectionChange,
   extensions,
 }: Options) => {
-  const { ref, view } = useCodeMirror([
+  const codeMirror = useCodeMirror([
     onUpdate(onChange, onSelectionChange),
     ...extensions,
   ]);
 
   useEffect(() => {
-    if (view) {
-      const editorValue = view.state.doc.toString();
+    if (codeMirror.view) {
+      const editorValue = codeMirror.view.state.doc.toString();
       if (value !== editorValue) {
-        view.dispatch({
+        codeMirror.view.dispatch({
           changes: {
             from: 0,
             to: editorValue.length,
@@ -56,7 +56,7 @@ export const useCodeEditor = ({
         });
       }
     }
-  }, [value, view]);
+  }, [value, codeMirror.view]);
 
-  return { view, ref };
+  return codeMirror;
 };

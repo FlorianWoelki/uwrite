@@ -7,7 +7,6 @@ import { selectCurrentFile } from '../store';
 import { renderPreview } from './util';
 import { CodeMirrorEditor } from './editor/CodeMirrorEditor';
 import { ThemeType } from '../hooks/useDarkMode';
-import { uwriteDark, uwriteLight } from './editor/theme/uwrite';
 import { debounce } from '../util/effects';
 
 interface ContentPaneProps {
@@ -65,11 +64,11 @@ export const ContentPane: React.FC<ContentPaneProps> = ({
       className="px-11"
       cursorPosition={cursorPosition}
       value={newValue}
+      theme={theme}
       onChange={(value: string) => setNewValue(value)}
       onSelectionChange={(cursorPosition: number) =>
         setCursorPosition(cursorPosition)
       }
-      extensions={[theme === 'dark' ? uwriteDark : uwriteLight]}
     />
   ) : (
     <div

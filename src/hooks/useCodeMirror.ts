@@ -12,22 +12,37 @@ export const useCodeMirror = (extensions: Extension[]) => {
   const [view, setView] = useState<EditorView | null>(null);
 
   useEffect(() => {
-    if (!ref.current) {
-      return;
-    }
-
-    const view = new EditorView({
-      extensions: [...defaultExtensions, ...extensions],
-      parent: ref.current,
-    });
-
-    setView(view);
+    const newView = createNewView();
 
     return () => {
-      view.destroy();
+      newView?.destroy();
+      view?.destroy();
       setView(null);
     };
   }, [ref.current]);
 
-  return { ref, view };
+  const createNewView = (): EditorView | undefined => {
+    if (!ref.current) {
+      return undefined;
+    }
+
+    const newView = new EditorView({
+      extensions: [...defaultExtensions, ...extensions],
+      parent: ref.current,
+    });
+
+    setView(newView);
+    return newView;
+  };
+
+  const recreate = (): void => {
+    if (!view) {
+      return;
+    }
+
+    view.destroy();
+    createNewView();
+  };
+
+  return { ref, view, recreate };
 };
