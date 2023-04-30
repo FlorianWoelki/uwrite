@@ -1,9 +1,12 @@
 import { useEffect } from 'react';
+import { vim } from '@replit/codemirror-vim';
 import { markdown } from '@codemirror/lang-markdown';
 import { uwriteDark, uwriteLight } from './theme/uwrite';
 import { useCodeEditor } from '../../hooks/useCodeEditor';
 import './CodeMirrorEditor.css';
 import { mathExtensions } from './extensions';
+import { useSelector } from 'react-redux';
+import { selectIsVimActive } from '../../store';
 
 export const CodeMirrorEditor: React.FC<any> = ({
   value,
@@ -14,11 +17,14 @@ export const CodeMirrorEditor: React.FC<any> = ({
   theme,
   extensions = [],
 }): JSX.Element => {
+  const isVimActive = useSelector(selectIsVimActive);
+
   const { ref, view, recreate } = useCodeEditor({
     value,
     onChange,
     onSelectionChange,
     extensions: [
+      isVimActive ? vim() : [],
       ...extensions,
       theme === 'dark' ? uwriteDark : uwriteLight,
       markdown({
@@ -32,8 +38,9 @@ export const CodeMirrorEditor: React.FC<any> = ({
       return;
     }
 
+    // TODO: Possible to only update certain extensions?
     recreate();
-  }, [theme]);
+  }, [theme, isVimActive]);
 
   useEffect(() => {
     if (view) {
